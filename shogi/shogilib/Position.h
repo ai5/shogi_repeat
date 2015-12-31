@@ -3,8 +3,8 @@
 #ifndef SHOGI_POSITION_H_
 #define SHOGI_POSITION_H_
 
-#include <types.h>
-#include <Key.h>
+#include "types.h"
+#include "Key.h"
 #include "Handicap.h"
 
 class Position
@@ -43,6 +43,12 @@ public:
 
 	bool IsBlack(File file, Rank rank) const { return color_of(this->board_[make_square(file, rank)]) == BLACK; }
 	bool IsWhite(File file, Rank rank) const { return color_of(this->board_[make_square(file, rank)]) == WHITE; }
+
+	Color ColorOf(File file, Rank rank) const {
+		return color_of(this->board_[make_square(file, rank)]);
+	}
+	
+
 	bool IsEmpty(File file, Rank rank) const { return this->board_[make_square(file, rank)] == Piece::NO_PIECE; }
 	bool IsHand(Color color, PieceType piece_type) const { return this->hand_[color][piece_type] != 0; }
 

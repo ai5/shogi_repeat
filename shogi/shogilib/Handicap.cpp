@@ -21,6 +21,26 @@ const std::string HandicapExtention::HandicapString[HANDICAP_NB] =
 	{ "その他" },
 };
 
+const std::wstring HandicapExtention::HandicapWString[HANDICAP_NB] =
+{
+	{ L"平手" },
+	{ L"香落ち" },
+	{ L"右香落ち" },
+	{ L"角落ち" },
+	{ L"飛車落ち" },
+	{ L"飛香落ち" },
+	{ L"二枚落ち" },
+	{ L"三枚落ち" },
+	{ L"四枚落ち" },
+	{ L"五枚落ち" },
+	{ L"左五枚落ち" },
+	{ L"六枚落ち" },
+	{ L"八枚落ち" },
+	{ L"十枚落ち" },
+	{ L"その他" },
+};
+
+
 /*-----------------------------------------------------------------------------*/
 /**
  * @brief ハンディキャップ文字列を取得
@@ -54,4 +74,18 @@ Handicap HandicapExtention::FromString(const std::string& str)
 	return Handicap::OTHER;
 }
 
+
+Handicap HandicapExtention::FromWString(const std::wstring& str)
+{
+	for (int i = 0; i < HANDICAP_NB; i++)
+	{
+		if (HandicapWString[i] == str)
+		{
+			return Handicap(i);
+		}
+	}
+
+	// ない場合
+	return Handicap::OTHER;
+}
 

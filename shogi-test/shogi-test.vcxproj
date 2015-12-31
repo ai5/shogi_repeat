@@ -28,17 +28,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColorTest.cpp" />
+    <ClCompile Include="DateTimeTest.cpp" />
+    <ClCompile Include="EnginePlayerTest.cpp" />
     <ClCompile Include="FileTest.cpp" />
     <ClCompile Include="HandicapTest.cpp" />
     <ClCompile Include="KeyTest.cpp" />
+    <ClCompile Include="KeyValueTest.cpp" />
+    <ClCompile Include="KifTest.cpp" />
+    <ClCompile Include="MoveCheckTest.cpp" />
     <ClCompile Include="MoveTest.cpp" />
     <ClCompile Include="NotationTest.cpp" />
     <ClCompile Include="PieceTest.cpp" />
     <ClCompile Include="PositionTest.cpp" />
+    <ClCompile Include="ProcessTest.cpp" />
     <ClCompile Include="RankTest.cpp" />
     <ClCompile Include="SfenTest.cpp" />
+    <ClCompile Include="SemaphoreTest.cpp" />
+    <ClCompile Include="MessageQueueTest.cpp" />
     <ClCompile Include="SquareTest.cpp" />
+    <ClCompile Include="StringQueueTest.cpp" />
+    <ClCompile Include="StringUtilTest.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TimerTest.cpp" />
+    <ClCompile Include="USIEngineTest.cpp" />
+    <ClCompile Include="USIOptionTest.cpp" />
+    <ClCompile Include="USIStringTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\shogi\shogi.vcxproj">
@@ -149,7 +163,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation;..\shogi\engine;..\shogi\util</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,7 +178,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation;..\shogi\engine;..\shogi\util</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -209,7 +223,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;..\shogi;..\shogi\shogilib;..\shogi\shogilib\notation;..\shogi\engine;..\shogi\util</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

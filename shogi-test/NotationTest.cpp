@@ -43,17 +43,17 @@ TEST_F(NotationTest, testInit)
 	ASSERT_EQ(notation.initial_position().hashkey().hand_b(), 0U);
 
 	ASSERT_EQ(notation.handicap(), Handicap::HIRATE);
-	ASSERT_EQ(notation.black_name(), "");
-	ASSERT_EQ(notation.white_name(), "");
+	ASSERT_EQ(notation.black_name(), L"");
+	ASSERT_EQ(notation.white_name(), L"");
 	// ASSERT_EQ(notation.move_current(), notation.MoveFirst);
 	// ASSERT_EQ(notation.MovePrev, notation.MoveFirst);
 
 	// copyのテスト
 
 	Sfen::LoadNotation(notation, sfen1);
-	notation.set_black_name("黒名前");
-	notation.set_white_name("白名前");
-	notation.set_kifu_info("日時", "2015/10/10");
+	notation.set_black_name(L"黒名前");
+	notation.set_white_name(L"白名前");
+	notation.set_kifu_info(L"日時", L"2015/10/10");
 
 	Notation copynotation(notation);
 	copynotation.Last(); // 最後の指し手に移動
@@ -63,9 +63,9 @@ TEST_F(NotationTest, testInit)
 
 	ASSERT_EQ(copynotation.initial_position().hashkey().boardkey(), Key::InitialBoardKey);
 	ASSERT_EQ(copynotation.initial_position().hashkey().hand_b(), 0U);
-	ASSERT_EQ(copynotation.black_name(), "黒名前");
-	ASSERT_EQ(copynotation.white_name(), "白名前");
-	ASSERT_EQ(copynotation.kifu_infos().at("日時"), "2015/10/10");
+	ASSERT_EQ(copynotation.black_name(), L"黒名前");
+	ASSERT_EQ(copynotation.white_name(), L"白名前");
+	ASSERT_EQ(copynotation.kifu_infos().at(L"日時"), L"2015/10/10");
 }
 
 #if 0
@@ -281,21 +281,21 @@ TEST_F(NotationTest, testAddBranch)
 
 TEST_F(NotationTest, testDeleteNotCurrent)
 {
-#if 0
+
 	Notation notation;
 	Notation notation2;
 
 	Sfen::LoadNotation(notation, sfen1);
 	Sfen::LoadNotation(notation2, sfen2);
 
-	notation.AddBranch(notation2);
+	notation.Jump(0);
+	notation.AddBranch(notation2.moves());
 
-	notation.ChangeCurrent(0);
-	ASSERT_EQ(notation.move_current().Children.Count, 2);
+	ASSERT_EQ(notation.move_current().branches().size(), 1);
 
 	notation.DeleteNotCurrent();
-	ASSERT_EQ(notation.move_current().Children.Count, 0);
-#endif
+	ASSERT_EQ(notation.move_current().branches().size(), 0);
+
 }
 
 // [TestMethod, Description("")]
@@ -317,22 +317,7 @@ TEST_F(NotationTest, testMatta)
 #endif
 }
 
-// [TestMethod, Description("")]
-TEST_F(NotationTest, testBack)
-{
-#if 0
-	Notation notation;
-	Sfen::LoadNotation(notation, sfen1);
 
-	notation.Last();
-	ASSERT_EQ(notation.move_current().Equals(new Move(MoveType::Resign)), true);
-	ASSERT_EQ(notation.move_current().number(), 116);
-
-	notation.Back();
-	ASSERT_EQ(notation.move_current().MoveType::IsMove(), true);
-	ASSERT_EQ(notation.move_current().number(), 115);
-#endif
-}
 
 // [TestMethod, Description("")]
 TEST_F(NotationTest, testNext)
@@ -395,11 +380,11 @@ TEST_F(NotationTest, testset_kifu_info)
 
 	Notation notation;
 
-	notation.set_kifu_info("日時", "2015/10/10");
-	notation.set_kifu_info("場所", "ここ");
+	notation.set_kifu_info(L"日時", L"2015/10/10");
+	notation.set_kifu_info(L"場所", L"ここ");
 
-	ASSERT_EQ(notation.kifu_infos().at("日時"), "2015/10/10");
-	ASSERT_EQ(notation.kifu_infos().at("場所"), "ここ");
+	ASSERT_EQ(notation.kifu_infos().at(L"日時"), L"2015/10/10");
+	ASSERT_EQ(notation.kifu_infos().at(L"場所"), L"ここ");
 }
 
 TEST_F(NotationTest, testFindMoveNode)
@@ -554,4 +539,23 @@ TEST_F(NotationTest, testDecisionHandicap)
 	notation.SetInitialPosition(pos);
 	notation.DecisionHandicap();
 	ASSERT_EQ(notation.handicap(), Handicap::H10);
+}
+
+TEST_F(NotationTest, testBack)
+{
+	Notation notation;
+	Sfen::LoadNotation(notation, sfen1);
+
+	notation.Last();
+	ASSERT_EQ(notation.move_current().Equals( Move(MoveType::RESIGN) ), true);
+	ASSERT_EQ(notation.move_current().number(), 116);
+
+	notation.Back();
+	ASSERT_EQ(is_move(notation.move_current().move_type()), true);
+	ASSERT_EQ(notation.move_current().number(), 115);
+
+	notation.Last();
+	ASSERT_EQ(is_move(notation.move_current().move_type()), true);
+	ASSERT_EQ(notation.move_current().number(), 115);
+
 }

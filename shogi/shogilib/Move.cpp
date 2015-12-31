@@ -1,14 +1,10 @@
 ﻿
 #include <iostream>
+#include <algorithm>
+#include <iterator>
+
 #include "Move.h"
 
-
-
-
-Move::~Move()
-{
-	std::cout << "delete Move" << std::endl;
-}
 
 
 /**
@@ -58,32 +54,65 @@ bool Move::Equals(const Move& move) const
 	return ret;
 }
 
-/*------------------------------------------------------------------------------
-*Kifuの指し手
-*-------------------------------------------------------------------------------
-*/
+/*====================================================================================*/
+/* MoveKif */
+
+MoveKif::MoveKif()
+{
+	this->Init();
+}
+
+MoveKif::MoveKif(const Move& move) : Move(move)
+{
+	this->current_ = -1;
+	this->number_ = 0;
+	this->time = 0;
+	this->totalTime = 0;
+}
+
+MoveKif::MoveKif(const MoveKif& move) : Move(move)
+{
+	this->comments_ = move.comments_;
+	this->branches_ = move.branches_;
+
+	this->current_ = move.current_;
+	this->number_ = move.number_;
+
+	this->time = move.time;
+	this->totalTime = move.totalTime;
+}
+
+MoveKif::MoveKif(MoveType move_type) : Move(move_type)
+{
+	this->current_ = -1;
+	this->number_ = 0;
+	this->time = 0;
+	this->totalTime = 0;
+}
+
 
 
 MoveKif::~MoveKif()
 {
-	std::cout << "delete Move" << std::endl;
 }
 
+/*-----------------------------------------------------------------------------*/
 /**
-*初期化
-*/
+ * @brief 初期化
+ */
+/*-----------------------------------------------------------------------------*/
 void MoveKif::Init()
 {
 	this->Move::Init();
 
 	this->branches_.clear();
-	this->current_ = -1;
-	this->parent_ = nullptr;
 
-	this->comment_list_.clear();
+	this->comments_.clear();
+	this->current_ = -1;
+	this->number_ = 0;
+
 	this->totalTime = 0;
 	this->time = 0;
-	this->number_ = 0;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -95,15 +124,14 @@ void MoveKif::Init()
 /*-----------------------------------------------------------------------------*/
 Moves* MoveKif::MakeBranch(Moves* parent)
 {
-	ASSERT_MSG(this->parent_ == nullptr || this->parent_ == parent, "引数がおかしい");
-
-	this->parent_ = parent;
-
-	this->branches_.emplace_back();
+	this->branches_.emplace_back(new Moves());
 
 	this->current_ = this->branches_.size() - 1; // カレント変えとく
 
-	return &this->branches_.back();
+	Moves* moves = this->branches_.back().get();
+	moves->set_parent(parent);
+
+	return moves;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -116,12 +144,12 @@ Moves* MoveKif::MakeBranch(Moves* parent)
 /*-----------------------------------------------------------------------------*/
 void MoveKif::AddBranch(Moves* parent, const MoveKif& move)
 {
-	this->parent_ = parent;
+	this->branches_.emplace_back(new Moves());
 
-	this->branches_.emplace_back();
-	Moves& moves = this->branches_.back();
+	Moves* moves = this->branches_.back().get();
 
-	moves.push_back(move);
+	moves->set_parent(parent);
+	moves->push_back(move);
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -134,10 +162,10 @@ void MoveKif::AddBranch(Moves* parent, const MoveKif& move)
 /*-----------------------------------------------------------------------------*/
 void MoveKif::AddBranch(Moves* parent, const Moves& moves)
 {
-	this->branches_.emplace_back(moves);
+	this->branches_.emplace_back(new Moves(moves));
 	
-	Moves& m = this->branches_.back();
-	m[0].parent_ = parent;
+	Moves* m = this->branches_.back().get();
+	m->set_parent(parent);
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -196,7 +224,7 @@ void MoveKif::DeleteBranch(int no)
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-void MoveKif::SwapParent(int no, const Moves& moves)
+void MoveKif::SwapParent(int no, std::shared_ptr<Moves> moves)
 {
 	this->branches_[no] = moves;
 
@@ -210,21 +238,72 @@ void MoveKif::SwapParent(int no, const Moves& moves)
 	}
 }
 
+/*====================================================================================*/
+/* Moves */
+
+Moves::Moves() : std::deque<MoveKif>()
+{
+	this->parent_ = nullptr;
+}
+
+
 /*-----------------------------------------------------------------------------*/
 /**
 * @brief コピーした後親を全部書き換える
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-void MoveKif::ChangeParent(Moves& moves, Moves* parent)
+Moves::Moves(const Moves& moves) : std::deque<MoveKif>(moves)
 {
-	moves[0].parent_ = parent;
+	Moves::ChangeParent(*this, moves.parent_);
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief コピーした後親を全部書き換える
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+Moves& Moves::operator=(const Moves& moves) {
+
+	if (this != &moves)
+	{
+		this->deque<MoveKif>::operator=(moves);
+
+		Moves::ChangeParent(*this, moves.parent_);
+	}
+
+	return *this;
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief コピーした後親を全部書き換える
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+void Moves::ChangeParent(Moves& moves, Moves* parent)
+{
+	moves.parent_ = parent;
 
 	for (auto& move : moves)
 	{
-		for (auto& branch : move.branches_)
+		for (auto& branch : move.branches())
 		{
-			MoveKif::ChangeParent(branch, &moves);
+			Moves::ChangeParent(*branch, &moves);
 		}
 	}
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief ブランチ全削除
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+void MoveKif::ClearBranch()
+{
+
+	this->branches_.clear();
+	this->current_ = -1;
 }

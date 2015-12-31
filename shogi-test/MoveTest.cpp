@@ -51,7 +51,6 @@ TEST(MoveTest, TestMoveKifuInit)
 	ASSERT_EQ(movedataex.number(), 0);
 	ASSERT_EQ(movedataex.time, 0);
 	ASSERT_EQ(movedataex.totalTime, 0);
-	ASSERT_EQ(movedataex.parent(), nullptr);
 	ASSERT_EQ(movedataex.getCurrentBranchNumber(), -1);
 
 	movedataex = MoveKif(MoveType::NORMAL);
@@ -60,7 +59,6 @@ TEST(MoveTest, TestMoveKifuInit)
 	ASSERT_EQ(movedataex.number(), 0);
 	ASSERT_EQ(movedataex.time, 0);
 	ASSERT_EQ(movedataex.totalTime, 0);
-	ASSERT_EQ(movedataex.parent(), nullptr);
 	ASSERT_EQ(movedataex.getCurrentBranchNumber(), -1);
 
 
@@ -88,7 +86,7 @@ TEST(MoveTest, TestMoveKifuInit)
 	ASSERT_EQ(movedataex.number(), movekif.number());
 	ASSERT_EQ(movedataex.time, movekif.time);
 	ASSERT_EQ(movedataex.totalTime, movekif.totalTime);
-	ASSERT_EQ(movedataex.parent(), movekif.parent());
+
 	ASSERT_EQ(movedataex.getCurrentBranchNumber(), movekif.getCurrentBranchNumber());
 
 
@@ -107,9 +105,9 @@ TEST(MoveTest, TestAddBranch)
 	move.AddBranch(&moves, pass);
 
 	ASSERT_EQ(move.branches().size(), 1);
-	ASSERT_EQ(move.parent(), &moves);
+	ASSERT_EQ(move.branches()[0]->parent(), &moves);
 
-	ASSERT_EQ(move.branches()[0][0].Equals(pass), true);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(pass), true);
 
 	moves2.emplace_back(MoveType::PASS);
 	moves2.emplace_back(MoveType::DRAW);
@@ -117,8 +115,8 @@ TEST(MoveTest, TestAddBranch)
 	move.AddBranch(&moves, moves2);
 
 	ASSERT_EQ(move.branches().size(), 2);
-	ASSERT_EQ(move.branches()[1][0].Equals(pass), true);
-	ASSERT_EQ(move.branches()[1][1].Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[1]->at(0).Equals(pass), true);
+	ASSERT_EQ(move.branches()[1]->at(1).Equals(MoveKif(MoveType::DRAW)), true);
 }
 
 TEST(MoveTest, TestSwapBranch)
@@ -144,18 +142,18 @@ TEST(MoveTest, TestSwapBranch)
 
 	ASSERT_EQ(move.branches().size(), 2);
 
-	ASSERT_EQ(move.branches()[1][0].Equals(MoveKif(MoveType::PASS)), true);
-	ASSERT_EQ(move.branches()[0][0].Equals(MoveKif(MoveType::NORMAL)), true);
-	ASSERT_EQ(move.branches()[0][1].Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[1]->at(0).Equals(MoveKif(MoveType::PASS)), true);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(MoveKif(MoveType::NORMAL)), true);
+	ASSERT_EQ(move.branches()[0]->at(1).Equals(MoveKif(MoveType::DRAW)), true);
 
 	ASSERT_EQ(move.getCurrentBranchNumber(), 0);
 
 	move.SwapBranch(0, 1);
 	ASSERT_EQ(move.branches().size(), 2);
 
-	ASSERT_EQ(move.branches()[0][0].Equals(MoveKif(MoveType::PASS)), true);
-	ASSERT_EQ(move.branches()[1][0].Equals(MoveKif(MoveType::NORMAL)), true);
-	ASSERT_EQ(move.branches()[1][1].Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(MoveKif(MoveType::PASS)), true);
+	ASSERT_EQ(move.branches()[1]->at(0).Equals(MoveKif(MoveType::NORMAL)), true);
+	ASSERT_EQ(move.branches()[1]->at(1).Equals(MoveKif(MoveType::DRAW)), true);
 
 	ASSERT_EQ(move.getCurrentBranchNumber(), 1);
 
@@ -182,8 +180,8 @@ TEST(MoveTest, TestDeleteBranch)
 	move.DeleteBranch(0);
 
 	ASSERT_EQ(move.branches().size(), 1);
-	ASSERT_EQ(move.branches()[0][0].Equals(MoveKif(MoveType::NORMAL)), true);
-	ASSERT_EQ(move.branches()[0][1].Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(MoveKif(MoveType::NORMAL)), true);
+	ASSERT_EQ(move.branches()[0]->at(1).Equals(MoveKif(MoveType::DRAW)), true);
 
 	ASSERT_EQ(move.getCurrentBranchNumber(), 0);
 
@@ -216,20 +214,20 @@ TEST(MoveTest, TestSwapParent)
 	Moves moves3;
 	moves3.emplace_back(MoveType::DRAW);
 
-	move.SwapParent(0, moves3);
+	move.SwapParent(0, std::shared_ptr<Moves>(new Moves(moves3)));
 
 	ASSERT_EQ(move.branches().size(), 2);
 
-	ASSERT_EQ(move.branches()[0][0].Equals(MoveKif(MoveType::DRAW)), true);
-	ASSERT_EQ(move.branches()[1][0].Equals(MoveKif(MoveType::NORMAL)), true);
-	ASSERT_EQ(move.branches()[1][1].Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[1]->at(0).Equals(MoveKif(MoveType::NORMAL)), true);
+	ASSERT_EQ(move.branches()[1]->at(1).Equals(MoveKif(MoveType::DRAW)), true);
 
 
-	move.SwapParent(1, moves3);
+	move.SwapParent(1, std::shared_ptr<Moves>(new Moves(moves3)));
 
-	ASSERT_EQ(move.branches()[0][0].Equals(MoveKif(MoveType::DRAW)), true);
-	ASSERT_EQ(move.branches()[1][0].Equals(MoveKif(MoveType::DRAW)), true);
-	ASSERT_EQ(move.branches()[1].size(), 1);
+	ASSERT_EQ(move.branches()[0]->at(0).Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[1]->at(0).Equals(MoveKif(MoveType::DRAW)), true);
+	ASSERT_EQ(move.branches()[1]->size(), 1);
 }
 
 TEST(MoveTest, ChangeParent)
@@ -255,11 +253,9 @@ TEST(MoveTest, ChangeParent)
 	ASSERT_EQ(moves1[0].branches().size(), 1);
 
 	moves1[0].setCurrentBranchNumber(0);
-	ASSERT_EQ(moves1[0].getCurrentBranch()->at(0).parent(), &moves1);
+	ASSERT_EQ(moves1[0].getCurrentBranch()->parent(), &moves1);
 
 	Moves moves3 = moves1;
-
-	MoveKif::ChangeParent(moves3, nullptr);
 
 	ASSERT_EQ(moves3[0].to(), moves1[0].to());
 	ASSERT_EQ(moves3[0].from(), moves1[0].from());
@@ -271,8 +267,8 @@ TEST(MoveTest, ChangeParent)
 	ASSERT_EQ(moves3[2].move_type(), moves1[2].move_type());
 
 	ASSERT_EQ(moves3[0].branches().size(), 1);
-	ASSERT_EQ(moves3[0].parent() == nullptr, true);
+	ASSERT_EQ(moves3.parent() == nullptr, true);
 
-	ASSERT_EQ(moves3[0].getCurrentBranch()->at(0).parent(), &moves3);
+	ASSERT_EQ(moves3[0].getCurrentBranch()->parent(), &moves3);
 
 }

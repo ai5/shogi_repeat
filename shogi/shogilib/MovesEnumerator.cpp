@@ -109,5 +109,5 @@ const MoveKif* MoveBranchEnumerator::Next()
 		return nullptr;
 	}
 
-	return &this->move_->branches()[this->no_++][0];
+	return &this->move_->branches()[this->no_++]->at(0);
 }

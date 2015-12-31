@@ -38,8 +38,9 @@ enum Square {
 	SQ_98, SQ_88, SQ_78, SQ_68, SQ_58, SQ_48, SQ_38, SQ_28, SQ_18,
 	SQ_99, SQ_89, SQ_79, SQ_69, SQ_59, SQ_49, SQ_39, SQ_29, SQ_19,
 	SQUARE_NB,
-
+	
 	SQ_NONE,
+	SQ_ZERO = 0,
 };
 
 
@@ -92,6 +93,7 @@ ENABLE_FULL_OPERATORS_ON(Rank)
 
 inline File& operator+=(File& d1, int d2) { return d1 = File(d1 + d2); }
 inline Rank& operator+=(Rank& d1, int d2) { return d1 = Rank(d1 + d2); }
+inline Square& operator+=(Square& d1, int d2) { return d1 = Square(d1 + d2); }
 
 inline File file_of(Square s)
 {
@@ -102,6 +104,12 @@ inline Rank rank_of(Square s)
 {
 	return Rank(s / FILE_NB);
 }
+
+inline bool in_board(Square s)
+{
+	return s >= 0 && s < SQUARE_NB;
+}
+
 
 inline File file_from_suji(int suji)
 {
@@ -175,6 +183,7 @@ inline Square make_square(File file, Rank rank)
 {
 	return Square(file + rank * (int)FILE_NB);
 }
+
 
 using Board = Piece[SQUARE_NB];
 using Hand = int[COLOR_NB][PIECE_TYPE_NB];

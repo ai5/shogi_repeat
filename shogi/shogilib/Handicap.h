@@ -31,7 +31,8 @@ class HandicapExtention
 {
 
 public:
-	static const std::string HandicapString[];
+	static const std::string HandicapString[HANDICAP_NB];
+	static const std::wstring HandicapWString[HANDICAP_NB];
 
 	/// 先手判定 true なら先手
 	static bool IsBlack(Handicap handicap)
@@ -48,6 +49,8 @@ public:
 
 	static const std::string& ToString(Handicap handicap);
 	static Handicap FromString(const std::string& str);
+	static Handicap FromWString(const std::wstring& str);
+
 };
 
 

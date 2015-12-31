@@ -143,8 +143,7 @@ void Sfen::LoadFromString(Notation& notation, const std::string& sfen)
 /**
 @brief USI棋譜を返す
 @param notation 棋譜クラス
-@param filename ファイル名
-@note sfen形式でファイルに保存する。
+@return USI棋譜文字列
 */
 /*-----------------------------------------------------------------------------*/
 std::string Sfen::SaveToString(const Notation& notation)
@@ -177,7 +176,7 @@ void Sfen::LoadNotation(Notation& notation, const std::string& sfen)
 /*-----------------------------------------------------------------------------*/
 /**
 @brief 局面文字列のロード
-@param position[outt] ポジションクラス
+@param [out] position ポジションクラス
 @param sfen 局面情報
 @note
 */
@@ -521,7 +520,7 @@ Move Sfen::ParseMove(const Position& position, const std::string& move)
 
 		movedata.set_to(make_square(file, rank));
 		movedata.set_piece(position.GetPiece(movedata.from()));
-
+		
 		if (move.length() >= 5 && move[4] == '+')
 		{
 			// 成り
@@ -535,9 +534,9 @@ Move Sfen::ParseMove(const Position& position, const std::string& move)
 			movedata.set_capture_piece(capture_piece);
 			movedata.set_move_type(MoveType(movedata.move_type() | MoveType::CAPTURE_FLAG));
 		}
-
-		// 同ほげは棋譜がないからわからない
 	}
+
+	movedata.set_side(position.side_to_move());
 
 	return movedata;
 }

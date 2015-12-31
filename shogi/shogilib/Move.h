@@ -3,10 +3,10 @@
 #ifndef SHOGI_MOVE_H_
 #define SHOGI_MOVE_H_
 
+#include <deque>
 #include <list>
 #include <string>
-#include <vector>
-
+#include <memory>
 #include "types.h"
 
 enum MoveType {
@@ -43,9 +43,8 @@ enum MoveType {
 };
 
 
-class MoveKif;
-using Moves = std::vector<MoveKif>;
-
+class Moves;
+using KifComments = std::list<std::wstring>;
 
 class Move
 {
@@ -58,8 +57,6 @@ protected:
 	Piece capture_piece_;
 
 public:
-
-public:
 	Move() {
 		this->Init();
 	}
@@ -68,6 +65,17 @@ public:
 		this->Init();
 
 		this->move_type_ = move_type;
+	}
+
+	Move(MoveType move_type, Square from, Square to, Piece piece, Piece capture_piece)
+	{
+		this->move_type_ = move_type;
+		this->to_ = to;
+		this->from_ = from;
+		this->move_type_ = move_type;
+		this->piece_ = piece;
+		this->capture_piece_ = capture_piece;
+		this->side_ = color_of(piece);
 	}
 
 	Move(const Move& move)
@@ -81,7 +89,7 @@ public:
 	}
 
 
-	virtual ~Move();
+	virtual ~Move() {}
 
 	void Init();
 	bool IsNoMove() const { return this->move_type_ == MoveType::NO_MOVE; }
@@ -109,17 +117,18 @@ public:
 	bool Equals(const Move& move) const;
 };
 
+using MoveBranches = std::deque<std::shared_ptr<Moves>>;
 
 // 棋譜の指し手
 class MoveKif : public Move
 {
 protected:
-	std::list<std::string> comment_list_; // コメント
-	std::vector<Moves> branches_; // 分岐
+	KifComments comments_; // コメント
+	MoveBranches branches_; // 分岐
 	int current_; // 分岐のカレント
 
 	// 分岐先頭要素の場合は親
-	Moves* parent_;
+	// Moves* parent_;
 
 	int number_;
 
@@ -127,41 +136,10 @@ public:
 	int time;
 	int totalTime;
 
-	MoveKif() {
-		this->Init();
-	}
-
-	MoveKif(const Move& move) : Move(move)
-	{
-		this->current_ = -1;
-		this->parent_ = nullptr;
-		this->number_ = 0;
-		this->time = 0;
-		this->totalTime = 0;
-	}
-
-	MoveKif(const MoveKif& move) : Move(move)
-	{
-		this->comment_list_ = move.comment_list_;
-		this->branches_ = move.branches_;
-		
-		this->current_ = move.current_;
-		this->parent_ = move.parent_;
-
-		this->time = move.time;
-		this->totalTime = move.totalTime;
-		this->number_ = move.number_;
-	}
-
-	MoveKif(MoveType move_type) : Move(move_type)
-	{
-		this->current_ = -1;
-		this->parent_ = nullptr;
-		this->number_ = 0;
-		this->time = 0;
-		this->totalTime = 0;
-	}
-
+	MoveKif();
+	MoveKif(const Move& move);
+	MoveKif(const MoveKif& move);
+	MoveKif(MoveType move_type);
 
 	~MoveKif();
 
@@ -180,7 +158,7 @@ public:
 			return nullptr;
 		}
 
-		return &this->branches_[this->current_];
+		return this->branches_[this->current_].get();
 	}
 
 	Moves* getCurrentBranch() {
@@ -189,35 +167,49 @@ public:
 			return nullptr;
 		}
 
-		return &this->branches_[this->current_];
+		return this->branches_[this->current_].get();
 	}
 
-	const std::vector<Moves>& branches() const { return this->branches_; }
+	const MoveBranches& branches() const { return this->branches_; }
+	MoveBranches& branches() { return this->branches_; }
 
 	int getParentNumber() const {
 		return this->number_ - 1;
 	}
 
-	Moves* parent() {
-		return this->parent_;
-	}
-
-	const Moves* parent() const {
-		return this->parent_;
-	}
-
 	int number() const { return this->number_; }
 	void set_number(int number) { this->number_ = number; }
 
+	const KifComments& comments() const { return this->comments_; }
+	void set_comments(KifComments& strs) { this->comments_ = strs; }
+	void AddComment(std::wstring str) {
+		this->comments_.push_back(str);
+	}
 
 	Moves* MakeBranch(Moves* parent);
 	void AddBranch(Moves* parent, const MoveKif& move);
 	void AddBranch(Moves* parent, const Moves& moves);
 	void SwapBranch(int left, int right);
 	void DeleteBranch(int no);
-	void SwapParent(int no, const Moves& moves);
+	void SwapParent(int no, std::shared_ptr<Moves> moves);
+	void ClearBranch();
+};
+
+
+class Moves : public std::deque<MoveKif>
+{
+	Moves* parent_; // 親 (smart pointerで管理はしない
+public:
+	Moves();
+	Moves(const Moves& moves);
+	Moves& operator=(const Moves& moves);
+
+	Moves* parent() { return this->parent_; }
+	const Moves* parent() const { return this->parent_; }
+	void set_parent(Moves* parent) { this->parent_ = parent; }
 
 	static void ChangeParent(Moves& moves, Moves* parent);
+
 };
 
 

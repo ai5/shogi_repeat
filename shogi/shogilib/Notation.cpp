@@ -9,10 +9,63 @@ Notation::Notation()
 	this->Init();
 }
 
+Notation::Notation(const Notation& notation) 
+{
+	this->position_ = notation.position_;
+	this->initial_position_ = notation.initial_position_;
+	this->black_name_ = notation.black_name_;
+	this->white_name_ = notation.white_name_;
+	this->handicap_ = notation.handicap_;
+	this->output_initial_position_ = this->output_initial_position_;
+	this->kifu_infos_ = notation.kifu_infos_;
+
+	this->result_ = notation.result_;
+	this->winner_ = notation.winner_;
+
+	this->moves_ = notation.moves_;
+
+	this->current_moves_ = &this->moves_;
+	this->move_current_ = &this->moves_[0];
+
+	this->Jump(notation.number());
+}
+
+
 
 Notation::~Notation()
 {
 }
+
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief コピー
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+Notation& Notation::operator=(const Notation& notation)
+{
+	this->position_ = notation.position_;
+	this->initial_position_ = notation.initial_position_;
+	this->black_name_ = notation.black_name_;
+	this->white_name_ = notation.white_name_;
+	this->handicap_ = notation.handicap_;
+	this->output_initial_position_ = this->output_initial_position_;
+	this->kifu_infos_ = notation.kifu_infos_;
+
+	this->result_ = notation.result_;
+	this->winner_ = notation.winner_;
+
+	this->moves_ = notation.moves_;
+
+	this->current_moves_ = &this->moves_;
+	this->move_current_ = &this->moves_[0];
+
+	this->Jump(notation.number());
+
+	return *this;
+}
+
 
 /*--------------------------------------------------------------------*/
 /**
@@ -23,8 +76,8 @@ void Notation::Init()
 	this->position_.Init();
 	this->initial_position_.Init();
 
-	this->black_name_ = "";
-	this->white_name_ = "";
+	this->black_name_ = L"";
+	this->white_name_ = L"";
 	this->handicap_ = Handicap::HIRATE;
 	this->output_initial_position_ = false;
 
@@ -49,11 +102,12 @@ void Notation::InitHashKey()
 */
 void Notation::SetInitialPosition(const Position& pos)
 {
-	this->position_ = pos;
 	this->initial_position_ = pos;
 
 	this->DecisionHandicap(); // ハンディキャップ設定
 	this->initial_position_.InitHashKey();
+
+	this->position_ = this->initial_position_;
 }
 
 /*
@@ -330,13 +384,13 @@ bool Notation::Prev(int num)
 
 		if (pos <= 0)
 		{
-			if (move.parent() == nullptr)
+			if (this->current_moves_->parent() == nullptr)
 			{
 				break;
 			}
 
 			// 親の分岐を取得
-			this->current_moves_ = move.parent();
+			this->current_moves_ = this->current_moves_->parent();
 
 			pos = move.getParentNumber() - (*this->current_moves_)[0].number();
 		}
@@ -376,10 +430,10 @@ const MoveKif*  Notation::getPrevMove() const
 
 	Moves* moves = this->current_moves_;
 
-	if (pos < 0 && move.parent() != nullptr)
+	if (pos < 0 && moves->parent() != nullptr)
 	{
 		// 親の分岐を取得
-		moves = move.parent();
+		moves = moves->parent();
 
 		pos = move.getParentNumber() - (*moves)[0].number();
 	}
@@ -481,6 +535,7 @@ bool Notation::AddMove(const MoveKif& move)
 		return false;
 	}
 
+
 	if (move_current.number() != this->number())
 	{
 		// 指し手の末尾と番号が違う場合 ブランチとして作成する
@@ -510,7 +565,13 @@ bool Notation::AddMove(const MoveKif& move)
 			move_kif.set_move_type(MoveType(move_kif.move_type() | MoveType::SAME_FLAG));
 		}
 
-		// piece captrue pieceは事前の指し手チェックの段階で入るのでここでは考慮しない
+		Piece capture_piece = position_.GetPiece(move_kif.to());
+		if (capture_piece != NO_PIECE)
+		{
+			// 捕獲する場合 captureフラグを建てる
+			move_kif.set_capture_piece(capture_piece);
+			move_kif.set_move_type(MoveType(move_kif.move_type() | MoveType::CAPTURE_FLAG));
+		}
 	}
 	else if (is_result(move_kif.move_type()))
 	{
@@ -563,6 +624,24 @@ bool Notation::MergeMove(const MoveKif& move)
 
 	// 無かったら追加
 	return this->AddMove(move);
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+ * @brief 入力取り消し
+ * @note  
+ */
+/*-----------------------------------------------------------------------------*/
+void Notation::Back()
+{
+	int pos = this->number() - (*this->current_moves_)[0].number();
+
+	this->Prev(1); // 1手戻す
+	if ((pos + 1) >= (int)this->current_moves_->size())
+	{
+		// おしりの手の場合
+		this->current_moves_->erase(this->current_moves_->begin() + pos, this->current_moves_->end());
+	}
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -650,6 +729,18 @@ void Notation::AddBranch(const Moves& src_moves)
 
 /*-----------------------------------------------------------------------------*/
 /**
+* @brief 棋譜のマージ
+* @note 
+*/
+/*-----------------------------------------------------------------------------*/
+void Notation::MergeNotation(const Notation& notation)
+{
+	
+	// 未実装
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
 * @brief ブランチ削除
 */
 /*-----------------------------------------------------------------------------*/
@@ -669,7 +760,7 @@ void Notation::DeleteBranch(int no)
 		if (move->branches().size() != 0)
 		{
 			// ブランチをずらす
-			moves->insert(moves->end(), move->branches()[0].begin(), move->branches()[0].end());
+			moves->insert(moves->end(), move->branches()[0]->begin(), move->branches()[0]->end());
 
 			move->DeleteBranch(0);
 		}
@@ -687,8 +778,12 @@ void Notation::DeleteBranch(int no)
 /*-----------------------------------------------------------------------------*/
 void Notation::SwapBranch(int left, int right)
 {
-	MoveKif* move = this->move_current_; // 一旦カレントに対する操作にしておく
-	Moves* moves = this->current_moves_;
+	this->SwapBranch(this->move_current_, this->current_moves_, left, right);
+}
+
+void Notation::SwapBranch(MoveKif* move, Moves* moves, int left, int right)
+{
+
 	int num = this->number();
 
 	if (left == right)
@@ -707,13 +802,14 @@ void Notation::SwapBranch(int left, int right)
 		int pos = num - (*moves)[0].number();
 
 		// 次の要素から最後までをコピーー＞消去
-		Moves temp;
-		std::copy(moves->begin() + pos + 1, moves->end(), std::back_inserter(temp));
+		std::shared_ptr<Moves>temp = std::make_shared<Moves>();
+
+		std::copy(moves->begin() + pos + 1, moves->end(), std::back_inserter(*temp));
 
 		moves->erase(moves->begin() + pos + 1, moves->end());
 
 		// ブランチをコピー
-		moves->insert(moves->end(), move->branches()[right].begin(), move->branches()[right].end());
+		moves->insert(moves->end(), move->branches()[right]->begin(), move->branches()[right]->end());
 
 		// 取っておいたやつ上書き
 		move->SwapParent(right, temp);
@@ -734,3 +830,37 @@ void Notation::ChangeChildCurrent(int no)
 	this->move_current_->setCurrentBranchNumber(no);
 }
 
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief カレント以外を削除する
+*/
+/*-----------------------------------------------------------------------------*/
+void Notation::DeleteNotCurrent()
+{
+	bool ret = false;
+	int number = this->number();
+	
+	size_t i;
+
+	for (i = 0; i <= (size_t)number && i < this->moves_.size(); i++)
+	{
+		int no = this->moves_[i].getCurrentBranchNumber();
+
+		if (no != -1)
+		{
+			this->SwapBranch(&this->moves_[i], &this->moves_, -1, no); // 分岐先を親に変更
+		}
+
+		// 分岐を全て削除
+		this->moves_[i].ClearBranch();
+	}
+
+	// カレント以降を削除
+	if (i < this->moves_.size())
+	{
+		this->moves_.erase(this->moves_.begin() + i, this->moves_.end());
+	}
+
+	this->current_moves_ = &this->moves_;
+	this->Jump(number);
+}

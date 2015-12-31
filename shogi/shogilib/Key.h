@@ -53,6 +53,14 @@ private:
 
 };
 
+inline bool operator==(const Key& left, const Key& right) {
+	return left.Equals(right);
+}
+
+inline bool operator<(const Key& left, const Key& right) {
+	return left.boardkey() < right.boardkey();
+}
+
 
 #endif
 

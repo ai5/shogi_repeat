@@ -21,7 +21,7 @@ public:
 
 	void Load(Notation& notation, const std::string& filename);
 	void Save(Notation& notation, const std::string& filename);
-	bool Sfen::CanRead(const std::string& str);
+	bool CanRead(const std::string& str);
 
 	void LoadFromString(Notation& notation, const std::string& sfen);
 	std::string  SaveToString(const Notation& notation);

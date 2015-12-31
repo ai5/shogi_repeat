@@ -125,7 +125,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;engine;util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +140,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;engine;util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,7 +187,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;shogilib\notation;shogilib;engine;util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,27 +218,65 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EnginePlayer.cpp" />
+    <ClCompile Include="engine\Path.cpp" />
+    <ClCompile Include="engine\PipeStream.cpp" />
+    <ClCompile Include="engine\Process.cpp" />
+    <ClCompile Include="engine\StringQueue.cpp" />
+    <ClCompile Include="engine\USIEngine.cpp" />
+    <ClCompile Include="engine\USIOption.cpp" />
+    <ClCompile Include="engine\USIString.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="PvInfo.cpp" />
     <ClCompile Include="shogi.cpp" />
     <ClCompile Include="shogilib\Handicap.cpp" />
+    <ClCompile Include="shogilib\History.cpp" />
     <ClCompile Include="shogilib\Key.cpp" />
     <ClCompile Include="shogilib\Move.cpp" />
+    <ClCompile Include="shogilib\MoveCheck.cpp" />
     <ClCompile Include="shogilib\MovesEnumerator.cpp" />
     <ClCompile Include="shogilib\Notation.cpp" />
+    <ClCompile Include="shogilib\Notation\Kif.cpp" />
     <ClCompile Include="shogilib\Notation\Sfen.cpp" />
     <ClCompile Include="shogilib\Position.cpp" />
-    <ClCompile Include="Tokenizer.cpp" />
+    <ClCompile Include="shogilib\StringUtil.cpp" />
+    <ClCompile Include="shogilib\Tokenizer.cpp" />
+    <ClCompile Include="util\KeyValue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnginePlayer.h" />
+    <ClInclude Include="engine\Path.h" />
+    <ClInclude Include="engine\PipeStream.h" />
+    <ClInclude Include="engine\Process.h" />
+    <ClInclude Include="engine\Semaphore.h" />
+    <ClInclude Include="engine\StringQueue.h" />
+    <ClInclude Include="engine\USIEngine.h" />
+    <ClInclude Include="engine\USIOption.h" />
+    <ClInclude Include="engine\USIString.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="LockedQueue.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="MessageQueue.h" />
+    <ClInclude Include="PvInfo.h" />
     <ClInclude Include="shogilib\Handicap.h" />
+    <ClInclude Include="shogilib\History.h" />
     <ClInclude Include="shogilib\Key.h" />
     <ClInclude Include="shogilib\Move.h" />
+    <ClInclude Include="shogilib\MoveCheck.h" />
     <ClInclude Include="shogilib\MovesEnumerator.h" />
     <ClInclude Include="shogilib\Notation.h" />
+    <ClInclude Include="shogilib\Notation\Kif.h" />
     <ClInclude Include="shogilib\Notation\Sfen.h" />
     <ClInclude Include="shogilib\Position.h" />
     <ClInclude Include="shogilib\StringUtil.h" />
+    <ClInclude Include="shogilib\Tokenizer.h" />
     <ClInclude Include="shogilib\types.h" />
-    <ClInclude Include="Tokenizer.h" />
+    <ClInclude Include="util\DateTime.h" />
+    <ClInclude Include="util\KeyValue.h" />
+    <ClInclude Include="util\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

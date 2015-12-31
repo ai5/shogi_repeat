@@ -298,7 +298,7 @@ void Position::BoardClear()
 */
 bool Position::DoMove(const Move& move)
 {
-	ASSERT_MSG(move.side() == this->side_to_move_, "パラメータエラー");
+	ASSERT_MSG(move.side() == NO_COLOR || move.side() == this->side_to_move_, "パラメータエラー");
 	bool ret = true;
 
 	if (move.move_type() == PASS)
@@ -323,7 +323,8 @@ bool Position::DoMove(const Move& move)
 		ASSERT_MSG(move.from() >= 0 && move.from() < SQUARE_NB, "パラメータエラー");
 		ASSERT_MSG(this->board_[move.from()] != NO_PIECE, "パラメータエラー");
 		ASSERT_MSG(this->board_[move.from()] == move.piece(), "パラメターエラー");
-		ASSERT_MSG(this->board_[move.to()] == move.capture_piece(), "パラメータエラー");
+		
+		ASSERT_MSG(move.capture_piece() == NO_PIECE || this->board_[move.to()] == move.capture_piece(), "パラメータエラー");
 		
 		Piece piece = move.piece();
 		if (move.move_type() & PROMOTION_FLAG)
