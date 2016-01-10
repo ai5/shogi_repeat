@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "USIOption.h"
-#include "Process.h"
+#include "CProcess.h"
 #include "StringQueue.h"
 
 

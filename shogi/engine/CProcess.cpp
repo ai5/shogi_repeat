@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Process.h"
+#include "CProcess.h"
 
 
 #define ERROR_LOG(msg, x) std::cerr << __FILE__ << " : " << __LINE__ << " : " << (msg) << (x) << std::endl

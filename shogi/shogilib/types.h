@@ -176,7 +176,7 @@ inline Color opp(Color color)
 
 inline wchar_t to_char(Color color)
 {
-	return (color == WHITE) ? '△' : '▲';
+	return (color == WHITE) ? L'△' : L'▲';
 }
 
 inline Square make_square(File file, Rank rank)

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Process.h"
+#include "CProcess.h"
 #include "Semaphore.h"
 
 TEST(ProcessTest, test)

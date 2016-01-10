@@ -221,7 +221,7 @@
     <ClCompile Include="EnginePlayer.cpp" />
     <ClCompile Include="engine\Path.cpp" />
     <ClCompile Include="engine\PipeStream.cpp" />
-    <ClCompile Include="engine\Process.cpp" />
+    <ClCompile Include="engine\CProcess.cpp" />
     <ClCompile Include="engine\StringQueue.cpp" />
     <ClCompile Include="engine\USIEngine.cpp" />
     <ClCompile Include="engine\USIOption.cpp" />
@@ -249,7 +249,7 @@
     <ClInclude Include="EnginePlayer.h" />
     <ClInclude Include="engine\Path.h" />
     <ClInclude Include="engine\PipeStream.h" />
-    <ClInclude Include="engine\Process.h" />
+    <ClInclude Include="engine\CProcess.h" />
     <ClInclude Include="engine\Semaphore.h" />
     <ClInclude Include="engine\StringQueue.h" />
     <ClInclude Include="engine\USIEngine.h" />
