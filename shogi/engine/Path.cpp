@@ -1,10 +1,10 @@
-#include "Path.h"
+ï»¿#include "Path.h"
 #include <stdlib.h>
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief Full Path æ“¾
-* @param ƒtƒ@ƒCƒ‹–¼
+* @brief Full Path å–å¾—
+* @param ãƒ•ã‚¡ã‚¤ãƒ«å
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -19,8 +19,8 @@ std::string Path::FullPath(const std::string& filename)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒtƒHƒ‹ƒ_Path æ“¾
-* @param ƒtƒ@ƒCƒ‹ƒpƒX
+* @brief ãƒ•ã‚©ãƒ«ãƒ€Path å–å¾—
+* @param ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -32,10 +32,14 @@ std::string Path::FolderPath(const std::string& filepath)
 	char file[_MAX_FNAME];
 	char ext[_MAX_EXT];
 
+#ifdef _MSC_VER
 	_splitpath_s(filepath.c_str(), drive, dir, file, ext);
-
 	_makepath_s(path, drive, dir, NULL, NULL);
+#else
+	_splitpath_s(filepath.c_str(), drive, _MAX_DRIVE, dir, _MAX_DIR, file, _MAX_FNAME, ext, _MAX_EXT);
+	_makepath_s(path, _MAX_PATH , drive, dir, NULL, NULL);
 
+#endif
 	return path;
 }
 

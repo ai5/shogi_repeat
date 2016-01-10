@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include <iostream>
 #include <chrono>
@@ -20,13 +20,13 @@ TEST(TimerTest, test)
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	ASSERT_EQ(count, 1);
 	
-	timer.Stop(); // ˆê‰~‚ß‚é
+	timer.Stop(); // ä¸€å¿œæ­¢ã‚ã‚‹
 
 	timer.Start(1000);
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	timer.Stop(); // ~‚ß‚é
+	timer.Stop(); // æ­¢ã‚ã‚‹
 
-	ASSERT_EQ(count, 1); // ƒJƒEƒ“ƒg‚Í‘‚¦‚Ä‚¢‚È‚¢‚Í‚¸
+	ASSERT_EQ(count, 1); // ã‚«ã‚¦ãƒ³ãƒˆã¯å¢—ãˆã¦ã„ãªã„ã¯ãš
 
 	timer.Start(100);
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));

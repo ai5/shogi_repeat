@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include <string>
 
@@ -106,15 +106,15 @@ TEST_F(SfenTest, testSave)
 	Notation notation;
 
 	sfen.LoadFromString(notation, sfen1);
-	// ƒeƒ“ƒ|ƒ‰ƒŠ‚É‘‚«o‚µ
+	// ãƒ†ãƒ³ãƒãƒ©ãƒªã«æ›¸ãå‡ºã—
 	sfen.Save(notation, folder + "/test.sfen");
 
 	Notation notation2;
 
-	// ƒeƒ“ƒ|ƒ‰ƒŠ‚©‚ç“Ç‚İo‚µ
+	// ãƒ†ãƒ³ãƒãƒ©ãƒªã‹ã‚‰èª­ã¿å‡ºã—
 	sfen.Load(notation2, folder + "/test.sfen");
 
-	// ÅI‹Ç–Ê‚ÌƒnƒbƒVƒ…’l‚Æè”‚ğŠm”F
+	// æœ€çµ‚å±€é¢ã®ãƒãƒƒã‚·ãƒ¥å€¤ã¨æ‰‹æ•°ã‚’ç¢ºèª
 	ASSERT_EQ(notation.position().hashkey().boardkey(), 4374722627024287036);
 	ASSERT_EQ(notation.position().hashkey().hand_b(), 68419591U);
 	ASSERT_EQ(notation.number(), 116);

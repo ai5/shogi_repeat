@@ -1,4 +1,4 @@
-#include "GameTimer.h"
+ï»¿#include "GameTimer.h"
 
 #include <Windows.h>
 #include <chrono>
@@ -30,7 +30,7 @@ GameTimer::~GameTimer()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ‚¿ŠÔİ’è
+ * @brief æŒã¡æ™‚é–“è¨­å®š
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void GameTimer::SetTime(Color color, int time_min, int byoyomi_sec)
 		this->BlackTime.Byoyomi = byoyomi_sec * 1000;
 		this->BlackTime.ElapsedTime = 0;
 
-		this->WhiteTime = this->BlackTime; // ŒãèŠÔ‚à“¯‚¶’l‚ğİ’è‚·‚é
+		this->WhiteTime = this->BlackTime; // å¾Œæ‰‹æ™‚é–“ã‚‚åŒã˜å€¤ã‚’è¨­å®šã™ã‚‹
 	}
 	else
 	{
@@ -56,7 +56,7 @@ void GameTimer::SetTime(Color color, int time_min, int byoyomi_sec)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @briefÄŠJ‚ÌÁ”ïŠÔİ’è
+* @briefå†é–‹æ™‚ã®æ¶ˆè²»æ™‚é–“è¨­å®š
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -70,13 +70,13 @@ void GameTimer::SetRestartTime(int blackTimeSec, int whiteTimeSec)
 
 	if (this->BlackTime.Time <= blacktime)
 	{
-		this->BlackTime.RemainTime = 0; // c‚èŠÔ‚È‚µ
+		this->BlackTime.RemainTime = 0; // æ®‹ã‚Šæ™‚é–“ãªã—
 		if (this->BlackTime.Byoyomi == 0)
 		{
-			// ŠÔ‚ª‚È‚¢ê‡
+			// æ™‚é–“ãŒãªã„å ´åˆ
 			if (this->BlackTime.Time != 0)
 			{
-				this->BlackTime.RemainTime = 60 * 1000; // b’è‚P•ª
+				this->BlackTime.RemainTime = 60 * 1000; // æš«å®šï¼‘åˆ†
 			}
 		}
 	}
@@ -87,13 +87,13 @@ void GameTimer::SetRestartTime(int blackTimeSec, int whiteTimeSec)
 
 	if (this->WhiteTime.Time <= whitetime)
 	{
-		this->WhiteTime.RemainTime = 0; // c‚èŠÔ‚È‚µ
+		this->WhiteTime.RemainTime = 0; // æ®‹ã‚Šæ™‚é–“ãªã—
 		if (this->WhiteTime.Byoyomi == 0)
 		{
-			// ŠÔ‚ª‚È‚¢ê‡
+			// æ™‚é–“ãŒãªã„å ´åˆ
 			if (this->WhiteTime.Time != 0)
 			{
-				this->WhiteTime.RemainTime = 60 * 1000; // b’è‚P•ª
+				this->WhiteTime.RemainTime = 60 * 1000; // æš«å®šï¼‘åˆ†
 			}
 		}
 	}
@@ -105,7 +105,7 @@ void GameTimer::SetRestartTime(int blackTimeSec, int whiteTimeSec)
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief Œv‘ªŠJn
+ * @brief è¨ˆæ¸¬é–‹å§‹
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ void GameTimer::Start(Color turn)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief Œv‘ª’â~
+* @brief è¨ˆæ¸¬åœæ­¢
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ int GameTimer::Stop()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@è”ÔØ‚è‘Ö‚¦
+* @briefã€€æ‰‹ç•ªåˆ‡ã‚Šæ›¿ãˆ
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ int GameTimer::ChangeTurn()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@è”ÔØ‚è‘Ö‚¦
+* @briefã€€æ‰‹ç•ªåˆ‡ã‚Šæ›¿ãˆ
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -176,7 +176,7 @@ void GameTimer::TakeTurn()
 		return;
 	}
 
-	this->turn_ = opp(this->turn_); // è”ÔØ‚è‘Ö‚¦
+	this->turn_ = opp(this->turn_); // æ‰‹ç•ªåˆ‡ã‚Šæ›¿ãˆ
 
 	int time = (this->turn_ == BLACK) ? this->BlackTime.Remain() : this->WhiteTime.Remain();
 
@@ -184,14 +184,14 @@ void GameTimer::TakeTurn()
 
 	if (time != 0)
 	{
-		// Ø‚ê•‰‚¯ƒ^ƒCƒ}[Œv‘ªŠJn
+		// åˆ‡ã‚Œè² ã‘ã‚¿ã‚¤ãƒãƒ¼è¨ˆæ¸¬é–‹å§‹
 		this->timer_.Start(time + GameTimer::MarginTime);
 	}
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@c‚èŠÔŒvZ
+* @briefã€€æ®‹ã‚Šæ™‚é–“è¨ˆç®—
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -202,12 +202,12 @@ GameRemainTime GameTimer::GetRemainTime(Color color, const GameTime& gameTime) c
 
 	if (this->turn_ == color && this->started_)
 	{
-		elapsed_time = (this->GetNowTime() - this->start_time_); // Œo‰ßŠÔms
+		elapsed_time = (this->GetNowTime() - this->start_time_); // çµŒéæ™‚é–“ms
 	}
 
 	if (gameTime.Time == 0 && gameTime.Byoyomi == 0)
 	{
-		remain.Time = gameTime.ElapsedTime + (int)elapsed_time; // Total‚ÌŒo‰ßŠÔ‚É‚·‚é
+		remain.Time = gameTime.ElapsedTime + (int)elapsed_time; // Totalã®çµŒéæ™‚é–“ã«ã™ã‚‹
 		remain.Byoyomi = 0;
 	}
 	else if (gameTime.RemainTime < elapsed_time)
@@ -239,18 +239,18 @@ GameRemainTime GameTimer::GetRemainTime(Color color, const GameTime& gameTime) c
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@ŠÔŒvZ
-* @return •b”‚ğ•Ô‚·
+* @briefã€€æ™‚é–“è¨ˆç®—
+* @return ç§’æ•°ã‚’è¿”ã™
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 int GameTimer::CalcTime(TimePoint now_time)
 {
-	TimePoint elapsed_time = (now_time - this->start_time_); // Œo‰ßŠÔms
+	TimePoint elapsed_time = (now_time - this->start_time_); // çµŒéæ™‚é–“ms
 	int expanded_time;
 	int old_time;
 
-	// Å’á‚P•bŠ·Z‚Æ•b–¢–Ø‚èÌ‚Ä‚Í‚Ç‚¤‚µ‚Ü‚µ‚å
+	// æœ€ä½ï¼‘ç§’æ›ç®—ã¨ç§’æœªæº€åˆ‡ã‚Šæ¨ã¦ã¯ã©ã†ã—ã¾ã—ã‚‡
 
 	if (this->turn_ == BLACK)
 	{
@@ -293,7 +293,7 @@ int GameTimer::CalcTime(TimePoint now_time)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ŠÔæ“¾(ms
+* @brief æ™‚é–“å–å¾—(ms
 * @note
 */
 /*-----------------------------------------------------------------------------*/

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef SHOGI_KEY_VALUE_H_
 #define SHOGI_KEY_VALUE_H_
 

@@ -1,4 +1,4 @@
-#include "USIEngine.h"
+ï»¿#include "USIEngine.h"
 #include "Path.h"
 
 USIEngine::USIEngine()
@@ -14,8 +14,8 @@ USIEngine::~USIEngine()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‰Šú‰»
-* @param filename ƒtƒBƒAƒ‹–¼
+* @brief åˆæœŸåŒ–
+* @param filename ãƒ•ã‚£ã‚¢ãƒ«å
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -50,8 +50,8 @@ bool USIEngine::Initialize(const std::string& filename)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief I—¹
-* @param filename ƒtƒBƒAƒ‹–¼
+* @brief çµ‚äº†
+* @param filename ãƒ•ã‚£ã‚¢ãƒ«å
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ void USIEngine::Terminate()
 		this->process_->WaitForExit(10000);
 		this->process_->Close();
 
-		// stdin‚ÌI—¹‘Ò‚¿
+		// stdinã®çµ‚äº†å¾…ã¡
 		this->stdin_thread_->join();
 	}
 }
@@ -74,7 +74,7 @@ void USIEngine::Terminate()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief Stdout‚©‚ç“Ç‚İ‚¾‚·ƒXƒŒƒbƒh
+* @brief Stdoutã‹ã‚‰èª­ã¿ã ã™ã‚¹ãƒ¬ãƒƒãƒ‰
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ void USIEngine::stdout_read()
 		}
 		else
 		{
-			// “Ç‚İo‚µƒGƒ‰[‚Å’†’f
+			// èª­ã¿å‡ºã—ã‚¨ãƒ©ãƒ¼ã§ä¸­æ–­
 			this->string_queue_->Push(nullptr);
 			break;
 		}
@@ -99,7 +99,7 @@ void USIEngine::stdout_read()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief “Ç‚İo‚µ
+* @brief èª­ã¿å‡ºã—
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ STRING_QUEUE_ERR USIEngine::ReadLine(std::string& str, int timeout)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘‚«‚İ
+* @brief æ›¸ãè¾¼ã¿
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -122,7 +122,7 @@ void USIEngine::WriteLine(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒIƒvƒVƒ‡ƒ“İ’è
+ * @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¨­å®š
  * @param name
  * @param value
  * @note  
@@ -155,8 +155,8 @@ void USIEngine::SetOption(const std::string& name, const std::string& value)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ““o˜^
-* @param str note‚É‘‚¢‚½ƒIƒvƒVƒ‡ƒ“•¶š—ñ
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³ç™»éŒ²
+* @param str noteã«æ›¸ã„ãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—
 * @note  option name <id> type <t> default <x> [min <y> max <z>] {var <v>}
 * 
 */
@@ -168,7 +168,7 @@ bool USIEngine::AddOption(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ“–¼‘O,’l‚ÅˆêŠ‡İ’è
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³åå‰,å€¤ã§ä¸€æ‹¬è¨­å®š
 */
 /*-----------------------------------------------------------------------------*/
 void USIEngine::SetOptions(const std::map<std::string, std::string>& opt_name_value)

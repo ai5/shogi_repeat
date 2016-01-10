@@ -1,4 +1,4 @@
-#include "PipeStream.h"
+ï»¿#include "PipeStream.h"
 
 #include <iostream>
 
@@ -6,7 +6,7 @@
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
 /*-----------------------------------------------------------------------------*/
 OPipeStream::OPipeStream()
@@ -28,7 +28,7 @@ OPipeStream::~OPipeStream()
 /*-----------------------------------------------------------------------------*/
 bool OPipeStream::Open()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	HANDLE writeTemp;
 	bool ret = true;
@@ -65,7 +65,7 @@ bool OPipeStream::Open()
 /*-----------------------------------------------------------------------------*/
 void OPipeStream::Close()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	if (this->h_read_ != 0)
 	{
@@ -82,13 +82,13 @@ void OPipeStream::Close()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief “Ç‚İo‚µ‚ğ•Â‚¶‚é
+* @brief èª­ã¿å‡ºã—ã‚’é–‰ã˜ã‚‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 void OPipeStream::CloseRead()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	if (this->h_read_ != 0)
 	{
@@ -99,13 +99,13 @@ void OPipeStream::CloseRead()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘‚«‚İ
+* @brief æ›¸ãè¾¼ã¿
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 int OPipeStream::Write(const std::string str)
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	DWORD len = -1;
 
@@ -124,7 +124,7 @@ int OPipeStream::Write(const std::string str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+* @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 */
 /*-----------------------------------------------------------------------------*/
 IPipeStream::IPipeStream()
@@ -149,7 +149,7 @@ IPipeStream::~IPipeStream()
 /*-----------------------------------------------------------------------------*/
 bool IPipeStream::Open()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	bool ret = true;
 	HANDLE readTemp;
@@ -186,7 +186,7 @@ bool IPipeStream::Open()
 /*-----------------------------------------------------------------------------*/
 void IPipeStream::Close()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	if (this->h_read_ != 0)
 	{
@@ -205,13 +205,13 @@ void IPipeStream::Close()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘‚«‚İ•Â‚¶‚é
+* @brief æ›¸ãè¾¼ã¿é–‰ã˜ã‚‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 void IPipeStream::CloseWrite()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	if (this->h_write_ != 0)
 	{
@@ -222,13 +222,13 @@ void IPipeStream::CloseWrite()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‚Ps‚²‚Æ‚Ì“Ç‚İo‚µ
+* @brief ï¼‘è¡Œã”ã¨ã®èª­ã¿å‡ºã—
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 bool IPipeStream::ReadLine(std::string& str)
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	if (!this->h_read_)
 	{
@@ -275,7 +275,7 @@ bool IPipeStream::ReadLine(std::string& str)
 				}
 			}
 
-			// ‰üs‚È‚©‚½
+			// æ”¹è¡Œãªã‹ãŸ
 			this->strbuf_ += std::string(this->buffer_ + this->buffer_pos_, this->buffer_len_ - this->buffer_pos_);
 			this->buffer_len_ = 0;
 			this->buffer_pos_ = 0;
@@ -285,11 +285,11 @@ bool IPipeStream::ReadLine(std::string& str)
 		{
 			if (ERROR_BROKEN_PIPE != GetLastError())
 			{
-				// qƒvƒƒZƒX‘¤‚ÅƒpƒCƒv‚ª•Â‚¶‚ç‚ê‚½i‘å‘Ì‚É‚¨‚¢‚ÄƒvƒƒZƒXI—¹jˆÈŠO‚ÌƒGƒ‰[‚ğ•\¦
+				// å­ãƒ—ãƒ­ã‚»ã‚¹å´ã§ãƒ‘ã‚¤ãƒ—ãŒé–‰ã˜ã‚‰ã‚ŒãŸï¼ˆå¤§ä½“ã«ãŠã„ã¦ãƒ—ãƒ­ã‚»ã‚¹çµ‚äº†æ™‚ï¼‰ä»¥å¤–ã®ã‚¨ãƒ©ãƒ¼ã‚’è¡¨ç¤º
 				ERROR_LOG("ReadFile error = ", GetLastError());
 			}
 
-			this->eof_flag = true; // “Ç‚İo‚µI—¹
+			this->eof_flag = true; // èª­ã¿å‡ºã—çµ‚äº†
 
 			if (this->strbuf_ == "")
 			{

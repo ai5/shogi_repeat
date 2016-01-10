@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef ENGINE_PLAYER_H_
 #define ENGINE_PLAYER_H_
 
@@ -19,23 +19,23 @@ class Notation;
 class GameTimer;
 
 
-// “à•”ó‘Ô
+// å†…éƒ¨çŠ¶æ…‹
 enum class EnginePlayerState {
 	NONE,
-	INITIALIZING, // usi -> usiok ‚Ü‚Å
-	INISIALIZED,  // usiok‚©‚çisready‚ğ‘—‚é‚Ü‚Å
-	WAIT_READY,   // isready -> readyok‚Ü‚Å
+	INITIALIZING, // usi -> usiok ã¾ã§
+	INISIALIZED,  // usiokã‹ã‚‰isreadyã‚’é€ã‚‹ã¾ã§
+	WAIT_READY,   // isready -> readyokã¾ã§
 	GO,           // go -> bestmove
 	PONDER,       // go -> bestmove or go -> ponderhit -> bestmove
 	STOP,         // stop -> bestmove
-	IDLE,         // isready‚ªI‚í‚Á‚½‚ ‚Æ
+	IDLE,         // isreadyãŒçµ‚ã‚ã£ãŸã‚ã¨
 
-	TERMINATING, // quit -> ƒvƒƒZƒX€–S‚Ü‚Å
+	TERMINATING, // quit -> ãƒ—ãƒ­ã‚»ã‚¹æ­»äº¡ã¾ã§
 };
 
 
-// ƒCƒxƒ“ƒg’Ê’mƒR[ƒ‹ƒoƒbƒN 
-// ¦color•”•ª‚Í¯•Êq‚Ì‚Ù‚¤‚ª‚æ‚¢‚©‚à
+// ã‚¤ãƒ™ãƒ³ãƒˆé€šçŸ¥ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ 
+// â€»coloréƒ¨åˆ†ã¯è­˜åˆ¥å­ã®ã»ã†ãŒã‚ˆã„ã‹ã‚‚
 class EnginePlayerListener
 {
 public:
@@ -51,15 +51,15 @@ public:
 	virtual void notifyError(Color color, int errnoNo, const std::string& errorMsg) = 0;
 };
 
-// goƒŠƒNƒGƒXƒg
+// goãƒªã‚¯ã‚¨ã‚¹ãƒˆ
 struct GoRequest
 {
 	enum Type {
-		NORMAL,   // ’Êí‘Î‹Ç—p
-		TIME_INFINITY, // ŠÔ–³§ŒÀ
-		PONDER,   // æ“Ç‚İ
-//		MATE,     // ‹l‚İ
-//		MOVETIME,    // ŠÔ‘¼w’è
+		NORMAL,   // é€šå¸¸å¯¾å±€ç”¨
+		TIME_INFINITY, // æ™‚é–“ç„¡åˆ¶é™
+		PONDER,   // å…ˆèª­ã¿
+//		MATE,     // è©°ã¿
+//		MOVETIME,    // æ™‚é–“ä»–æŒ‡å®š
 	};
 
 	GoRequest::Type ReqType;
@@ -68,10 +68,10 @@ struct GoRequest
 	int Wtime;
 	int Byoyomi;
 
-	// type‚ªMOVETIME‚Ì‚Æ‚«ˆÈ‰º‚Ì‚R‚Â‚ªg‚í‚ê‚é
-	int64_t Nodes; // ƒm[ƒh” ƒ}ƒCƒiƒX‚Ì’l‚¾‚Æ–¢g—p
-	int Depth;     // [‚³
-	int Time;      // ŠÔms
+	// typeãŒMOVETIMEã®ã¨ãä»¥ä¸‹ã®ï¼“ã¤ãŒä½¿ã‚ã‚Œã‚‹
+	int64_t Nodes; // ãƒãƒ¼ãƒ‰æ•° ãƒã‚¤ãƒŠã‚¹ã®å€¤ã ã¨æœªä½¿ç”¨
+	int Depth;     // æ·±ã•
+	int Time;      // æ™‚é–“ms
 
 	std::string Sfen;
 	std::string Moves;
@@ -113,7 +113,7 @@ class EnginePlayer
 
 	EnginePlayerState state_;
 
-	bool cancel_ = false; // ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO
+	bool cancel_ = false; // ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°
 	EnginePlayerListener* lisnter_;
 	
 	int transactionCounter_;
@@ -162,7 +162,7 @@ public:
 
 private:
 	
-	// ƒRƒ}ƒ“ƒhóMˆ—
+	// ã‚³ãƒãƒ³ãƒ‰å—ä¿¡å‡¦ç†
 	void receive_thread();
 	void receive_command(const std::string& str);
 	void parse_option(const std::string& str);

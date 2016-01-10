@@ -1,4 +1,4 @@
-#include "Game.h"
+ï»¿#include "Game.h"
 
 #include <algorithm>
 
@@ -29,7 +29,7 @@ Game::~Game()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ŠJn
+ * @brief é–‹å§‹
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -46,8 +46,8 @@ void Game::Start(const GameParam& param)
 }
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief I—¹
-* @note ƒXƒŒƒbƒh‚Ì’†‚©‚ç‚ÍŒÄ‚Ño‚³‚È‚¢‚±‚Æ
+* @brief çµ‚äº†
+* @note ã‚¹ãƒ¬ãƒƒãƒ‰ã®ä¸­ã‹ã‚‰ã¯å‘¼ã³å‡ºã•ãªã„ã“ã¨
 */
 /*-----------------------------------------------------------------------------*/
 void Game::Terminate()
@@ -70,7 +70,7 @@ void Game::Terminate()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ˜A‘±‘Î‹Ç
+* @brief é€£ç¶šå¯¾å±€
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -107,20 +107,20 @@ void Game::main_loop()
 			break;
 		}
 	}
-	// ’†’fˆ—H
+	// ä¸­æ–­å‡¦ç†ï¼Ÿ
 
 	this->game_term();
 
 	if (!this->cancel_)
 	{
-		// ƒLƒƒƒ“ƒZƒ‹ˆÈŠO‚ÌI—¹‚Ì‚µ‚©‚½‚ªexit‚µ‚©v‚¢‚Â‚©‚È‚¢
+		// ã‚­ãƒ£ãƒ³ã‚»ãƒ«ä»¥å¤–ã®çµ‚äº†ã®ã—ã‹ãŸãŒexitã—ã‹æ€ã„ã¤ã‹ãªã„
 		// exit(0);
 	}
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘Î‹Ç
+* @brief å¯¾å±€
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -131,7 +131,7 @@ bool Game::is_continuous_game_end()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‰Šú‰»
+* @brief åˆæœŸåŒ–
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ void Game::game_init()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘Î‹ÇŠJn
+* @brief å¯¾å±€é–‹å§‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ void Game::game_start()
 
 		if (this->param_.Num >= 0)
 		{
-			this->notation_.Jump(this->param_.Num); // w’è‚µ‚½è‚ÉˆÚ“®
+			this->notation_.Jump(this->param_.Num); // æŒ‡å®šã—ãŸæ‰‹ã«ç§»å‹•
 
 		}
 		else
@@ -173,9 +173,9 @@ void Game::game_start()
 			this->notation_.Last();
 		}
 
-		this->notation_.DeleteNotCurrent(); // ‰Šú‚©‚çƒJƒŒƒ“ƒgˆÊ’u‚Ü‚Å‚ğc‚µ‚Äíœ
+		this->notation_.DeleteNotCurrent(); // åˆæœŸã‹ã‚‰ã‚«ãƒ¬ãƒ³ãƒˆä½ç½®ã¾ã§ã‚’æ®‹ã—ã¦å‰Šé™¤
 
-		// ƒJƒŒƒ“ƒgˆÊ’uResult‚È‚ç‚»‚ê‚àíœ
+		// ã‚«ãƒ¬ãƒ³ãƒˆä½ç½®Resultãªã‚‰ãã‚Œã‚‚å‰Šé™¤
 		if (is_result(this->notation_.move_current().move_type()))
 		{
 			this->notation_.Back();
@@ -185,7 +185,7 @@ void Game::game_start()
 	}
 	else
 	{
-		this->notation_.Init(); // ‰Šú‰»
+		this->notation_.Init(); // åˆæœŸåŒ–
 		this->notation_.set_handicap(this->param_.handicap);
 
 		this->history_.Clear();
@@ -196,8 +196,8 @@ void Game::game_start()
 
 	Logger::Open(this->GetLogName(date));
 
-	this->start_date_ = date; // ‘Î‹ÇŠJnŠÔ‚ğŠo‚¦‚Æ‚­
-	this->notation_.set_kifu_info(L"ŠJn“ú", date.ToWString());
+	this->start_date_ = date; // å¯¾å±€é–‹å§‹æ™‚é–“ã‚’è¦šãˆã¨ã
+	this->notation_.set_kifu_info(L"é–‹å§‹æ—¥æ™‚", date.ToWString());
 	this->notation_.set_black_name(this->param_.Black.WName);
 	this->notation_.set_white_name(this->param_.White.WName);
 
@@ -213,7 +213,7 @@ void Game::game_start()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‘Î‹ÇI—¹
+* @brief å¯¾å±€çµ‚äº†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -222,19 +222,19 @@ void Game::game_end()
 	this->play_ = false;
 	std::cout << "game end " << std::endl;
 
-	// game over‚ğŒÄ‚Ño‚·
+	// game overã‚’å‘¼ã³å‡ºã™
 	this->black_player_->GameOver(this->notation_.winner());
 	this->white_player_->GameOver(this->notation_.winner());
 
-	// Šû•ˆ‚Ì•Û‘¶
+	// æ£‹è­œã®ä¿å­˜
 
 	Kif kif;
 	kif.Save(this->notation_, this->param_.KifPath + this->GetKifuFileName(this->start_date_, this->param_.Black.Name, this->param_.White.Name));
 	
 
-	// ƒƒO‚ÍŸ‚Ìƒtƒ@ƒCƒ‹Open‚©I—¹‚ÅƒNƒ[ƒY‚³‚ê‚é	 
+	// ãƒ­ã‚°ã¯æ¬¡ã®ãƒ•ã‚¡ã‚¤ãƒ«Openã‹çµ‚äº†ã§ã‚¯ãƒ­ãƒ¼ã‚ºã•ã‚Œã‚‹	 
 
-	// Ÿ‚Ì‘Î‹Çİ’è@İ’è‚Ì“ü‚ê‘Ö‚¦‚È‚Ç
+	// æ¬¡ã®å¯¾å±€è¨­å®šã€€è¨­å®šã®å…¥ã‚Œæ›¿ãˆãªã©
 	this->count_++;
 	switch (this->notation_.winner())
 	{
@@ -262,7 +262,7 @@ void Game::game_end()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒGƒ“ƒWƒ“I—¹
+* @brief ã‚¨ãƒ³ã‚¸ãƒ³çµ‚äº†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -272,13 +272,13 @@ void Game::game_term()
 	this->black_player_->Terminate();
 	this->white_player_->Terminate();
 
-	// ƒƒO‹L˜^I—¹
+	// ãƒ­ã‚°è¨˜éŒ²çµ‚äº†
 	Logger::Close();
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief Œ‹‰Ê‚ğ•\¦
+ * @brief çµæœã‚’è¡¨ç¤º
  */
 /*-----------------------------------------------------------------------------*/
 
@@ -296,7 +296,7 @@ void Game::print_log()
 	}
 
 	std::cout <<
-		StringUtil::Format("%s %d.%02d(%d) %s %d.%02d(%d) ˆø‚«•ª‚¯ %d\n",
+		StringUtil::Format("%s %d.%02d(%d) %s %d.%02d(%d) å¼•ãåˆ†ã‘ %d\n",
 			(this->swap_flag) ? this->param_.White.Name.c_str() : this->param_.Black.Name.c_str(),
 			(total_count == 0) ? 0 : black_cnt * 100 / total_count,
 			(total_count == 0) ? 0 : black_cnt * 10000 / total_count % 100,
@@ -321,12 +321,12 @@ void Game::EventPost(MessagePost& msg)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒLƒƒƒ“ƒZƒ‹
+* @brief ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 */
 /*-----------------------------------------------------------------------------*/
 void Game::EventCancel(Message& msg)
 {
-	// ‘Î‹Ç’†‚È‚ç
+	// å¯¾å±€ä¸­ãªã‚‰
 	if (this->play_)
 	{
 		this->play_ = false;
@@ -338,25 +338,25 @@ void Game::EventCancel(Message& msg)
 		this->black_player_->GameOver(this->notation_.winner());
 		this->white_player_->GameOver(this->notation_.winner());
 
-		this->notation_.AddMove(MoveKif(MoveType::STOP)); // Šû•ˆ‚É’†’f‚ğ‚¢‚ê‚é
+		this->notation_.AddMove(MoveKif(MoveType::STOP)); // æ£‹è­œã«ä¸­æ–­ã‚’ã„ã‚Œã‚‹
 	}
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‰Šú‰»Š®—¹
+* @brief åˆæœŸåŒ–å®Œäº†
 */
 /*-----------------------------------------------------------------------------*/
 void Game::EventInitialized(MessageInitialized& msg)
 {
 	if (msg.Player == BLACK)
 	{
-		// æè‰Šú‰»Š®—¹
+		// å…ˆæ‰‹åˆæœŸåŒ–å®Œäº†
 		this->white_player_->Init(this->param_.White.FileName);
 	}
 	else if (msg.Player == WHITE)
 	{
-		// –¼‘O‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‚±‚Ìƒ^ƒCƒ~ƒ“ƒO‚Åˆê“x‚¾‚¯İ’è‚³‚ê‚é
+		// åå‰ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã“ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ä¸€åº¦ã ã‘è¨­å®šã•ã‚Œã‚‹
 
 		if (this->param_.Black.Name == "")
 		{
@@ -370,7 +370,7 @@ void Game::EventInitialized(MessageInitialized& msg)
 			this->param_.White.WName = StringUtil::ConvertWStringFromString(this->white_player_->Name());
 		}
 
-		// æŒã‚ÌƒIƒvƒVƒ‡ƒ“İ’è
+		// å…ˆå¾Œã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¨­å®š
 		this->LoadOption(BLACK, this->param_.Black.SettingFileName);
 		this->LoadOption(WHITE, this->param_.White.SettingFileName);
 
@@ -391,7 +391,7 @@ void Game::EventReady(MessageReady& msg)
 	}
 	else
 	{
-		this->game_start(); // ‘Î‹ÇŠJn
+		this->game_start(); // å¯¾å±€é–‹å§‹
 	}
 }
 
@@ -404,12 +404,12 @@ void Game::EventBestMove(MessageBestMove& msg)
 {
 	if (is_result(msg.BestMove.move_type()))
 	{
-		int time = this->timer_.Stop(); // ƒ^ƒCƒ}[~‚ß‚é
+		int time = this->timer_.Stop(); // ã‚¿ã‚¤ãƒãƒ¼æ­¢ã‚ã‚‹
 
-		// result‚Ìê‡
+		// resultã®å ´åˆ
 		if (msg.BestMove.move_type() == MoveType::NYUGYOKU_KACHI)
 		{
-			// “ü‹Ê”»’è ¡‚Í–³ğŒ‚ÅƒXƒ‹[‚·‚é
+			// å…¥ç‰åˆ¤å®š ä»Šã¯ç„¡æ¡ä»¶ã§ã‚¹ãƒ«ãƒ¼ã™ã‚‹
 		}
 
 		MoveKif move(msg.BestMove);
@@ -431,33 +431,33 @@ void Game::EventBestMove(MessageBestMove& msg)
 
 		this->notation_.AddMove(move);
 
-		// w‚µè‚Ìƒ`ƒFƒbƒN
+		// æŒ‡ã—æ‰‹ã®ãƒã‚§ãƒƒã‚¯
 		if (!valid)
 		{
-			// ‘Šè•û‚ª”½‘¥Ÿ‚¿
+			// ç›¸æ‰‹æ–¹ãŒåå‰‡å‹ã¡
 			this->notation_.AddMove(MoveKif(MoveType::WIN_FOUL));
 			this->game_end();
 		}
 		else
 		{
-			// ’…è‚Ìê‡
+			// ç€æ‰‹ã®å ´åˆ
 			this->history_.Add(this->notation_.position().hashkey(), MoveCheck::IsCheck(this->notation_.position()));
 
 			if (this->history_.IsRepetitionCheck())
 			{
-				// ˜A‘±‰¤è‚Ìç“úè
+				// é€£ç¶šç‹æ‰‹ã®åƒæ—¥æ‰‹
 				this->notation_.AddMove(MoveKif(MoveType::WIN_FOUL));
 				this->game_end();
 			}
 			else if (this->history_.IsRepetition())
 			{
-				// ç“úè
+				// åƒæ—¥æ‰‹
 				this->notation_.AddMove(MoveKif(MoveType::REPETITION));
 				this->game_end();
 			}
 			else if (this->param_.MaxMoves > 0 && this->notation_.number() >= this->param_.MaxMoves)
 			{
-				// è”‚Åˆø‚«•ª‚¯
+				// æ‰‹æ•°ã§å¼•ãåˆ†ã‘
 				this->notation_.AddMove(MoveKif(MoveType::REPETITION));
 				this->game_end();
 			}
@@ -488,13 +488,13 @@ void Game::EventBestMove(MessageBestMove& msg)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒ^ƒCƒ€ƒAƒEƒg
+* @brief ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
 */
 /*-----------------------------------------------------------------------------*/
 void Game::EventTimeout(Message& msg)
 {
-	// ƒ^ƒCƒ€ƒAƒEƒg‚Ìˆ—
-	// “ü‚êˆá‚¢‚É‚È‚é‚±‚Æ‚ª‚ ‚é‚Ì‚ÅA‚±‚±‚Å”»•Ê
+	// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆæ™‚ã®å‡¦ç†
+	// å…¥ã‚Œé•ã„ã«ãªã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§ã€ã“ã“ã§åˆ¤åˆ¥
 	if (this->play_)
 	{
 		Color turn = this->notation_.position().side_to_move();
@@ -503,18 +503,18 @@ void Game::EventTimeout(Message& msg)
 
 		if (remain.HaveTime == 0 && remain.HaveByoyomi == 0)
 		{
-			// ŠÔ§ŒÀ‚È‚µ
+			// æ™‚é–“åˆ¶é™ãªã—
 		}
 		else
 		{
 			if (remain.Time == 0 && remain.Byoyomi == 0)
 			{
-				// —¼•û‚O‚Ìê‡
+				// ä¸¡æ–¹ï¼ã®å ´åˆ
 
-				int time = this->timer_.Stop(); // ƒ^ƒCƒ}[‚ğ’â~
+				int time = this->timer_.Stop(); // ã‚¿ã‚¤ãƒãƒ¼ã‚’åœæ­¢
 
 			
-				MoveKif move(MoveType::TIMEOUT); // ƒ^ƒCƒ€ƒAƒEƒg•‰‚¯‚É‚·‚é
+				MoveKif move(MoveType::TIMEOUT); // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆè² ã‘ã«ã™ã‚‹
 				move.time = time;
 
 				this->notation_.AddMove(move);
@@ -527,7 +527,7 @@ void Game::EventTimeout(Message& msg)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ““Ç‚İ‚İ
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³èª­ã¿è¾¼ã¿
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -556,8 +556,8 @@ void Game::LoadOption(Color color, const std::string& filename)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ“•Û‘¶
-* @note ”r‘¼‚Æ‚©ƒIƒuƒWƒFƒNƒg‚Æ‚©‹C‚É‚µ‚È‚¢‚Ì‚Å’ˆÓ
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä¿å­˜
+* @note æ’ä»–ã¨ã‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã‹æ°—ã«ã—ãªã„ã®ã§æ³¨æ„
 */
 /*-----------------------------------------------------------------------------*/
 void Game::SaveOption(Color color, const std::string& filename)
@@ -578,7 +578,7 @@ void Game::SaveOption(Color color, const std::string& filename)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@ƒƒOƒtƒ@ƒCƒ‹–¼‚Ìì¬
+* @briefã€€ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -592,7 +592,7 @@ std::string Game::GetLogName(DateTime date)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief@Šû•ˆƒtƒ@ƒCƒ‹–¼‚Ìì¬
+* @briefã€€æ£‹è­œãƒ•ã‚¡ã‚¤ãƒ«åã®ä½œæˆ
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -610,7 +610,7 @@ std::string Game::GetKifuFileName(DateTime date, const std::string& black_name, 
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief PVî•ñ‚ğƒRƒƒ“ƒg‚É’Ç‰Á
+ * @brief PVæƒ…å ±ã‚’ã‚³ãƒ¡ãƒ³ãƒˆã«è¿½åŠ 
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -618,7 +618,7 @@ void Game::AddComment(const std::map<int, PvInfo>& pvinfos)
 {
 	for (auto& info : pvinfos)
 	{
-		std::string str = "*‘Î‹Ç " + info.second.ToString();
+		std::string str = "*å¯¾å±€ " + info.second.ToString();
 
 		this->notation_.AddComment(StringUtil::ConvertWStringFromString(str));
 	}
@@ -627,7 +627,7 @@ void Game::AddComment(const std::map<int, PvInfo>& pvinfos)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒ^ƒCƒ€ƒAƒEƒg‚ÌƒR[ƒ‹ƒoƒbƒN
+* @brief ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -641,7 +641,7 @@ void Game::timeout()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ‰Šú‰»Š®—¹
+* @brief åˆæœŸåŒ–å®Œäº†
 */
 /*-----------------------------------------------------------------------------*/
 void GameEngineListner::notifyInisialized(Color color)

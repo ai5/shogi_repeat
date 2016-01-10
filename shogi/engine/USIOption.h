@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_USI_OPTION_H_
 #define SHOGI_USI_OPTION_H_
@@ -65,7 +65,7 @@ public:
 };
 
 
-// ƒXƒsƒ“
+// ã‚¹ãƒ”ãƒ³
 class USIOptionSpin : public USIOption
 {
 public:
@@ -90,7 +90,7 @@ public:
 	}
 };
 
-// ƒRƒ“ƒ{
+// ã‚³ãƒ³ãƒœ
 class USIOptionCombo : public USIOption
 {
 public:
@@ -164,7 +164,7 @@ public:
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒIƒvƒVƒ‡ƒ“‚Ì˜A‘z”z—ñ
+ * @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®é€£æƒ³é…åˆ—
  */
 /*-----------------------------------------------------------------------------*/
 class USIOptions : public std::map<std::string, std::shared_ptr<USIOption>>
@@ -204,7 +204,7 @@ public:
 
 	void Add(USIOption* option)
 	{
-		//@“o˜^‚³‚ê‚Ä‚¢‚Ä‚à–³‹‚µ‚Ä’Ç‰Á
+		//ã€€ç™»éŒ²ã•ã‚Œã¦ã„ã¦ã‚‚ç„¡è¦–ã—ã¦è¿½åŠ 
 		(*this)[option->Name] = std::shared_ptr<USIOption>(option);
 	}
 

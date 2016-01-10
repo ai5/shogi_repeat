@@ -115,8 +115,8 @@ public:
 	}
 
 private:
-	const MoveKif*  Notation::getPrevMove() const;
-	const MoveKif* Notation::getNext() const;
+	const MoveKif*  getPrevMove() const;
+	const MoveKif* getNext() const;
 
 	Color getWinPlayer(const Move& move) const;
 

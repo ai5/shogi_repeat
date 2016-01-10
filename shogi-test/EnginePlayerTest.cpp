@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include <iostream>
 #include <condition_variable>
@@ -11,6 +11,7 @@
 #include "GameTimer.h"
 #include "PvInfo.h"
 
+#include "Logger.h"
 
 class Listener : public EnginePlayerListener 
 {
@@ -69,13 +70,14 @@ TEST(EnginePlayerTest, test)
 	Listener listener;
 
 	EnginePlayer player(BLACK, &listener);
-	player.Init("tchild.exe");
+	ASSERT_EQ(player.Init("tchild.exe"), true);
 
-	listener.Wait(10000); // 10•b
-	// ƒIƒvƒVƒ‡ƒ“‘—M
+	listener.Wait(10000); // 10ç§’
+	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³é€ä¿¡
+
 
 	player.Ready();
-	listener.Wait(10000); // 10•b
+	listener.Wait(10000); // 10ç§’
 	player.GameStart();
 
 	Notation notation;
@@ -115,8 +117,8 @@ TEST(EnginePlayerTest, test3)
 	EnginePlayer player(BLACK, &listener);
 	player.Init("ErrorEngine.exe");
 
-	listener.Wait(40000); // 10•b
-						  // ƒIƒvƒVƒ‡ƒ“‘—M
+	listener.Wait(40000); // 10ç§’
+						  // ã‚ªãƒ—ã‚·ãƒ§ãƒ³é€ä¿¡
 	ASSERT_EQ(listener.error_cnt(), 1);
 #endif
 }

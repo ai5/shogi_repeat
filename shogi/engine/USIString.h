@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SHOGI_USI_STRING_H_
 #define SHOGI_USI_STRING_H_

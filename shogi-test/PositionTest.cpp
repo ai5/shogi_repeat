@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include "types.h"
 #include "Position.h"
@@ -39,21 +39,21 @@ TEST(PositionTest, testInit)
 
 	std::string sfen = "ln1B4l/k2G5/ppp1pgn1p/6p2/4PP3/2PK2P2/PPN5P/L8/6GNL w RBG3S3Prs2p 92";
 	/*
-	Œãè‚Ì‹îF”ò ‹â •à“ñ
-	‚X ‚W ‚V ‚U ‚T ‚S ‚R ‚Q ‚P
+	å¾Œæ‰‹ã®æŒé§’ï¼šé£› éŠ€ æ­©äºŒ
+	ï¼™ ï¼˜ ï¼— ï¼– ï¼• ï¼” ï¼“ ï¼’ ï¼‘
 	+---------------------------+
-	|vvŒj E Šp E E E Ev|ˆê
-	|v‹Ê E E ‹à E E E E E|“ñ
-	|v•àv•àv•à Ev•àv‹àvŒj Ev•à|O
-	| E E E E E Ev•à E E|l
-	| E E E E •à •à E E E|ŒÜ
-	| E E •à ‹Ê E E •à E E|˜Z
-	| •à •à Œj E E E E E •à|µ
-	|  E E E E E E E E|”ª
-	| E E E E E E ‹à Œj |‹ã
+	|vé¦™væ¡‚ ãƒ» è§’ ãƒ» ãƒ» ãƒ» ãƒ»vé¦™|ä¸€
+	|vç‰ ãƒ» ãƒ» é‡‘ ãƒ» ãƒ» ãƒ» ãƒ» ãƒ»|äºŒ
+	|væ­©væ­©væ­© ãƒ»væ­©vé‡‘væ¡‚ ãƒ»væ­©|ä¸‰
+	| ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» ãƒ»væ­© ãƒ» ãƒ»|å››
+	| ãƒ» ãƒ» ãƒ» ãƒ» æ­© æ­© ãƒ» ãƒ» ãƒ»|äº”
+	| ãƒ» ãƒ» æ­© ç‰ ãƒ» ãƒ» æ­© ãƒ» ãƒ»|å…­
+	| æ­© æ­© æ¡‚ ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» æ­©|ä¸ƒ
+	| é¦™ ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» ãƒ»|å…«
+	| ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» ãƒ» é‡‘ æ¡‚ é¦™|ä¹
 	+---------------------------+
-	æè‚Ì‹îF”ò Šp ‹à ‹âO •àO
-	Œãè”Ô
+	å…ˆæ‰‹ã®æŒé§’ï¼šé£› è§’ é‡‘ éŠ€ä¸‰ æ­©ä¸‰
+	å¾Œæ‰‹ç•ª
 	*/
 
 	Sfen::LoadPosition(pos, sfen);
@@ -135,7 +135,7 @@ TEST(PositionTest, testDoMove)
 	ASSERT_EQ(pos.hashkey().boardkey(), -1498543269764304972L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 17825794U);
 
-	// ‰Šú‹Ç–Ê
+	// åˆæœŸå±€é¢
 	pos = Position();
 
 	movedata = Move(MoveType::NORMAL);
@@ -192,67 +192,67 @@ TEST(PositionTest, testSetHandicapKyo)
 
 	Position pos;
 
-	// —‚¿
+	// é¦™è½ã¡
 	pos.SetHandicapKyo();
 	ASSERT_EQ(pos.hashkey().boardkey(), -6385813035845869014);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// ‰E—‚¿
+	// å³é¦™è½ã¡
 	pos.SetHandicapRightKyo();
 	ASSERT_EQ(pos.hashkey().boardkey(), -827721616849455819L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// Šp—‚¿
+	// è§’è½ã¡
 	pos.SetHandicapKaku();
 	ASSERT_EQ(pos.hashkey().boardkey(), 1230110347094849136);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// ”òÔ—‚¿
+	// é£›è»Šè½ã¡
 	pos.SetHandicapHisya();
 	ASSERT_EQ(pos.hashkey().boardkey(), -4716765230208824937L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// ”ò  —‚¿
+	// é£› é¦™ è½ã¡
 	pos.SetHandicapHiKyo();
 	ASSERT_EQ(pos.hashkey().boardkey(), 2441288327435227345L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// ‚Q–‡—‚¿
+	// ï¼’æšè½ã¡
 	pos.SetHandicap2();
 	ASSERT_EQ(pos.hashkey().boardkey(), -7524950945548843893L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 3–‡—‚¿
+	// 3æšè½ã¡
 	pos.SetHandicap3();
 	ASSERT_EQ(pos.hashkey().boardkey(), 6565054495035034322L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 4–‡—‚¿
+	// 4æšè½ã¡
 	pos.SetHandicap4();
 	ASSERT_EQ(pos.hashkey().boardkey(), -4291825405808225388L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 5–‡—‚¿
+	// 5æšè½ã¡
 	pos.SetHandicap5();
 	ASSERT_EQ(pos.hashkey().boardkey(), 6783499617761427302L);
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// ¶5–‡—‚¿
+	// å·¦5æšè½ã¡
 	pos.SetHandicapLeft5();
 	ASSERT_EQ(pos.hashkey().boardkey(), ((uint64_t)-5722628817346772237L));
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 6–‡—‚¿
+	// 6æšè½ã¡
 	pos.SetHandicap6();
 	ASSERT_EQ(pos.hashkey().boardkey(), ((uint64_t)3082335813779254785L));
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 8–‡—‚¿
+	// 8æšè½ã¡
 	pos.SetHandicap8();
 	ASSERT_EQ(pos.hashkey().boardkey(), ((uint64_t)-4600826916764102087L));
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);
 
-	// 10–‡—‚¿
+	// 10æšè½ã¡
 	pos.SetHandicap10();
 	ASSERT_EQ(pos.hashkey().boardkey(), ((uint64_t)3965985277409873510L));
 	ASSERT_EQ(pos.hashkey().hand_b(), 1U);

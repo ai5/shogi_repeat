@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+Ôªø#include <gtest/gtest.h>
 
 #include "types.h"
 
@@ -11,8 +11,8 @@ TEST(ColorTest, testOpp)
 
 TEST(ColorTest, testToChar)
 {
-	ASSERT_EQ(to_char(Color::BLACK), 'Å£');
-	ASSERT_EQ(to_char(Color::WHITE), 'Å¢');
+	ASSERT_EQ(to_char(Color::BLACK), L'‚ñ≤');
+	ASSERT_EQ(to_char(Color::WHITE), L'‚ñ≥');
 }
 
 

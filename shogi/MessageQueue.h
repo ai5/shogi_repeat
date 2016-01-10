@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef SHOGI_MESSAGE_QUEUE_H_
 #define SHOGI_MESSAGE_QUEUE_H_
 
@@ -13,11 +13,11 @@ enum class MessageID {
 	Post,
 	Cancel,
 	
-	Timeout,     // ƒ^ƒCƒ€Œã
-	Initialized, // ‰Šú‰»Š®—¹
+	Timeout,     // ã‚¿ã‚¤ãƒ å¾Œ
+	Initialized, // åˆæœŸåŒ–å®Œäº†
 	Ready,       // Ready
 	BestMove,    // BestMove
-	Error,       // ƒGƒ‰[
+	Error,       // ã‚¨ãƒ©ãƒ¼
 };
 
 class Message {

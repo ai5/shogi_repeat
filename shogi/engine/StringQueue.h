@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SHOGI_STRING_QUEUE_H_
 #define SHOGI_STRING_QUEUE_H_

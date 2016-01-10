@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include "types.h"
 #include "Handicap.h"
@@ -14,30 +14,30 @@ TEST(HandicapTest, TestIsBlack)
 
 TEST(HandicapTest, TestToString)
 {
-	ASSERT_TRUE(HandicapExtention::ToString(Handicap::HIRATE) == "•½è");
-	ASSERT_TRUE(HandicapExtention::ToString(Handicap::OTHER) == "‚»‚Ì‘¼");
-	ASSERT_TRUE(HandicapExtention::ToString(Handicap::KYO) == "—‚¿");
-	ASSERT_TRUE(HandicapExtention::ToString(Handicap::RIGHT_KYO) == "‰E—‚¿");
+	ASSERT_TRUE(HandicapExtention::ToString(Handicap::HIRATE) == "å¹³æ‰‹");
+	ASSERT_TRUE(HandicapExtention::ToString(Handicap::OTHER) == "ãã®ä»–");
+	ASSERT_TRUE(HandicapExtention::ToString(Handicap::KYO) == "é¦™è½ã¡");
+	ASSERT_TRUE(HandicapExtention::ToString(Handicap::RIGHT_KYO) == "å³é¦™è½ã¡");
 }
 
 TEST(HandicapTest, TestFromString)
 {
-	ASSERT_EQ(HandicapExtention::FromString("•½è"), Handicap::HIRATE);
-	ASSERT_EQ(HandicapExtention::FromString("—‚¿"), Handicap::KYO);
-	ASSERT_EQ(HandicapExtention::FromString("‰E—‚¿"), Handicap::RIGHT_KYO);
-	ASSERT_EQ(HandicapExtention::FromString("Šp—‚¿"), Handicap::KAKU);
-	ASSERT_EQ(HandicapExtention::FromString("”òÔ—‚¿"), Handicap::HISYA);
-	ASSERT_EQ(HandicapExtention::FromString("”ò—‚¿"), Handicap::HIKYO);
+	ASSERT_EQ(HandicapExtention::FromString("å¹³æ‰‹"), Handicap::HIRATE);
+	ASSERT_EQ(HandicapExtention::FromString("é¦™è½ã¡"), Handicap::KYO);
+	ASSERT_EQ(HandicapExtention::FromString("å³é¦™è½ã¡"), Handicap::RIGHT_KYO);
+	ASSERT_EQ(HandicapExtention::FromString("è§’è½ã¡"), Handicap::KAKU);
+	ASSERT_EQ(HandicapExtention::FromString("é£›è»Šè½ã¡"), Handicap::HISYA);
+	ASSERT_EQ(HandicapExtention::FromString("é£›é¦™è½ã¡"), Handicap::HIKYO);
 
-	ASSERT_EQ(HandicapExtention::FromString("“ñ–‡—‚¿"), Handicap::H2);
-	ASSERT_EQ(HandicapExtention::FromString("O–‡—‚¿"), Handicap::H3);
-	ASSERT_EQ(HandicapExtention::FromString("l–‡—‚¿"), Handicap::H4);
-	ASSERT_EQ(HandicapExtention::FromString("ŒÜ–‡—‚¿"), Handicap::H5);
+	ASSERT_EQ(HandicapExtention::FromString("äºŒæšè½ã¡"), Handicap::H2);
+	ASSERT_EQ(HandicapExtention::FromString("ä¸‰æšè½ã¡"), Handicap::H3);
+	ASSERT_EQ(HandicapExtention::FromString("å››æšè½ã¡"), Handicap::H4);
+	ASSERT_EQ(HandicapExtention::FromString("äº”æšè½ã¡"), Handicap::H5);
 
-	ASSERT_EQ(HandicapExtention::FromString("¶ŒÜ–‡—‚¿"), Handicap::LEFT5);
-	ASSERT_EQ(HandicapExtention::FromString("˜Z–‡—‚¿"), Handicap::H6);
-	ASSERT_EQ(HandicapExtention::FromString("”ª–‡—‚¿"), Handicap::H8);
-	ASSERT_EQ(HandicapExtention::FromString("\–‡—‚¿"), Handicap::H10);
+	ASSERT_EQ(HandicapExtention::FromString("å·¦äº”æšè½ã¡"), Handicap::LEFT5);
+	ASSERT_EQ(HandicapExtention::FromString("å…­æšè½ã¡"), Handicap::H6);
+	ASSERT_EQ(HandicapExtention::FromString("å…«æšè½ã¡"), Handicap::H8);
+	ASSERT_EQ(HandicapExtention::FromString("åæšè½ã¡"), Handicap::H10);
 
-	ASSERT_EQ(HandicapExtention::FromString("‚»‚Ì‘¼"), Handicap::OTHER);
+	ASSERT_EQ(HandicapExtention::FromString("ãã®ä»–"), Handicap::OTHER);
 }

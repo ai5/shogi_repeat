@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SHOGI_PROCESS_H_
 #define SHOGI_PROCESS_H_

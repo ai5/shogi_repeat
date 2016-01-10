@@ -1,4 +1,4 @@
-#ifndef LOCKED_QUEUE_H_
+﻿#ifndef LOCKED_QUEUE_H_
 #define LOCKED_QUEUE_H_
 
 // Copyright (c) 2012-2013

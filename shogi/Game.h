@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_GAME_H_
 #define SHOGI_GAME_H_
@@ -24,37 +24,37 @@ struct PlayerSetting
 	std::string FileName;
 	std::string SettingFileName;
 
-	// ŠÔİ’è
-	int time  = 0;    // ‚¿ŠÔ(•b
-	int byoyomi = 1; // •b“Ç‚İ(•b
+	// æ™‚é–“è¨­å®š
+	int time  = 0;    // æŒã¡æ™‚é–“(ç§’
+	int byoyomi = 1; // ç§’èª­ã¿(ç§’
 	
 };
 
 struct GameParam
 {
-	PlayerSetting Black; // æèİ’è
-	PlayerSetting White; // Œãèİ’è
+	PlayerSetting Black; // å…ˆæ‰‹è¨­å®š
+	PlayerSetting White; // å¾Œæ‰‹è¨­å®š
 
-	bool PonderON = false; // Ponderİ’è
+	bool PonderON = false; // Ponderè¨­å®š
 
-	bool SaveLog = true;      // ƒƒO•Û‘¶
-	bool SaveNotation = true; // Šû•ˆ•Û‘¶
-	bool DispLog = false;      // ƒƒO‚ğstdout‚Öo—Í
+	bool SaveLog = true;      // ãƒ­ã‚°ä¿å­˜
+	bool SaveNotation = true; // æ£‹è­œä¿å­˜
+	bool DispLog = false;      // ãƒ­ã‚°ã‚’stdoutã¸å‡ºåŠ›
 
-	std::string LogPath = ""; // ƒƒO‚ğ•Û‘¶‚·‚éƒpƒX
-	std::string KifPath = ""; // Šû•ˆ‚ğ•Û‘¶‚·‚éƒpƒX
+	std::string LogPath = ""; // ãƒ­ã‚°ã‚’ä¿å­˜ã™ã‚‹ãƒ‘ã‚¹
+	std::string KifPath = ""; // æ£‹è­œã‚’ä¿å­˜ã™ã‚‹ãƒ‘ã‚¹
 
-	Handicap handicap = Handicap::HIRATE; // è‡Š„
+	Handicap handicap = Handicap::HIRATE; // æ‰‹åˆå‰²
 
-	// Šû•ˆ‚Ì“r’†‹Ç–Ê‚©‚çŠJn
+	// æ£‹è­œã®é€”ä¸­å±€é¢ã‹ã‚‰é–‹å§‹
 	bool UseNotation = false; // 
-	Notation notation;  // Šû•ˆ
-	int Num = -1;            // ŠJnè”
+	Notation notation;  // æ£‹è­œ
+	int Num = -1;            // é–‹å§‹æ‰‹æ•°
 
-	bool SwapPlayer = true; // æŒã“ü‚ê‘Ö‚¦
+	bool SwapPlayer = true; // å…ˆå¾Œå…¥ã‚Œæ›¿ãˆ
 
-	int MaxPlays = 1; // ‘Î‹Ç”
-	int MaxMoves = 256; // ˆø‚«•ª‚¯‚É‚·‚éè”   <=0 ‚Å”»’è‚È‚µ
+	int MaxPlays = 1; // å¯¾å±€æ•°
+	int MaxMoves = 256; // å¼•ãåˆ†ã‘ã«ã™ã‚‹æ‰‹æ•°   <=0 ã§åˆ¤å®šãªã—
 };
 
 class GameEngineListner : public EnginePlayerListener
@@ -79,13 +79,13 @@ public:
 
 };
 
-// ˜A‘±‘Î‹Ç‚·‚éƒNƒ‰ƒX
+// é€£ç¶šå¯¾å±€ã™ã‚‹ã‚¯ãƒ©ã‚¹
 class Game
 {
-	std::thread th_; // ‘Î‹Ç‚ğ“®‚©‚·ƒXƒŒƒbƒh
-	bool cancel_ = false; // ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO@ƒLƒƒƒ“ƒZƒ‹‚³‚ê‚é‚Æ—§‚Â
-	bool terminate_ = false; // I—¹ƒtƒ‰ƒO
-	bool play_ = false; // ‘Î‹Ç’†ƒtƒ‰ƒO game_play ‚©‚çgame_end‚Ü‚Å
+	std::thread th_; // å¯¾å±€ã‚’å‹•ã‹ã™ã‚¹ãƒ¬ãƒƒãƒ‰
+	bool cancel_ = false; // ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ã€€ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã‚‹ã¨ç«‹ã¤
+	bool terminate_ = false; // çµ‚äº†ãƒ•ãƒ©ã‚°
+	bool play_ = false; // å¯¾å±€ä¸­ãƒ•ãƒ©ã‚° game_play ã‹ã‚‰game_endã¾ã§
 	GameParam param_;
 
 	std::unique_ptr<EnginePlayer> black_player_;
@@ -93,17 +93,17 @@ class Game
 
 	GameEngineListner engine_listner_;
 	
-	MessageQueue msgq_; // ƒƒbƒZ[ƒWQ
+	MessageQueue msgq_; // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸Q
 
 	std::mutex mtx_;
 
-	Notation notation_; // Šû•ˆ
-	History history_; // ç“úè”»’è—p
+	Notation notation_; // æ£‹è­œ
+	History history_; // åƒæ—¥æ‰‹åˆ¤å®šç”¨
 
-	GameTimer timer_; // ŠÔØ‚ê‘å–ƒ
+	GameTimer timer_; // æ™‚é–“åˆ‡ã‚Œå¤§éº»
 
-	DateTime start_date_; // ‘Î‹ÇŠJn“ú
-	int count_ = 0;  // ‘Î‹Ç”
+	DateTime start_date_; // å¯¾å±€é–‹å§‹æ—¥æ™‚
+	int count_ = 0;  // å¯¾å±€æ•°
 	int black_win_ = 0;
 	int white_win_ = 0;
 	bool swap_flag = false;
@@ -131,7 +131,7 @@ private:
 
 	void print_log();
 
-	// ƒCƒxƒ“ƒg
+	// ã‚¤ãƒ™ãƒ³ãƒˆ
 	void EventPost(MessagePost& msg);
 	void EventCancel(Message& msg);
 
@@ -142,7 +142,7 @@ private:
 	void EventBestMove(MessageBestMove& msg);
 
 
-	// ‚»‚Ì‘¼
+	// ãã®ä»–
 	void LoadOption(Color color, const std::string& filename);
 	std::string GetLogName(DateTime date);
 	std::string GetKifuFileName(DateTime date, const std::string& black_name, const std::string& white_name);
@@ -157,7 +157,7 @@ private:
 
 	void AddComment(const std::map<int, PvInfo>& pvinfos);
 
-	// ƒR[ƒ‹ƒoƒbƒN
+	// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	void timeout();
 
 };

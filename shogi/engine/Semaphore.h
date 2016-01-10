@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_SEMAPHORE_H_
 #define SHOGI_SEMAPHORE_H_
@@ -43,7 +43,7 @@ public:
 
 	void post()
 	{
-		std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+		std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 		if (this->count_ < this->max_)
 		{
@@ -70,10 +70,10 @@ public:
 
 		while (this->count_ == 0)
 		{
-			// wait_for ‚Íunique_lock‚ğƒAƒ“ƒƒbƒN
-			// cond_‚ª’Ê’m‚³‚ê‚é‚Ü‚Å‘Ò‚Â
-			// w’èŠÔ‚Å’Ê’m‚ª—ˆ‚È‚¯‚ê‚Î timeout
-			// ’Ê’m‚ğó‚¯‚½‚çunique_lock‚ğƒƒbƒN‚·‚é EEE‚ç‚µ‚¢
+			// wait_for ã¯unique_lockã‚’ã‚¢ãƒ³ãƒ­ãƒƒã‚¯
+			// cond_ãŒé€šçŸ¥ã•ã‚Œã‚‹ã¾ã§å¾…ã¤
+			// æŒ‡å®šæ™‚é–“ã§é€šçŸ¥ãŒæ¥ãªã‘ã‚Œã° timeout
+			// é€šçŸ¥ã‚’å—ã‘ãŸã‚‰unique_lockã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹ ãƒ»ãƒ»ãƒ»ã‚‰ã—ã„
 
 			if (timeoutMs < 0)
 			{

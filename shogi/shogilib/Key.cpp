@@ -2,6 +2,10 @@
 
 #include "Move.h"
 
+// テスト側でリンクエラーがでるので定義
+const uint64_t Key::InitialBoardKey;
+const uint32_t Key::TurnBit; 
+
 const uint64_t Key::zobBoard[PIECE_NB][SQUARE_NB] =
 {
 	{

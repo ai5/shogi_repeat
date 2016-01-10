@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SHOGI_HISTORY_H_
 #define SHOGI_HISTORY_H_

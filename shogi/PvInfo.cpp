@@ -1,4 +1,4 @@
-
+ï»¿
 #include "PvInfo.h"
 
 #include <sstream>
@@ -10,7 +10,7 @@
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ PvInfo::PvInfo(int num, int timeMs, int score, int mate, long long nodes, int de
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief •¶š—ñ•ÏŠ·
+ * @brief æ–‡å­—åˆ—å¤‰æ›
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -39,38 +39,38 @@ std::string PvInfo::ToString() const
 	// multi pv
 	if (this->Num != 0)
 	{
-		ss << "Œó•â" << this->Num;
+		ss << "å€™è£œ" << this->Num;
 	}
 
-	// ŠÔ
+	// æ™‚é–“
 	{
 		int min = this->TimeMs / (60 * 1000);
 		int sec = (this->TimeMs - (min * 60 * 1000)) / 1000;
 		int msec = (this->TimeMs - (min * 60 * 1000)) % 1000;
 
-		ss << StringUtil::Format(" ŠÔ %02d:%02d.%d", min, sec, msec / 100);
+		ss << StringUtil::Format(" æ™‚é–“ %02d:%02d.%d", min, sec, msec / 100);
 	}
 
-	// [‚³
+	// æ·±ã•
 	{
-		ss << " [‚³ " << this->Depth << "/" << this->SelDepth;
+		ss << " æ·±ã• " << this->Depth << "/" << this->SelDepth;
 	}
 
-	// ƒm[ƒh”
+	// ãƒãƒ¼ãƒ‰æ•°
 	{
-		ss << " ƒm[ƒh” " << this->Nodes;
+		ss << " ãƒãƒ¼ãƒ‰æ•° " << this->Nodes;
 	}
 
 	if (this->Mate == MateNone)
 	{
 		int eval = this->Score;
 
-		ss << " •]‰¿’l " << this->Score;
+		ss << " è©•ä¾¡å€¤ " << this->Score;
 
 	}
 	else
 	{
-		ss << " •]‰¿’l " << ((this->Mate < 0) ? "-‹l" : "+‹l");
+		ss << " è©•ä¾¡å€¤ " << ((this->Mate < 0) ? "-è©°" : "+è©°");
 		if (this->Score != 0)
 		{
 			ss << " " << this->Score;
@@ -80,10 +80,10 @@ std::string PvInfo::ToString() const
 	// pv;
 	if (this->PvMoves->size() != 0)
 	{
-		ss << " “Ç‚İ‹Ø";
+		ss << " èª­ã¿ç­‹";
 		for (auto& move : *this->PvMoves)
 		{
-			ss << " " << ((move.side() == BLACK) ? "£" : "¢") <<  Kif::ToMoveString(move);
+			ss << " " << ((move.side() == BLACK) ? "â–²" : "â–³") <<  Kif::ToMoveString(move);
 		}
 	}
 

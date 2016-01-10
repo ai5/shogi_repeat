@@ -1,4 +1,4 @@
-#include "KeyValue.h"
+ï»¿#include "KeyValue.h"
 
 #include <fstream>
 
@@ -7,8 +7,8 @@
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief “Ç‚İ‚İ
- * @note “ú–{Œê‚Í–³—
+ * @brief èª­ã¿è¾¼ã¿
+ * @note æ—¥æœ¬èªã¯ç„¡ç†
  */
 /*-----------------------------------------------------------------------------*/
 bool KeyValue::Load(const std::string& filename)
@@ -29,22 +29,22 @@ bool KeyValue::Load(const std::string& filename)
 	{
 		if (str[0] == '#')
 		{
-			// ƒRƒƒ“ƒg
+			// ã‚³ãƒ¡ãƒ³ãƒˆ
 		}
 		else
 		{
 			int pos = StringUtil::IndexOfAny(str, "=\t");
 			if (pos == std::string::npos)
 			{
-				// –³‚¢ê‡ –³‹
+				// ç„¡ã„å ´åˆ ç„¡è¦–
 			}
 			else
 			{
-				// ‚ ‚Á‚½ê‡
+				// ã‚ã£ãŸå ´åˆ
 				std::string key = str.substr(0, pos);
 				std::string value = str.substr(pos + 1, str.length() - (pos + 1));
 
-				key = StringUtil::Trim(key, " "); // ‘OŒã‚Ì‹ó”’‚ÍƒgƒŠƒ~ƒ“ƒO
+				key = StringUtil::Trim(key, " "); // å‰å¾Œã®ç©ºç™½ã¯ãƒˆãƒªãƒŸãƒ³ã‚°
 				value = StringUtil::Trim(value, " ");
 
 				(*this)[key] = value;
@@ -59,7 +59,7 @@ bool KeyValue::Load(const std::string& filename)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief •Û‘¶
+* @brief ä¿å­˜
 */
 /*-----------------------------------------------------------------------------*/
 bool KeyValue::Save(const std::string& filename) const

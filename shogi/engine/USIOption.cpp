@@ -1,4 +1,4 @@
-#include "USIOption.h"
+ï»¿#include "USIOption.h"
 #include "USIString.h"
 
 
@@ -9,7 +9,7 @@ USIOption::~USIOption()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒIƒvƒVƒ‡ƒ“’Ç‰Á
+ * @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¿½åŠ 
  * @param tokens
  * @note  option name <id> type <t> default <x> [min <y> max <z>] {var <v>}
  */

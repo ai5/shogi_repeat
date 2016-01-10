@@ -470,7 +470,7 @@ bool Kif::ReadHand(Color color, Position& pos, const std::wstring& str, int ofs)
 	for (size_t i = (size_t)ofs; i < str.length(); i++)
 	{
 		wchar_t ch = str[i];
-		if (ch == ' ' || ch == '　')
+		if (ch == ' ' || ch == L'　')
 		{
 			// スペース
 			continue;
@@ -1116,7 +1116,7 @@ int Kif::NumberFromKanjiNumber(std::wstring str, size_t* index)
 	{
 		wchar_t ch = str[idx];
 
-		if (ch == ' ' || ch == '　')
+		if (ch == ' ' || ch == L'　')
 		{
 			// スペース
 		}
@@ -1242,7 +1242,7 @@ void Kif::SplitMove(std::deque<std::wstring>& str_list, const std::wstring& line
 		for (end = start; end < line.length(); end++)
 		{
 			// 区切りもじなら
-			if (line[end] == ' ' && end != 0 && line[end - 1] == '同')
+			if (line[end] == ' ' && end != 0 && line[end - 1] == L'同')
 			{
 				// 一つ前が同？
 			}

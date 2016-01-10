@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_TIMER_H_
 #define SHOGI_TIMER_H_
@@ -15,7 +15,7 @@ template <class typeName>
 class Timer
 {
 	std::thread th_;
-	std::function<void(typeName)> timeout_func_ = nullptr; // ƒR[ƒ‹ƒoƒbƒN‚Ìƒpƒ‰ƒ[ƒ^‚ğ•ÏX‚·‚éãè‚¢d‘g‚İ‚Í‚È‚¢‚Ì‚©H
+	std::function<void(typeName)> timeout_func_ = nullptr; // ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å¤‰æ›´ã™ã‚‹ä¸Šæ‰‹ã„ä»•çµ„ã¿ã¯ãªã„ã®ã‹ï¼Ÿ
 	typeName timeout_param;
 
 	bool close_ = false;
@@ -32,8 +32,8 @@ public:
 		this->th_ = std::thread(&Timer::timer_thread, this);
 	}
 
-	Timer(const Timer&) = delete;  // copy‚Í‚Å‚«‚È‚¢
-	Timer& operator=(const Timer&) = delete; // copy‚Ío—ˆ‚È‚¢
+	Timer(const Timer&) = delete;  // copyã¯ã§ããªã„
+	Timer& operator=(const Timer&) = delete; // copyã¯å‡ºæ¥ãªã„
 
 	~Timer() {
 		this->Close();
@@ -44,7 +44,7 @@ public:
 		this->timeout_param = param;
 	}
 
-	// ŠJn ms ƒR[ƒ‹ƒoƒbƒN‚ªŒÄ‚Ño‚³‚ê‚é‚Ü‚Å‚ÌŠÔ
+	// é–‹å§‹ ms ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒå‘¼ã³å‡ºã•ã‚Œã‚‹ã¾ã§ã®æ™‚é–“
 	void Start(int ms) 
 	{
 		std::unique_lock<std::mutex> lock(this->mtx_);
@@ -55,14 +55,14 @@ public:
 		this->cond_.notify_one();
 	}
 
-	// ’â~
+	// åœæ­¢
 	void Stop() {
 		std::unique_lock<std::mutex> lock(this->mtx_);
 		this->start_ = false;
 		this->cond_.notify_one();
 	}
 
-	// •Â‚¶‚é
+	// é–‰ã˜ã‚‹
 	void Close() {
 		{
 			std::unique_lock<std::mutex> lock(this->mtx_);
@@ -91,7 +91,7 @@ protected:
 		{
 			if (this->start_)
 			{
-				// ‰½ŒÌ‚©”²‚¯‚Ä‚­‚é‚±‚Æ‚ª‚ ‚é‚Ì‚Åwhileƒ‹[ƒv
+				// ä½•æ•…ã‹æŠœã‘ã¦ãã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§whileãƒ«ãƒ¼ãƒ—
 				while (this->start_)
 				{
 					TimePoint waittime = this->interval_ - (this->Now() - this->start_time_);
@@ -100,12 +100,12 @@ protected:
 						std::cv_status sts = this->cond_.wait_for(lock, std::chrono::milliseconds(waittime));
 					}
 
-					TimePoint elapsed_time = (this->Now() - this->start_time_); // Œo‰ßŠÔms
+					TimePoint elapsed_time = (this->Now() - this->start_time_); // çµŒéæ™‚é–“ms
 
 					if (elapsed_time >= this->interval_)
 					{
-						this->start_ = false; // one shot“®ì
-											  // ƒ^ƒCƒ€ƒAƒEƒg
+						this->start_ = false; // one shotå‹•ä½œ
+											  // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
 						if (this->timeout_func_ != nullptr)
 						{
 							lock.unlock();

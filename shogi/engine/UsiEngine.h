@@ -49,7 +49,7 @@ public:
 	void SetOption(const std::string& name, bool value);
 	void SetOption(const std::string& name, int value);
 	void SetOption(const std::string& name, const std::string& value);
-	bool USIEngine::AddOption(const std::string& str);
+	bool AddOption(const std::string& str);
 
 	void SetOptions(const std::map<std::string, std::string>& opt_name_value);
 

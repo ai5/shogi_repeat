@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include <string>
 #include <vector>
@@ -48,24 +48,24 @@ TEST_F(NotationTest, testInit)
 	// ASSERT_EQ(notation.move_current(), notation.MoveFirst);
 	// ASSERT_EQ(notation.MovePrev, notation.MoveFirst);
 
-	// copy‚ÌƒeƒXƒg
+	// copyã®ãƒ†ã‚¹ãƒˆ
 
 	Sfen::LoadNotation(notation, sfen1);
-	notation.set_black_name(L"•–¼‘O");
-	notation.set_white_name(L"”’–¼‘O");
-	notation.set_kifu_info(L"“ú", L"2015/10/10");
+	notation.set_black_name(L"é»’åå‰");
+	notation.set_white_name(L"ç™½åå‰");
+	notation.set_kifu_info(L"æ—¥æ™‚", L"2015/10/10");
 
 	Notation copynotation(notation);
-	copynotation.Last(); // ÅŒã‚Ìw‚µè‚ÉˆÚ“®
+	copynotation.Last(); // æœ€å¾Œã®æŒ‡ã—æ‰‹ã«ç§»å‹•
 
 	ASSERT_EQ(copynotation.position().hashkey().boardkey(), 4374722627024287036U);
 	ASSERT_EQ(copynotation.position().hashkey().hand_b(), 68419591U);
 
 	ASSERT_EQ(copynotation.initial_position().hashkey().boardkey(), Key::InitialBoardKey);
 	ASSERT_EQ(copynotation.initial_position().hashkey().hand_b(), 0U);
-	ASSERT_EQ(copynotation.black_name(), L"•–¼‘O");
-	ASSERT_EQ(copynotation.white_name(), L"”’–¼‘O");
-	ASSERT_EQ(copynotation.kifu_infos().at(L"“ú"), L"2015/10/10");
+	ASSERT_EQ(copynotation.black_name(), L"é»’åå‰");
+	ASSERT_EQ(copynotation.white_name(), L"ç™½åå‰");
+	ASSERT_EQ(copynotation.kifu_infos().at(L"æ—¥æ™‚"), L"2015/10/10");
 }
 
 #if 0
@@ -78,7 +78,7 @@ TEST_F(NotationTest, testInitEdit)
 
 	Sfen::LoadNotation(notation, sfen1);
 
-	notation.Last(); // ÅŒã‚Ìw‚µè‚ÉˆÚ“®
+	notation.Last(); // æœ€å¾Œã®æŒ‡ã—æ‰‹ã«ç§»å‹•
 
 	ASSERT_EQ(notation.position().hashkey().boardkey(), 4374722627024287036U);
 	ASSERT_EQ(notation.position().hashkey().hand_b(), 68419591U);
@@ -199,7 +199,7 @@ TEST_F(NotationTest, testChangeChildCurrent)
 	}
 
 	// notation.Jump(73);
-	// ChangeChildCurrent‚Ìd—l‚ªC#”Å‚Æˆá‚¤‚±‚Æ‚É’ˆÓ
+	// ChangeChildCurrentã®ä»•æ§˜ãŒC#ç‰ˆã¨é•ã†ã“ã¨ã«æ³¨æ„
 	notation.ChangeChildCurrent(0);
 
 	ASSERT_EQ(notation.move_current().getCurrentBranchNumber(), 0);
@@ -211,7 +211,7 @@ TEST_F(NotationTest, testChangeChildCurrent)
 #if 0
 	notation.ChangeCurrent(movenode);
 
-	// ƒ}[ƒWƒeƒXƒg
+	// ãƒãƒ¼ã‚¸ãƒ†ã‚¹ãƒˆ
 	notation.ChangeCurrent(72);
 	ASSERT_EQ(notation.move_current().Children.Count, 2);
 	notation.Merge(notation.move_current(), 0, 1);
@@ -380,11 +380,11 @@ TEST_F(NotationTest, testset_kifu_info)
 
 	Notation notation;
 
-	notation.set_kifu_info(L"“ú", L"2015/10/10");
-	notation.set_kifu_info(L"êŠ", L"‚±‚±");
+	notation.set_kifu_info(L"æ—¥æ™‚", L"2015/10/10");
+	notation.set_kifu_info(L"å ´æ‰€", L"ã“ã“");
 
-	ASSERT_EQ(notation.kifu_infos().at(L"“ú"), L"2015/10/10");
-	ASSERT_EQ(notation.kifu_infos().at(L"êŠ"), L"‚±‚±");
+	ASSERT_EQ(notation.kifu_infos().at(L"æ—¥æ™‚"), L"2015/10/10");
+	ASSERT_EQ(notation.kifu_infos().at(L"å ´æ‰€"), L"ã“ã“");
 }
 
 TEST_F(NotationTest, testFindMoveNode)

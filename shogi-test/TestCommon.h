@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef SHOGI_TEST_COMMON_H_
 #define SHOGI_TEST_COMMON_H_
 

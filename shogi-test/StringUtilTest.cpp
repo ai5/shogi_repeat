@@ -1,58 +1,58 @@
-#include <gtest/gtest.h>
+ï»¿#include <gtest/gtest.h>
 
 #include "StringUtil.h"
 
 TEST(StringUtilTest, testStartsWith)
 {
-	std::string str = "¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½";
+	std::string str = "ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸ";
 	
-	ASSERT_EQ(StringUtil::StartsWith(str, "¡"), true);
+	ASSERT_EQ(StringUtil::StartsWith(str, "ä»Š"), true);
 
-	ASSERT_EQ(StringUtil::StartsWith(str, "¡“ú‚Í"), true);
-	ASSERT_EQ(StringUtil::StartsWith(str, "¡“ú‚Í“V‹C‚à‚æ‚­"), true);
-	ASSERT_EQ(StringUtil::StartsWith(str, "¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½"), true);
+	ASSERT_EQ(StringUtil::StartsWith(str, "ä»Šæ—¥ã¯"), true);
+	ASSERT_EQ(StringUtil::StartsWith(str, "ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆã"), true);
+	ASSERT_EQ(StringUtil::StartsWith(str, "ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸ"), true);
 
-	ASSERT_EQ(StringUtil::StartsWith(str, "“ú"), false);
-	ASSERT_EQ(StringUtil::StartsWith(str, "“V‹C‚à‚æ‚­"), false);
-	ASSERT_EQ(StringUtil::StartsWith(str, "¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½‚ªŠ¦‚©‚Á‚½"), false);
+	ASSERT_EQ(StringUtil::StartsWith(str, "æ—¥"), false);
+	ASSERT_EQ(StringUtil::StartsWith(str, "å¤©æ°—ã‚‚ã‚ˆã"), false);
+	ASSERT_EQ(StringUtil::StartsWith(str, "ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸãŒå¯’ã‹ã£ãŸ"), false);
 
-	std::wstring wstr = L"¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½";
+	std::wstring wstr = L"ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸ";
 
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"¡"), true);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"ä»Š"), true);
 
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"¡“ú‚Í"), true);
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"¡“ú‚Í“V‹C‚à‚æ‚­"), true);
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½"), true);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"ä»Šæ—¥ã¯"), true);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆã"), true);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸ"), true);
 
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"“ú"), false);
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"“V‹C‚à‚æ‚­"), false);
-	ASSERT_EQ(StringUtil::StartsWith(wstr, L"¡“ú‚Í“V‹C‚à‚æ‚­°‚ê‚Å‚µ‚½‚ªŠ¦‚©‚Á‚½"), false);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"æ—¥"), false);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"å¤©æ°—ã‚‚ã‚ˆã"), false);
+	ASSERT_EQ(StringUtil::StartsWith(wstr, L"ä»Šæ—¥ã¯å¤©æ°—ã‚‚ã‚ˆãæ™´ã‚Œã§ã—ãŸãŒå¯’ã‹ã£ãŸ"), false);
 }
 
 TEST(StringUtilTest, testTrim)
 {
-	ASSERT_EQ(StringUtil::TrimStart(L"ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::TrimStart(L" ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::TrimStart(L"@@ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::TrimStart(L" @ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::TrimStart(L"ƒeƒXƒg ", L" @"), L"ƒeƒXƒg ");
-	ASSERT_EQ(StringUtil::TrimStart(L"ƒeƒXƒg @", L" @"), L"ƒeƒXƒg @");
+	ASSERT_EQ(StringUtil::TrimStart(L"ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::TrimStart(L" ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::TrimStart(L"ã€€ã€€ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::TrimStart(L" ã€€ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::TrimStart(L"ãƒ†ã‚¹ãƒˆ ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ ");
+	ASSERT_EQ(StringUtil::TrimStart(L"ãƒ†ã‚¹ãƒˆ ã€€", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ ã€€");
 
-	ASSERT_EQ(StringUtil::Trim(L"ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::Trim(L" ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::Trim(L"@@ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::Trim(L" @ƒeƒXƒg", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::Trim(L"ƒeƒXƒg ", L" @"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::Trim(L"ƒeƒXƒg @", L" @"), L"ƒeƒXƒg");
+	ASSERT_EQ(StringUtil::Trim(L"ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::Trim(L" ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::Trim(L"ã€€ã€€ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::Trim(L" ã€€ãƒ†ã‚¹ãƒˆ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::Trim(L"ãƒ†ã‚¹ãƒˆ ", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::Trim(L"ãƒ†ã‚¹ãƒˆ ã€€", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
 
-	ASSERT_EQ(StringUtil::Trim(L"@ ƒeƒXƒg @", L" @"), L"ƒeƒXƒg");
+	ASSERT_EQ(StringUtil::Trim(L"ã€€ ãƒ†ã‚¹ãƒˆ ã€€", L" ã€€"), L"ãƒ†ã‚¹ãƒˆ");
 }
 
 TEST(StringUtilTest, testIndexOfAny)
 {
-	ASSERT_EQ(StringUtil::IndexOfAny(L"ƒeƒXƒg:ƒeƒXƒg", L":F"), 3);
-	ASSERT_EQ(StringUtil::IndexOfAny(L"ƒeƒXƒgFƒeƒXƒg:", L":F"), 3);
-	ASSERT_EQ(StringUtil::IndexOfAny(L"ƒeƒXƒg:ƒeƒXƒgF", L":F"), 3);
+	ASSERT_EQ(StringUtil::IndexOfAny(L"ãƒ†ã‚¹ãƒˆ:ãƒ†ã‚¹ãƒˆ", L":ï¼š"), 3);
+	ASSERT_EQ(StringUtil::IndexOfAny(L"ãƒ†ã‚¹ãƒˆï¼šãƒ†ã‚¹ãƒˆ:", L":ï¼š"), 3);
+	ASSERT_EQ(StringUtil::IndexOfAny(L"ãƒ†ã‚¹ãƒˆ:ãƒ†ã‚¹ãƒˆï¼š", L":ï¼š"), 3);
 }
 
 TEST(StringUtilTest, testFormat)
@@ -67,11 +67,11 @@ TEST(StringUtilTest, testFormat)
 
 TEST(StringUtilTest, testConvert)
 {
-	ASSERT_EQ(StringUtil::ConvertWStringFromString("ƒeƒXƒg"), L"ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::ConvertWStringFromString("•\¦"), L"•\¦");
+	ASSERT_EQ(StringUtil::ConvertWStringFromString("ãƒ†ã‚¹ãƒˆ"), L"ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::ConvertWStringFromString("è¡¨ç¤º"), L"è¡¨ç¤º");
 
-	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"ƒeƒXƒg"), "ƒeƒXƒg");
-	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"•\¦"), "•\¦");
+	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"ãƒ†ã‚¹ãƒˆ"), "ãƒ†ã‚¹ãƒˆ");
+	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"è¡¨ç¤º"), "è¡¨ç¤º");
 }
 
 TEST(StringUtilTest, testParseTime)

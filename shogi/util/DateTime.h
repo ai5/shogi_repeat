@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef SHOGI_DATE_TIME_H_
 #define SHOGI_DATE_TIME_H_
 

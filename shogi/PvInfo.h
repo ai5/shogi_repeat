@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef SHOGI_PV_INFO_H_
 #define SHOGI_PV_INFO_H_
 
@@ -8,20 +8,20 @@ class Moves;
 
 struct PvInfo
 {
-	int Num;    // multipv‚Ì’l@–¢İ’è‚Ìê‡‚Í0
-	int TimeMs; // ŠÔ
-	int Score;    // ƒXƒRƒA
-	int Mate;	  // 0 ’ÊíƒXƒRƒA < 0 Œãè‚Â‚İ > 0 æè‚Â‚İ
-	long long Nodes;  // ƒm[ƒh”
-	int Depth;        // [‚³
+	int Num;    // multipvã®å€¤ã€€æœªè¨­å®šã®å ´åˆã¯0
+	int TimeMs; // æ™‚é–“
+	int Score;    // ã‚¹ã‚³ã‚¢
+	int Mate;	  // 0 é€šå¸¸ã‚¹ã‚³ã‚¢ < 0 å¾Œæ‰‹ã¤ã¿ > 0 å…ˆæ‰‹ã¤ã¿
+	long long Nodes;  // ãƒãƒ¼ãƒ‰æ•°
+	int Depth;        // æ·±ã•
 	int SelDepth;
-	std::unique_ptr<Moves> PvMoves; // “Ç‚İ‹Ø
+	std::unique_ptr<Moves> PvMoves; // èª­ã¿ç­‹
 	PvInfo() {};
 	PvInfo(int num, int timeMs, int score, int mate, long long nodes, int depth, int seldepth, const Moves& moves);
 
 	static const int MateNone = 0;
-	static const int MateBlack = 1; // æè‚©‚çŒ©‚Ä©•ª‚ªŸ‚¿
-	static const int MateWhite = -1;  // æè‚©‚çŒ©‚Ä‘Šè‚ªŸ‚¿
+	static const int MateBlack = 1; // å…ˆæ‰‹ã‹ã‚‰è¦‹ã¦è‡ªåˆ†ãŒå‹ã¡
+	static const int MateWhite = -1;  // å…ˆæ‰‹ã‹ã‚‰è¦‹ã¦ç›¸æ‰‹ãŒå‹ã¡
 
 	std::string ToString() const;
 };

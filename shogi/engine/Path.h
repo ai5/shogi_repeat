@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef SHOGI_PATH_H_
 #define SHOGI_PAT_H_
 

@@ -1,4 +1,4 @@
-#include "StringQueue.h"
+ï»¿#include "StringQueue.h"
 
 
 
@@ -13,13 +13,13 @@ StringQueue::~StringQueue()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒLƒ…[‚É‹l‚Ş
+ * @brief ã‚­ãƒ¥ãƒ¼ã«è©°ã‚€
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
 void StringQueue::Push(const std::string& str)
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 	if (this->close_)
 	{
 		return;
@@ -32,7 +32,7 @@ void StringQueue::Push(const std::string& str)
 
 void StringQueue::Push(const char* str)
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 	if (this->close_)
 	{
 		return;
@@ -44,7 +44,7 @@ void StringQueue::Push(const char* str)
 	}
 	else
 	{
-		this->queue_.emplace_back(); // ‰Šú—v‘f‚Ínullptr
+		this->queue_.emplace_back(); // åˆæœŸè¦ç´ ã¯nullptr
 	}
 
 	this->sem_.post();
@@ -53,8 +53,8 @@ void StringQueue::Push(const char* str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒLƒ…[‚É‹l‚Ş
-* @param timeoutMs Å‘å‘Ò‚¿ŠÔ ms
+* @brief ã‚­ãƒ¥ãƒ¼ã«è©°ã‚€
+* @param timeoutMs æœ€å¤§å¾…ã¡æ™‚é–“ ms
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ STRING_QUEUE_ERR StringQueue::Pop(std::string& ref_str, int timeoutMs)
 	STRING_QUEUE_ERR err = STRING_QUEUE_ERR::OK;
 
 	{
-		std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+		std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 		if (this->close_)
 		{
@@ -97,13 +97,13 @@ STRING_QUEUE_ERR StringQueue::Pop(std::string& ref_str, int timeoutMs)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒLƒ…[•Â‚¶‚é
+* @brief ã‚­ãƒ¥ãƒ¼é–‰ã˜ã‚‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
 void StringQueue::Close()
 {
-	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guard‚ğg‚¤‚Æ‚±‚ÌƒXƒR[ƒv“à‚ªƒƒbƒN‚³‚ê‚é
+	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardã‚’ä½¿ã†ã¨ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—å†…ãŒãƒ­ãƒƒã‚¯ã•ã‚Œã‚‹
 
 	this->close_ = true;
 

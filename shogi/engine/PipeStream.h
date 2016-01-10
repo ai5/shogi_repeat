@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_PIPE_STREAM_H_
 #define SHOGI_PIPE_STREAM_H_
@@ -7,7 +7,7 @@
 #include <iostream>
 #include <mutex>
 
-// qƒvƒƒZƒX‚ÌStdIn—p‚ÌPipeƒXƒgƒŠ[ƒ€
+// å­ãƒ—ãƒ­ã‚»ã‚¹ã®StdInç”¨ã®Pipeã‚¹ãƒˆãƒªãƒ¼ãƒ 
 class OPipeStream
 {
 	std::mutex mtx_;
@@ -29,7 +29,7 @@ public:
 };
 
 
-// qƒvƒƒZƒX‚ÌStdOut,StdErr—p‚ÌPipeƒXƒgƒŠ[ƒ€
+// å­ãƒ—ãƒ­ã‚»ã‚¹ã®StdOut,StdErrç”¨ã®Pipeã‚¹ãƒˆãƒªãƒ¼ãƒ 
 class IPipeStream
 {
 	std::mutex mtx_;

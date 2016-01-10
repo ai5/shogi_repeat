@@ -257,7 +257,6 @@
     <ClInclude Include="engine\USIString.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="LockedQueue.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MessageQueue.h" />
     <ClInclude Include="PvInfo.h" />
@@ -276,6 +275,7 @@
     <ClInclude Include="shogilib\types.h" />
     <ClInclude Include="util\DateTime.h" />
     <ClInclude Include="util\KeyValue.h" />
+    <ClInclude Include="util\LockedQueue.h" />
     <ClInclude Include="util\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

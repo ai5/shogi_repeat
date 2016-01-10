@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SHOGI_LOGGER_H_
 #define SHOGI_LOGGER_H_

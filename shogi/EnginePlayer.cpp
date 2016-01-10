@@ -1,4 +1,4 @@
-#include "EnginePlayer.h"
+ï»¿#include "EnginePlayer.h"
 
 #include <string>
 #include <cassert>
@@ -22,7 +22,8 @@ EnginePlayer::EnginePlayer(Color color, EnginePlayerListener* lisnter)
 
 	this->color_ = color;
 	this->lisnter_ = lisnter;
-
+	this->transactionCounter_ = 0;
+	this->state_ = EnginePlayerState::NONE;
 }
 
 
@@ -33,7 +34,7 @@ EnginePlayer::~EnginePlayer()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ŠJn
+ * @brief é–‹å§‹
  * @param 
  * @note  
  */
@@ -49,7 +50,7 @@ bool EnginePlayer::Init(const std::string& filename)
 
 	if (!this->engine_->Initialize(filename))
 	{
-		// ‹N“®¸”sH
+		// èµ·å‹•å¤±æ•—ï¼Ÿ
 		this->engine_ = nullptr;
 		return false;
 	}
@@ -61,14 +62,14 @@ bool EnginePlayer::Init(const std::string& filename)
 	this->send_cmd("usi");
 
 	this->timer_.SetTimeOut(&EnginePlayer::InitTimeout, this);
-	this->timer_.Start(30000); // ƒ^ƒCƒ€ƒAƒEƒg‚Í‚R‚O•b
+	this->timer_.Start(30000); // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã¯ï¼“ï¼ç§’
 
 	return true;
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief I—¹
+* @brief çµ‚äº†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -93,8 +94,8 @@ void EnginePlayer::Terminate()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ“İ’è
-* @note isready‚Ì‘—M
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¨­å®š
+* @note isreadyã®é€ä¿¡
 */
 /*-----------------------------------------------------------------------------*/
 void EnginePlayer::SetOptions(const std::map<std::string, std::string>& opt_name_value)
@@ -116,8 +117,8 @@ void EnginePlayer::SetOptions(const std::map<std::string, std::string>& opt_name
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒIƒvƒVƒ‡ƒ“æ“¾
-* @note isready‚Ì‘—M
+* @brief ã‚ªãƒ—ã‚·ãƒ§ãƒ³å–å¾—
+* @note isreadyã®é€ä¿¡
 */
 /*-----------------------------------------------------------------------------*/
 const USIOptions& EnginePlayer::GetOptions() const
@@ -128,7 +129,7 @@ const USIOptions& EnginePlayer::GetOptions() const
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief isready‚Ì‘—M
+* @brief isreadyã®é€ä¿¡
 */
 /*-----------------------------------------------------------------------------*/
 void EnginePlayer::Ready()
@@ -156,7 +157,7 @@ void EnginePlayer::GameStart()
 	}
 	else
 	{
-		ASSERT_MSG(0, "STATE‚ªIDLEˆÈŠO‚ÍŒÄ‚Ño‚µ‚Ä‚Í‚¢‚¯‚Ü‚¹‚ñ");
+		ASSERT_MSG(0, "STATEãŒIDLEä»¥å¤–ã¯å‘¼ã³å‡ºã—ã¦ã¯ã„ã‘ã¾ã›ã‚“");
 	}
 }
 
@@ -168,7 +169,7 @@ void EnginePlayer::GameStart()
 /*-----------------------------------------------------------------------------*/
 void EnginePlayer::GameOver(Color color)
 {
-	this->Stop(); // ˆê‰ŒÄ‚Ô
+	this->Stop(); // ä¸€å¿œå‘¼ã¶
 
 	{
 		std::unique_lock<std::mutex> lock(this->mtx_);
@@ -194,7 +195,7 @@ void EnginePlayer::GameOver(Color color)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief vlŠJn
+* @brief æ€è€ƒé–‹å§‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -215,7 +216,7 @@ int EnginePlayer::Go(Notation& notation, const GameTimer& time_info)
 
 	this->ponder_ = nullptr;
 
-	// state‚Å‚Í‚¶‚­H
+	// stateã§ã¯ã˜ãï¼Ÿ
 	if (!(this->state_ == EnginePlayerState::IDLE
 		|| this->state_ == EnginePlayerState::GO
 		|| this->state_ == EnginePlayerState::PONDER
@@ -230,7 +231,7 @@ int EnginePlayer::Go(Notation& notation, const GameTimer& time_info)
 	int byoyomi = game_time.Byoyomi;
 	if (game_time.Byoyomi == 0 && game_time.Time == 0)
 	{
-		byoyomi = 10 * 1000; // b’è‚P‚O•b
+		byoyomi = 10 * 1000; // æš«å®šï¼‘ï¼ç§’
 	}
 
 	GoRequest req(time_info.BlackTime.RemainTime, time_info.WhiteTime.RemainTime, byoyomi);
@@ -249,7 +250,7 @@ int EnginePlayer::Go(Notation& notation, const GameTimer& time_info)
 		this->go_req_ = req;
 		this->is_go_req_ = true;
 
-		// ’â~‚³‚¹‚é
+		// åœæ­¢ã•ã›ã‚‹
 		this->state_ = EnginePlayerState::STOP;
 		this->send_cmd("stop");
 	}
@@ -266,7 +267,7 @@ int EnginePlayer::Go(Notation& notation, const GameTimer& time_info)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief go req‚ÌÀs
+* @brief go reqã®å®Ÿè¡Œ
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -274,7 +275,7 @@ void EnginePlayer::ExecGoReeust(const GoRequest& req)
 {
 	std::string str;
 
-	this->pv_info_.clear(); // pv î•ñ‚ÌƒNƒŠƒA
+	this->pv_info_.clear(); // pv æƒ…å ±ã®ã‚¯ãƒªã‚¢
 
 	this->pos_ = req.Pos;
 
@@ -296,7 +297,7 @@ void EnginePlayer::ExecGoReeust(const GoRequest& req)
 	}
 	else
 	{
-		// ‘¼‚Í–¢‘Î‰
+		// ä»–ã¯æœªå¯¾å¿œ
 		this->send_cmd("go infinite");
 	}
 
@@ -305,7 +306,7 @@ void EnginePlayer::ExecGoReeust(const GoRequest& req)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief æ“Ç‚İ
+* @brief å…ˆèª­ã¿
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -314,11 +315,11 @@ int EnginePlayer::Ponder(const Notation& notation)
 	std::unique_lock<std::mutex> lock(this->mtx_);
 	if (this->ponder_ == nullptr || !(this->ponder_->move_type() && MoveType::MOVE_FLAG))
 	{
-		// null or w‚µè‚¶‚á‚È‚¢
-		return this->transactionCounter_; // Œ»İ‚Ì’l‚ğ•Ô‚µ‚Æ‚­
+		// null or æŒ‡ã—æ‰‹ã˜ã‚ƒãªã„
+		return this->transactionCounter_; // ç¾åœ¨ã®å€¤ã‚’è¿”ã—ã¨ã
 	}
 
-	// state‚Å‚Í‚¶‚­H
+	// stateã§ã¯ã˜ãï¼Ÿ
 	if (this->state_ != EnginePlayerState::IDLE ) 
 	{
 		return this->transactionCounter_;
@@ -344,7 +345,7 @@ int EnginePlayer::Ponder(const Notation& notation)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ’â~
+* @brief åœæ­¢
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -362,7 +363,7 @@ void EnginePlayer::Stop()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒGƒ“ƒWƒ“‚ÖƒRƒ}ƒ“ƒh‘—M
+* @brief ã‚¨ãƒ³ã‚¸ãƒ³ã¸ã‚³ãƒãƒ³ãƒ‰é€ä¿¡
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -375,7 +376,7 @@ void EnginePlayer::send_cmd(const std::string &cmd)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief óMƒXƒŒƒbƒh
+* @brief å—ä¿¡ã‚¹ãƒ¬ãƒƒãƒ‰
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -392,13 +393,13 @@ void EnginePlayer::receive_thread()
 
 		if (err == STRING_QUEUE_ERR::TIMEOUT)
 		{
-			// ƒ^ƒCƒ€ƒAƒEƒgˆ—
+			// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆå‡¦ç†
 			continue;
 		}
 
 		if (err != STRING_QUEUE_ERR::OK)
 		{
-			// ƒGƒ‰‚Ìê‡‚ÍI—¹
+			// ã‚¨ãƒ©ã®å ´åˆã¯çµ‚äº†
 			break;
 		}
 
@@ -411,7 +412,7 @@ void EnginePlayer::receive_thread()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief engine -> gui‚ÌƒRƒ}ƒ“ƒhˆ—
+* @brief engine -> guiã®ã‚³ãƒãƒ³ãƒ‰å‡¦ç†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -421,7 +422,7 @@ void EnginePlayer::receive_command(const std::string& str)
 	switch (this->state_)
 	{
 	case	EnginePlayerState::NONE:
-		// ‰½‚à‚µ‚È‚¢
+		// ä½•ã‚‚ã—ãªã„
 		break;
 	case	EnginePlayerState::INITIALIZING:
 		if (str == "usiok")
@@ -439,7 +440,7 @@ void EnginePlayer::receive_command(const std::string& str)
 		{
 			this->state_ = EnginePlayerState::IDLE;
 			this->lisnter_->notifyReadyOk(this->color_);
-			// •Û—¯‚µ‚Ä‚ ‚éƒRƒ}ƒ“ƒh‚Ìˆ—
+			// ä¿ç•™ã—ã¦ã‚ã‚‹ã‚³ãƒãƒ³ãƒ‰ã®å‡¦ç†
 			this->handleIdleState();
 		}
 
@@ -456,7 +457,7 @@ void EnginePlayer::receive_command(const std::string& str)
 			{
 				if (this->state_ == EnginePlayerState::GO)
 				{
-					// ponder’†‚Ìbestmove‚Í–³‹
+					// ponderä¸­ã®bestmoveã¯ç„¡è¦–
 					this->parse_bestmove(str);
 				}
 
@@ -474,9 +475,9 @@ void EnginePlayer::receive_command(const std::string& str)
 			USITokenizer tok(str);
 			if (tok.GetToken() == "bestmove")
 			{
-				// bestmove‚Ìê‡
+				// bestmoveã®å ´åˆ
 				this->state_ = EnginePlayerState::IDLE;
-				// •Û—¯‚µ‚Ä‚ ‚éƒRƒ}ƒ“ƒh‚Ìˆ—
+				// ä¿ç•™ã—ã¦ã‚ã‚‹ã‚³ãƒãƒ³ãƒ‰ã®å‡¦ç†
 				this->handleIdleState();
 			}
 		}
@@ -489,7 +490,7 @@ void EnginePlayer::receive_command(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief OPTIONƒRƒ}ƒ“ƒhˆ—
+* @brief OPTIONã‚³ãƒãƒ³ãƒ‰å‡¦ç†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -501,7 +502,7 @@ void EnginePlayer::parse_option(const std::string& str)
 
 	if (cmd == "id")
 	{
-		// id‚Ìê‡
+		// idã®å ´åˆ
 
 		std::string name =  tok.GetToken();
 		if (name == "name")
@@ -521,7 +522,7 @@ void EnginePlayer::parse_option(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief bestmove‚Ìˆ—
+* @brief bestmoveã®å‡¦ç†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -555,7 +556,7 @@ void EnginePlayer::parse_bestmove(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief bestmove‚Ìˆ—
+* @brief bestmoveã®å‡¦ç†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -608,8 +609,8 @@ void EnginePlayer::parse_info(const std::string& str)
 					Move move = Sfen::ParseMove(pos, value);
 					if (move.IsNoMove())
 					{
-						// w‚µè‚¶‚á‚È‚¢H
-						tok.Back(value); // –{—ˆ‚È‚çÅŒã‚Ü‚ÅPV‚Ì‚Í‚¸‚¾‚ªA‚»‚¤‚¶‚á‚È‚¢ƒGƒ“ƒWƒ“‚ª‘¶İ‚·‚é
+						// æŒ‡ã—æ‰‹ã˜ã‚ƒãªã„ï¼Ÿ
+						tok.Back(value); // æœ¬æ¥ãªã‚‰æœ€å¾Œã¾ã§PVã®ã¯ãšã ãŒã€ãã†ã˜ã‚ƒãªã„ã‚¨ãƒ³ã‚¸ãƒ³ãŒå­˜åœ¨ã™ã‚‹
 						break;
 					}
 
@@ -630,7 +631,7 @@ void EnginePlayer::parse_info(const std::string& str)
 				if (token == "cp")
 				{
 					StringUtil::ParseNum(tok.GetToken(), score);
-					if (this->color_ == WHITE) score = -score; // Œãè‚ÍƒXƒRƒA‚ğ‹t‚É‚·‚é
+					if (this->color_ == WHITE) score = -score; // å¾Œæ‰‹ã¯ã‚¹ã‚³ã‚¢ã‚’é€†ã«ã™ã‚‹
 				}
 				else if (token == "mate")
 				{
@@ -672,7 +673,7 @@ void EnginePlayer::parse_info(const std::string& str)
 			}
 			else if (token == "lowerbound")
 			{
-				// –{—ˆ‚Ísocore cp 100 lowerbound ‚İ‚½‚¢‚ÈŒ`®‚Å‚­‚é‚¯‚Ç‚±‚ê’P“Æ‚Å”»•Ê‚·‚é
+				// æœ¬æ¥ã¯socore cp 100 lowerbound ã¿ãŸã„ãªå½¢å¼ã§ãã‚‹ã‘ã©ã“ã‚Œå˜ç‹¬ã§åˆ¤åˆ¥ã™ã‚‹
 			}
 			else if (token == "upperbound")
 			{
@@ -680,7 +681,7 @@ void EnginePlayer::parse_info(const std::string& str)
 			else if (token == "currmove")
 			{
 				Move move =	Sfen::ParseMove(this->pos_, tok.GetToken());
-				// –¢À‘•
+				// æœªå®Ÿè£…
 			}
 			else if (token == "hashfull")
 			{
@@ -698,7 +699,7 @@ void EnginePlayer::parse_info(const std::string& str)
 				std::string value = tok.GetTokenLast();
 				if (value.size() != 0)
 				{
-					// –¢À‘•
+					// æœªå®Ÿè£…
 				}
 
 				break;
@@ -710,7 +711,7 @@ void EnginePlayer::parse_info(const std::string& str)
 		{
 			this->pv_info_[multipv] = PvInfo( multipv, time, score, mate, nodes, depth, seldepth, moves);
 
-			// ‚È‚ñ‚©FXƒp[ƒX‚µ‚ÄƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ô
+			// ãªã‚“ã‹è‰²ã€…ãƒ‘ãƒ¼ã‚¹ã—ã¦ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã¶
 			this->lisnter_->notifyInfo(this->color_, this->transactionNo_, this->pv_info_[multipv]);
 		}
 	}
@@ -718,7 +719,7 @@ void EnginePlayer::parse_info(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief IDLE‚É‘JˆÚ‚µ‚½‚Ìˆ—
+* @brief IDLEã«é·ç§»ã—ãŸæ™‚ã®å‡¦ç†
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -726,7 +727,7 @@ void EnginePlayer::handleIdleState()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_);
 
-	// •Û—¯‚³‚ê‚Ä‚éƒRƒ}ƒ“ƒh‚ÌÀs
+	// ä¿ç•™ã•ã‚Œã¦ã‚‹ã‚³ãƒãƒ³ãƒ‰ã®å®Ÿè¡Œ
 
 	if (this->is_go_req_)
 	{
@@ -759,7 +760,7 @@ std::string EnginePlayer::time_str(TimePoint tp)
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ‰Šú‰»‚Ìƒ^ƒCƒ€ƒAƒEƒg
+ * @brief åˆæœŸåŒ–ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
@@ -768,7 +769,7 @@ void EnginePlayer::InitTimeout()
 	if (this->state_ == EnginePlayerState::INITIALIZING)
 	{
 		Logger::WriteLine("initialize timeout");
-		// ‰Šú‰»’†‚Å‚ ‚é
-		this->lisnter_->notifyError(this->color_, -1, "‰Šú‰»ƒ^ƒCƒ€ƒAƒEƒg");
+		// åˆæœŸåŒ–ä¸­ã§ã‚ã‚‹
+		this->lisnter_->notifyError(this->color_, -1, "åˆæœŸåŒ–ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ");
 	}
 }

@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+Ôªø#include <gtest/gtest.h>
 
 #include "MoveCheck.h"
 #include "Sfen.h"
@@ -32,7 +32,7 @@ const std::string MoveCheckTest::sfen3 = "3B4l/k2G5/4pgn1p/6p2/3NPP3/2Pbs1P2/PP1
 const std::string MoveCheckTest::sfen4 = "1ngR5/6kll/p4P1pp/2p1SBp2/3ppn3/2P6/P1NGP4/5g2K/L4b3 b NL4Prg3s3p 1";
 
 
-// [TestMethod, Description("IsValidÇÃÉeÉXÉg")]
+// [TestMethod, Description("IsValid„ÅÆ„ÉÜ„Çπ„Éà")]
 TEST_F(MoveCheckTest, testIsValid)
 {
 	Position pos;
@@ -75,7 +75,7 @@ TEST_F(MoveCheckTest, testIsValid)
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_37, Piece::W_SILVER, Piece::NO_PIECE)), true);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::NORMAL, Square::SQ_81, Square::SQ_73, Piece::W_KNIGHT, Piece::NO_PIECE)), false);
 
-	// Dropâ¬î€îªíË
+	// DropÂèØÂê¶Âà§ÂÆö
 	Sfen::LoadPosition(pos, sfen3);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_99, Piece::W_PAWN, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_28, Piece::W_PAWN, Piece::NO_PIECE)), true);
@@ -86,12 +86,12 @@ TEST_F(MoveCheckTest, testIsValid)
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_89, Piece::W_KNIGHT, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_48, Piece::W_KNIGHT, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_77, Piece::W_KNIGHT, Piece::NO_PIECE)), true);
-	// ë≈Çøï‡ãlÇﬂîªíË
+	// Êâì„Å°Ê≠©Ë©∞„ÇÅÂà§ÂÆö
 
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_77, Piece::W_PAWN, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_77, Piece::W_LANCE, Piece::NO_PIECE)), true);
 
-	// Dropâ¬î€îªíË
+	// DropÂèØÂê¶Âà§ÂÆö
 	Sfen::LoadPosition(pos, sfen4);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_11, Piece::B_PAWN, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_82, Piece::B_PAWN, Piece::NO_PIECE)), true);
@@ -102,7 +102,7 @@ TEST_F(MoveCheckTest, testIsValid)
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_21, Piece::B_KNIGHT, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_62, Piece::B_KNIGHT, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_33, Piece::B_KNIGHT, Piece::NO_PIECE)), true);
-	// ë≈Çøï‡ãlÇﬂîªíË
+	// Êâì„Å°Ê≠©Ë©∞„ÇÅÂà§ÂÆö
 
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_33, Piece::B_PAWN, Piece::NO_PIECE)), false);
 	ASSERT_EQ(MoveCheck::IsValid(pos, Move(MoveType::DROP, SQ_NONE, Square::SQ_33, Piece::B_LANCE, Piece::NO_PIECE)), true);

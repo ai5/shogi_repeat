@@ -4,6 +4,7 @@
 #include <Position.h>
 #include <Move.h>
 
+
 TEST(KeyTest, TestKeyInit)
 {
 	Position pos;

@@ -1,4 +1,4 @@
-#include <vector>
+ï»¿#include <vector>
 
 #include "USIString.h"
 
@@ -7,9 +7,9 @@
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ”’l‚Ìƒp[ƒX
-* @param str •¶š—ñ
-* @param [out] num  ”’l
+* @brief æ•°å€¤ã®ãƒ‘ãƒ¼ã‚¹
+* @param str æ–‡å­—åˆ—
+* @param [out] num  æ•°å€¤
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -26,7 +26,7 @@ bool USIString::ParseNum(const std::string& str, int* out_num)
 	{
 		if (str[0] == '-')
 		{
-			// ƒ}ƒCƒiƒX
+			// ãƒã‚¤ãƒŠã‚¹
 			minus = true;
 			index++;
 		}
@@ -56,7 +56,7 @@ bool USIString::ParseNum(const std::string& str, int* out_num)
 			break;
 		}
 
-		// Å’á1Œ…ˆÈã‚ ‚é‚Æ¬Œ÷
+		// æœ€ä½1æ¡ä»¥ä¸Šã‚ã‚‹ã¨æˆåŠŸ
 		ret = true;
 	}
 
@@ -72,7 +72,7 @@ bool USIString::ParseNum(const std::string& str, int* out_num)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* token•ªŠ„
+* tokenåˆ†å‰²
 */
 /*-----------------------------------------------------------------------------*/
 std::string USITokenizer::GetToken()
@@ -84,7 +84,7 @@ std::string USITokenizer::GetToken()
 		pos++;
 	}
 
-	// Ÿ‚Ì‹æØ‚è•¶š‚Ü‚ÅƒJƒEƒ“ƒg
+	// æ¬¡ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¾ã§ã‚«ã‚¦ãƒ³ãƒˆ
 	int start = pos;
 	while (pos < this->input_string_.size() && this->input_string_[pos] != ' ')
 	{
@@ -104,27 +104,27 @@ std::string USITokenizer::GetToken()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* token•ªŠ„
+* tokenåˆ†å‰²
 */
 /*-----------------------------------------------------------------------------*/
 std::string USITokenizer::GetToken(const std::string& next)
 {
 	size_t pos = this->pos_;
 
-	// ‹ó”’ƒXƒLƒbƒv
+	// ç©ºç™½ã‚¹ã‚­ãƒƒãƒ—
 	// while (pos < this->input_string_.size() && this->input_string_[pos] == ' ')
 	// {
 	// 	pos++;
 	// }
 
-	// Ÿ‚Ì‹æØ‚è•¶š‚Ü‚ÅƒJƒEƒ“ƒg
+	// æ¬¡ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¾ã§ã‚«ã‚¦ãƒ³ãƒˆ
 
 	size_t start = pos;
 
 	pos = this->input_string_.find(" " + next + " ", pos);
 	if (pos == std::string::npos)
 	{
-		// ‚È‚¢ê‡
+		// ãªã„å ´åˆ
 		pos = this->input_string_.size();
 	}
 
@@ -141,14 +141,14 @@ std::string USITokenizer::GetToken(const std::string& next)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* token•ªŠ„
+* tokenåˆ†å‰²
 */
 /*-----------------------------------------------------------------------------*/
 std::string USITokenizer::GetTokenName(const std::string& next)
 {
 	size_t pos = this->pos_;
 
-	// ‹ó”’ƒXƒLƒbƒv
+	// ç©ºç™½ã‚¹ã‚­ãƒƒãƒ—
 	while (pos < this->input_string_.size() && this->input_string_[pos] == ' ')
 	{
 	 	pos++;
@@ -159,7 +159,7 @@ std::string USITokenizer::GetTokenName(const std::string& next)
 	pos = this->input_string_.find(" " + next + " ", pos);
 	if (pos == std::string::npos)
 	{
-		// ‚È‚¢ê‡
+		// ãªã„å ´åˆ
 		pos = this->input_string_.size();
 	}
 
@@ -176,7 +176,7 @@ std::string USITokenizer::GetTokenName(const std::string& next)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* ÅŒã‚Ü‚Å
+* æœ€å¾Œã¾ã§
 */
 /*-----------------------------------------------------------------------------*/
 std::string USITokenizer::GetTokenLast()
@@ -190,7 +190,7 @@ std::string USITokenizer::GetTokenLast()
 
 	this->pos_ = this->input_string_.size();
 
-	// Ÿ‚Ì‹æØ‚è•¶š‚Ü‚ÅƒJƒEƒ“ƒg
+	// æ¬¡ã®åŒºåˆ‡ã‚Šæ–‡å­—ã¾ã§ã‚«ã‚¦ãƒ³ãƒˆ
 	unsigned len = this->input_string_.size() - pos;
 	if (len <= 0)
 	{
@@ -203,10 +203,10 @@ std::string USITokenizer::GetTokenLast()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief –ß‚·
+ * @brief æˆ»ã™
  */
 /*-----------------------------------------------------------------------------*/
 void USITokenizer::Back(const std::string& token)
 {
-	this->pos_ -= token.size(); // ƒTƒCƒY•ª–ß‚·‚¾‚¯
+	this->pos_ -= token.size(); // ã‚µã‚¤ã‚ºåˆ†æˆ»ã™ã ã‘
 }

@@ -1,4 +1,4 @@
-#include <Windows.h>
+ï»¿#include <Windows.h>
 
 #include <iostream>
 
@@ -21,7 +21,7 @@ Process::~Process()
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief ƒvƒƒZƒXŠJn
+ * @brief ãƒ—ãƒ­ã‚»ã‚¹é–‹å§‹
  * @param 
  * @note  
  */
@@ -32,7 +32,7 @@ bool Process::Start()
 
 	if (this->hChildProcess)
 	{
-		return false; // ‚Î‚©‚æ‚¯
+		return false; // ã°ã‹ã‚ˆã‘
 	}
 
 	STARTUPINFO si;
@@ -46,7 +46,7 @@ bool Process::Start()
 	DWORD dwCreationFlags = CREATE_NEW_CONSOLE;
 	if (this->StartInfo.CreateNoWindow) 
 	{
-		// ‚Ç‚Á‚¿g‚¤‚ÌH
+		// ã©ã£ã¡ä½¿ã†ã®ï¼Ÿ
 		// si.wShowWindow |= SW_HIDE;
 		dwCreationFlags |= CREATE_NO_WINDOW;
 	}
@@ -62,7 +62,7 @@ bool Process::Start()
 	}
 	else
 	{
-		si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE); // eƒvƒƒZƒX‚Ì•W€o—Í‚ğŒp³
+		si.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE); // è¦ªãƒ—ãƒ­ã‚»ã‚¹ã®æ¨™æº–å‡ºåŠ›ã‚’ç¶™æ‰¿
 	}
 
 	// STD Error
@@ -73,7 +73,7 @@ bool Process::Start()
 	}
 	else
 	{
-		si.hStdError = GetStdHandle(STD_OUTPUT_HANDLE); // eƒvƒƒZƒX‚Ì•W€o—Í‚ğŒp³
+		si.hStdError = GetStdHandle(STD_OUTPUT_HANDLE); // è¦ªãƒ—ãƒ­ã‚»ã‚¹ã®æ¨™æº–å‡ºåŠ›ã‚’ç¶™æ‰¿
 	}
 
 	// STD IN
@@ -105,7 +105,7 @@ bool Process::Start()
 	this->StdErr.CloseWrite();
 	this->StdIn.CloseRead();
 
-	// ƒTƒ“ƒvƒ‹‚Å‚Í‚±‚Ìƒnƒ“ƒhƒ‹ƒh•Â‚¶‚Ä‚é‚¯‚ÇˆÓ–¡‚í‚©‚ç‚ñ
+	// ã‚µãƒ³ãƒ—ãƒ«ã§ã¯ã“ã®ãƒãƒ³ãƒ‰ãƒ«ãƒ‰é–‰ã˜ã¦ã‚‹ã‘ã©æ„å‘³ã‚ã‹ã‚‰ã‚“
 	if (!CloseHandle(pi.hThread)) { 
 		ERROR_LOG("CloseHandle error = ", GetLastError());
 	}
@@ -120,7 +120,7 @@ bool Process::Start()
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒvƒƒZƒXI—¹‘Ò‚¿
+* @brief ãƒ—ãƒ­ã‚»ã‚¹çµ‚äº†å¾…ã¡
 * @param timeout msec
 * @note
 */
@@ -145,7 +145,7 @@ void Process::WaitForExit(int timeout)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ƒnƒ“ƒhƒ‹•Â‚¶‚é
+* @brief ãƒãƒ³ãƒ‰ãƒ«é–‰ã˜ã‚‹
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@ void Process::Close()
 			CloseHandle(this->hChildProcess);
 			this->hChildProcess = 0;
 
-			// ƒvƒƒZƒX‚Ìƒnƒ“ƒhƒ‹‚ğ•Â‚¶‚Ä‚©‚çAƒpƒCƒv‚Ìƒnƒ“ƒhƒ‹‚ğ•Â‚¶‚é
+			// ãƒ—ãƒ­ã‚»ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’é–‰ã˜ã¦ã‹ã‚‰ã€ãƒ‘ã‚¤ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’é–‰ã˜ã‚‹
 			this->StdIn.Close();
 			this->StdErr.Close();
 			this->StdOut.Close();
@@ -175,16 +175,16 @@ void Process::Close()
 
 	if (join)
 	{
-		// ˆê‰I—¹‚ğ‘Ò‚Â
+		// ä¸€å¿œçµ‚äº†ã‚’å¾…ã¤
 		this->exit_thread_->join();
 	}
 }
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief ExitƒR[ƒ‹ƒoƒbƒNİ’è 
+* @brief Exitã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯è¨­å®š 
 * @param
-* @note ƒR[ƒ‹ƒoƒbƒN‚Í•ÊƒXƒŒƒbƒh‚©‚çŒÄ‚Ño‚³‚ê‚é‚±‚Æ‚É’ˆÓ
+* @note ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã¯åˆ¥ã‚¹ãƒ¬ãƒƒãƒ‰ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã“ã¨ã«æ³¨æ„
 */
 /*-----------------------------------------------------------------------------*/
 void Process::SetExited(std::function<void()> func)
@@ -196,8 +196,8 @@ void Process::SetExited(std::function<void()> func)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief Exit‚ÌŠÄ‹
-* @note process‚ÌI—¹‚ğŒŸ’m‚µ‚½‚çƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
+* @brief Exitã®ç›£è¦–
+* @note processã®çµ‚äº†ã‚’æ¤œçŸ¥ã—ãŸã‚‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 */
 /*-----------------------------------------------------------------------------*/
 void Process::exitThread()
@@ -209,7 +209,7 @@ void Process::exitThread()
 
 		if (this->exited_ != nullptr)
 		{
-			this->exited_(); // callback“à‚©‚çProcessŠÖ˜A‚Ìˆ—‚ğŒÄ‚Ño‚·‚Æ€‚Ê‚ªA‚»‚ñ‚È‚±‚Æ‚µ‚È‚¢‚æ‚ËH
+			this->exited_(); // callbackå†…ã‹ã‚‰Processé–¢é€£ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™ã¨æ­»ã¬ãŒã€ãã‚“ãªã“ã¨ã—ãªã„ã‚ˆã­ï¼Ÿ
 		}
 	}
 }

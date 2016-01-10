@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef SHOGI_GAME_TIMER_H_
 #define SHOGI_GAME_TIMER_H_
@@ -11,20 +11,20 @@
 
 struct GameRemainTime
 {
-	int Time;  // Ž‚¿ŽžŠÔŽc‚è (ms
-	int Byoyomi; // •b“Ç‚ÝŽc‚èŽžŠÔ(ms
-	int ElapsedTime;  // Á”ïŽžŠÔ(ms
+	int Time;  // æŒã¡æ™‚é–“æ®‹ã‚Š (ms
+	int Byoyomi; // ç§’èª­ã¿æ®‹ã‚Šæ™‚é–“(ms
+	int ElapsedTime;  // æ¶ˆè²»æ™‚é–“(ms
 
-	int HaveTime;     // Ž‚¿ŽžŠÔ(ms
-	int HaveByoyomi;  // Ž‚¿•b“Ç‚ÝŽžŠÔ(ms
+	int HaveTime;     // æŒã¡æ™‚é–“(ms
+	int HaveByoyomi;  // æŒã¡ç§’èª­ã¿æ™‚é–“(ms
 };
 
 struct GameTime
 {
-	int Time       = 10 * 60 * 1000;  // Ž‚¿ŽžŠÔ (ms
-	int RemainTime = 10 * 60 * 1000; // Žc‚èŽžŠÔ ( ms
-	int Byoyomi    = 30 * 1000; // Ž‚¿ŽžŠÔ (ms
-	int ElapsedTime = 0;  // Á”ïŽžŠÔ(ms
+	int Time       = 10 * 60 * 1000;  // æŒã¡æ™‚é–“ (ms
+	int RemainTime = 10 * 60 * 1000; // æ®‹ã‚Šæ™‚é–“ ( ms
+	int Byoyomi    = 30 * 1000; // æŒã¡æ™‚é–“ (ms
+	int ElapsedTime = 0;  // æ¶ˆè²»æ™‚é–“(ms
 
 	int Remain() const { return this->RemainTime + this->Byoyomi; }
 };

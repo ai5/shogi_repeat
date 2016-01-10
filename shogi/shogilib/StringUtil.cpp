@@ -23,27 +23,26 @@
 std::string StringUtil::Format(const char* fmt, ...) 
 {
 	va_list     arguments;
-	std::string buffer;
+	std::string buffer = "";
 
 	assert(fmt);
 
 	va_start(arguments, fmt);
 
-	try
 	{
 		int length = _vscprintf(fmt, arguments);
-		if (length < 0)   throw std::runtime_error(fmt);
+		if (length >= 0)
+		{
 
-		std::unique_ptr<char[]> buf(new char[length + 1]);
+			std::unique_ptr<char[]> buf(new char[length + 1]);
 
-		int result = vsprintf_s(buf.get(), length + 1, fmt, arguments);
-		if (result < 0)   throw std::runtime_error(fmt);
-		
-		buffer = buf.get();
-	}
-	catch (...) 
-	{
-		buffer = "";
+			int result = vsprintf_s(buf.get(), length + 1, fmt, arguments);
+			if (result >= 0)
+			{
+				buffer = buf.get();
+
+			}
+		}
 	}
 
 	va_end(arguments);
