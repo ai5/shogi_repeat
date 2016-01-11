@@ -449,6 +449,12 @@ void Game::EventBestMove(MessageBestMove& msg)
 				this->notation_.AddMove(MoveKif(MoveType::WIN_FOUL));
 				this->game_end();
 			}
+			else if (this->history_.IsRepetitionCheckOpp())
+			{
+				// 連続王手の千日手 相手側が連続王手
+				this->notation_.AddMove(MoveKif(MoveType::LOSE_FOUL));
+				this->game_end();
+			}
 			else if (this->history_.IsRepetition())
 			{
 				// 千日手

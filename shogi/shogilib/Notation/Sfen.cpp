@@ -11,8 +11,10 @@
 #include "Notation.h"
 #include "Position.h"
 #include "Tokenizer.h"
+#include "MoveCheck.h"
 #include "MovesEnumerator.h"
 #include "StringUtil.h"
+
 
 /*-----------------------------------------------------------------------------*/
 
@@ -290,6 +292,13 @@ void Sfen::ReadNotation(Notation& notation, const std::string& sfen)
 			}
 
 			// 合法手チェック(未実装
+			if (is_move(move.move_type()))
+			{
+				if (!MoveCheck::IsValid(notation.position(), move))
+				{
+					break;
+				}
+			}
 
 			// 棋譜に指し手を追加
 			notation.AddMove(MoveKif(move));

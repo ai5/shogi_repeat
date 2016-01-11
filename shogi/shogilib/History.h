@@ -52,7 +52,8 @@ public:
 
 	bool IsRepetition();
 	bool IsRepetitionCheck();
-
+	bool History::IsRepetitionCheckOpp();
+	
 };
 
 #endif

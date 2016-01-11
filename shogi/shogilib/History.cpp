@@ -67,7 +67,6 @@ void History::Init(const Notation& notation)
 /*-----------------------------------------------------------------------------*/
 void History::Add(const Key& key, bool check)
 {
-#if 0
 	this->move_list_.push_back(key);
 
 	if (this->move_dic_.count(key) > 0)
@@ -79,7 +78,6 @@ void History::Add(const Key& key, bool check)
 	{
 		this->move_dic_[key] = HistoryItem(this->move_list_.size() - 1, check);	
 	}
-#endif
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -122,6 +120,42 @@ bool History::IsRepetitionCheck()
 		ret = true;
 
 		for (size_t i = this->move_dic_[key].No; i < this->move_list_.size(); i += 2)
+		{
+			key = this->move_list_[i];
+
+			if (!this->move_dic_[key].IsCheck)
+			{
+				ret = false;
+				break;
+			}
+		}
+	}
+
+	return ret;
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief 連続王手の千日手判定 相手側
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+bool History::IsRepetitionCheckOpp()
+{
+	bool ret = false;
+
+	if (this->move_list_.size() == 0)
+	{
+		return false;
+	}
+
+	auto key = this->move_list_.back();
+
+	if (this->move_dic_[key].Count >= RepCount && !this->move_dic_[key].IsCheck)
+	{
+		ret = true;
+
+		for (size_t i = this->move_dic_[key].No + 1; i < this->move_list_.size(); i += 2)
 		{
 			key = this->move_list_[i];
 

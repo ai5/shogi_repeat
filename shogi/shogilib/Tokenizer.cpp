@@ -72,7 +72,7 @@ std::string Tokenizer::GetToken(const std::string& str)
 	std::vector<Token>::iterator ite = this->current_;
 	while (ite != this->tokens_.end())
 	{
-		if (this->input_string_.compare(ite->pos, ite->length, str))
+		if (this->input_string_.compare(ite->pos, str.length(), str) == 0)
 		{
 			break;
 		}

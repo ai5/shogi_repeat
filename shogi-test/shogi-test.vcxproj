@@ -32,6 +32,7 @@
     <ClCompile Include="EnginePlayerTest.cpp" />
     <ClCompile Include="FileTest.cpp" />
     <ClCompile Include="HandicapTest.cpp" />
+    <ClCompile Include="HistoryTest.cpp" />
     <ClCompile Include="KeyTest.cpp" />
     <ClCompile Include="KeyValueTest.cpp" />
     <ClCompile Include="KifTest.cpp" />
