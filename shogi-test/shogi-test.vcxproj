@@ -65,6 +65,9 @@
   <ItemGroup>
     <ClInclude Include="TestCommon.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ErrorEngine.exe" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5B43CFA3-3BF7-4D02-BC1A-BC18377F6072}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -186,6 +189,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ErrorEngine.exe $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
