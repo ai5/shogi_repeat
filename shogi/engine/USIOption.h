@@ -28,9 +28,8 @@ public:
 
 public:
 	USIOption(const std::string& name, USIOptionType type)
+		: Name(name), Type(type)
 	{
-		this->Name = name;
-		this->Type = type;
 	}
 
 	virtual ~USIOption();

@@ -11,9 +11,9 @@ class Move;
 
 class Key
 {
-	uint64_t boardkey_;
-	uint32_t hand_b_;
-	uint32_t hand_w_;
+	uint64_t boardkey_ = 0;
+	uint32_t hand_b_ = 0;
+	uint32_t hand_w_ = 0;
 public:
 	static const uint64_t InitialBoardKey = 4038204047121054572;
 	static const uint32_t TurnBit = 1;

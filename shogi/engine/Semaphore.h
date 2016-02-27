@@ -18,21 +18,18 @@ protected:
 
 public:
 	Semaphore()
+		: count_(0), max_(INT_MAX)
 	{
-		this->count_ = 0;
-		this->max_ = INT_MAX;
 	}
 
 	Semaphore(int initial)
+		: count_(initial), max_(INT_MAX)
 	{
-		this->count_ = initial;
-		this->max_ = INT_MAX;
 	}
 
 	Semaphore(int initial, int max)
+		: count_(initial), max_(max)
 	{
-		this->count_ = initial;
-		this->max_ = INT_MAX;
 	}
 
 	virtual ~Semaphore()

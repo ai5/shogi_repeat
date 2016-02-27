@@ -6,27 +6,22 @@
 
 Notation::Notation()
 {
-	this->Init();
+	this->moves_.emplace_back(); // 初期局面を入れておく
+	this->move_current_ = &this->moves_[0];
 }
 
-Notation::Notation(const Notation& notation) 
+Notation::Notation(const Notation& notation)
+	: position_(notation.position_)
+	, initial_position_(notation.initial_position_)
+	, black_name_(notation.black_name_)
+	, white_name_(notation.white_name_)
+	, handicap_(notation.handicap_)
+	, output_initial_position_(notation.output_initial_position_)
+	, kifu_infos_(notation.kifu_infos_)
+	, result_(notation.result_)
+	, winner_(notation.winner_)
+	, moves_(notation.moves_)
 {
-	this->position_ = notation.position_;
-	this->initial_position_ = notation.initial_position_;
-	this->black_name_ = notation.black_name_;
-	this->white_name_ = notation.white_name_;
-	this->handicap_ = notation.handicap_;
-	this->output_initial_position_ = this->output_initial_position_;
-	this->kifu_infos_ = notation.kifu_infos_;
-
-	this->result_ = notation.result_;
-	this->winner_ = notation.winner_;
-
-	this->moves_ = notation.moves_;
-
-	this->current_moves_ = &this->moves_;
-	this->move_current_ = &this->moves_[0];
-
 	this->Jump(notation.number());
 }
 

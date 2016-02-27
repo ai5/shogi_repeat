@@ -49,43 +49,30 @@ using KifComments = std::list<std::wstring>;
 class Move
 {
 protected:
-	Color side_; // 手番
-	Square to_;
-	Square from_;
-	MoveType move_type_;
-	Piece piece_;
-	Piece capture_piece_;
+	Color side_ = NO_COLOR; // 手番
+	Square to_ = SQ_NONE;
+	Square from_ = SQ_NONE;
+	MoveType move_type_ = NO_MOVE;
+	Piece piece_ = NO_PIECE;
+	Piece capture_piece_ = NO_PIECE;
 
 public:
-	Move() {
-		this->Init();
+	Move() 
+	{
 	}
 
-	Move(MoveType move_type) {
-		this->Init();
-
-		this->move_type_ = move_type;
+	Move(MoveType move_type) : move_type_(move_type)
+	{
 	}
 
 	Move(MoveType move_type, Square from, Square to, Piece piece, Piece capture_piece)
+		: move_type_(move_type), to_(to), from_(from), piece_(piece), capture_piece_(capture_piece), side_(color_of(piece))
 	{
-		this->move_type_ = move_type;
-		this->to_ = to;
-		this->from_ = from;
-		this->move_type_ = move_type;
-		this->piece_ = piece;
-		this->capture_piece_ = capture_piece;
-		this->side_ = color_of(piece);
 	}
 
 	Move(const Move& move)
+		: move_type_(move.move_type_), to_(move.to_), from_(move.from_), piece_(move.piece_), capture_piece_(move.capture_piece_), side_(move.side_)
 	{
-		this->to_ = move.to_;
-		this->from_ = move.from_;
-		this->move_type_ = move.move_type_;
-		this->piece_ = move.piece_;
-		this->capture_piece_ = move.capture_piece_;
-		this->side_ = move.side_;
 	}
 
 

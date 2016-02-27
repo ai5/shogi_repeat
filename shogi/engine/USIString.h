@@ -23,12 +23,11 @@ public:
 class USITokenizer
 {
 	const std::string& input_string_;
-	int pos_;
+	int pos_ = 0;
 
 public:
 	USITokenizer(const std::string& str) : input_string_(str)
 	{
-		this->pos_ = 0;
 	}
 
 	~USITokenizer() {};

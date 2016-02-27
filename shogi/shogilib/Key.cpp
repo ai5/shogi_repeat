@@ -427,33 +427,21 @@ const uint32_t Key::handTable[PIECE_TYPE_NB] =
 /*---------------------------------------------------------------*/
 Key::Key()
 {
-	this->boardkey_ = 0;
-	this->hand_b_ = 0;
-	this->hand_w_ = 0;
 }
 
 Key::Key(const Key& key)
+	: boardkey_(key.boardkey_), hand_b_(key.hand_b_), hand_w_(key.hand_w_)
 {
-	this->boardkey_ = key.boardkey_;
-	this->hand_b_ = key.hand_b_;
-	this->hand_w_ = key.hand_w_;
 }
 
 Key::Key(Color side, const Board& board, const Hand& hand)
 {
-	this->boardkey_ = 0;
-	this->hand_b_ = 0;
-	this->hand_w_ = 0;
-
 	this->Init(side, board, hand);
 }
 
 Key::Key(uint64_t boardkey, uint32_t hand_b, uint32_t hand_w)
+	: boardkey_(boardkey), hand_b_(hand_b), hand_w_(hand_w)
 {
-	this->boardkey_ = boardkey;
-	this->hand_b_ = hand_b;
-	this->hand_w_ = hand_w;
-
 }
 
 /*---------------------------------------------------------------*/

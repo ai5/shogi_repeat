@@ -28,18 +28,21 @@ class Timer
 
 
 public:
-	Timer() {
+	Timer()
+	{
 		this->th_ = std::thread(&Timer::timer_thread, this);
 	}
 
 	Timer(const Timer&) = delete;  // copyはできない
 	Timer& operator=(const Timer&) = delete; // copyは出来ない
 
-	~Timer() {
+	~Timer()
+	{
 		this->Close();
 	}
 	
-	void SetTimeOut(std::function<void(typeName)> func, typeName param) {
+	void SetTimeOut(std::function<void(typeName)> func, typeName param)
+	{
 		this->timeout_func_ = func; 
 		this->timeout_param = param;
 	}

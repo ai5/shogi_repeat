@@ -16,8 +16,8 @@ private:
 	Position position_;
 	Position initial_position_;
 
-	std::wstring black_name_;
-	std::wstring white_name_;
+	std::wstring black_name_ = L"";
+	std::wstring white_name_ = L"";
 
 	Handicap handicap_ = Handicap::HIRATE;
 	bool output_initial_position_ = false;
@@ -26,7 +26,7 @@ private:
 
 	Moves moves_;
 
-	Moves* current_moves_;
+	Moves* current_moves_ = &moves_;
 	MoveKif* move_current_;
 
 	MoveType result_ = NO_MOVE;

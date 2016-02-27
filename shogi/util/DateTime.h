@@ -11,9 +11,11 @@ class DateTime : public std::chrono::time_point<std::chrono::system_clock>
 {
 public:
 	DateTime() {}
+	
 	DateTime(const std::chrono::time_point<std::chrono::system_clock>& time) : std::chrono::time_point<std::chrono::system_clock>(time)
 	{
 	}
+
 	DateTime(int year, int month, int day, int hour, int minute, int second)
 	{
 		tm date;

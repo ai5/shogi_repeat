@@ -17,13 +17,10 @@
 
 
 EnginePlayer::EnginePlayer(Color color, EnginePlayerListener* lisnter)
+	: color_(color)
+	, lisnter_(lisnter)
 {
 	assert(lisnter);
-
-	this->color_ = color;
-	this->lisnter_ = lisnter;
-	this->transactionCounter_ = 0;
-	this->state_ = EnginePlayerState::NONE;
 }
 
 

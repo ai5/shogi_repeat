@@ -15,15 +15,9 @@
  */
 /*-----------------------------------------------------------------------------*/
 PvInfo::PvInfo(int num, int timeMs, int score, int mate, long long nodes, int depth, int seldepth, const Moves& moves)
+	: Num(num), TimeMs(timeMs), Score(score), Mate(mate), Nodes(nodes), Depth(depth), SelDepth(seldepth)
+	, PvMoves(std::make_unique<Moves>(moves))
 {
-	this->Num = num;
-	this->TimeMs = timeMs;
-	this->Score = score;
-	this->Mate = mate;
-	this->Nodes = nodes;
-	this->Depth = depth;
-	this->SelDepth = seldepth;
-	this->PvMoves = std::make_unique<Moves>(moves);
 }
 
 /*-----------------------------------------------------------------------------*/

@@ -7,11 +7,10 @@ Tokenizer::Tokenizer()
 }
 
 Tokenizer::Tokenizer(const std::string& str, const std::string& delim)
+	: input_string_(str)
+	, delim_(delim)
 {
-	this->input_string_ = str;
-	this->delim_ = delim;
 	this->Split();
-
 	this->current_ = this->tokens_.begin();
 }
 

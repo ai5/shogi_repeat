@@ -10,15 +10,13 @@ class MovesEnumerator
 
 	const Moves& moves_;
 
-	const Moves* current_moves_;
-	int number_;
+	const Moves* current_moves_ = &moves_;
+	int number_ = 0;
 
 public:
 
 	MovesEnumerator(const Moves& moves) : moves_(moves)
 	{
-		this->current_moves_ = &this->moves_;
-		this->number_ = 0;
 	}
 
 	~MovesEnumerator()
@@ -39,16 +37,13 @@ class MoveBranchEnumerator
 	const Moves* moves_;
 	const MoveKif* move_;
 
-	int no_;
+	int no_ = -1;
 
 public:
 
 	MoveBranchEnumerator(const Moves* moves, const MoveKif* move)
+		: moves_(moves), move_(move)
 	{
-		this->moves_ = moves;
-		this->move_ = move;
-
-		this->no_ = -1;
 	}
 
 	~MoveBranchEnumerator()

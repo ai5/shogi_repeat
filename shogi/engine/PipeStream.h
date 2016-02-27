@@ -12,8 +12,8 @@ class OPipeStream
 {
 	std::mutex mtx_;
 
-	HANDLE h_read_;
-	HANDLE h_write_;
+	HANDLE h_read_ = 0;
+	HANDLE h_write_ = 0;
 
 public:
 	OPipeStream();

@@ -8,7 +8,8 @@
 
 class Position;
 
-struct MoveCoord {
+struct MoveCoord 
+{
 	int file; // オフセット
 	int rank; // オフセット
 };

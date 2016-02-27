@@ -11,8 +11,6 @@
 /*-----------------------------------------------------------------------------*/
 OPipeStream::OPipeStream()
 {
-	this->h_read_ = 0;
-	this->h_write_ = 0;
 }
 
 OPipeStream::~OPipeStream()

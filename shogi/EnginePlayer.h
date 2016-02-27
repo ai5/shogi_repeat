@@ -73,33 +73,26 @@ struct GoRequest
 	int Depth;     // 深さ
 	int Time;      // 時間ms
 
-	std::string Sfen;
-	std::string Moves;
+	std::string Sfen = "";
+	std::string Moves = "";
 	int transactionNo;
 	Position Pos;
 
-	GoRequest()
+	GoRequest() : ReqType(Type::TIME_INFINITY)
 	{
-		this->ReqType = Type::TIME_INFINITY;
-		this->Sfen = "";
-		this->Moves = "";
 	}
 
 	GoRequest(int btime, int wtime, int byoyomi)
+		: ReqType(Type::NORMAL)
+		, Btime(btime)
+		, Wtime(wtime)
+		, Byoyomi(byoyomi)
 	{
-		this->ReqType = Type::NORMAL;
-		this->Btime = btime;
-		this->Wtime = wtime;
-		this->Byoyomi = byoyomi;
-		this->Sfen = "";
-		this->Moves = "";
 	}
 
 	GoRequest(GoRequest::Type type)
+		: ReqType(type)
 	{
-		this->ReqType = type;
-		this->Sfen = "";
-		this->Moves = "";
 	}
 };
 
@@ -111,12 +104,12 @@ class EnginePlayer
 	std::unique_ptr<std::thread> th_;
 	std::mutex mtx_;
 
-	EnginePlayerState state_;
+	EnginePlayerState state_ = EnginePlayerState::NONE;
 
 	bool cancel_ = false; // キャンセルフラグ
 	EnginePlayerListener* lisnter_;
 	
-	int transactionCounter_;
+	int transactionCounter_ = 0;
 	int transactionNo_;
 	Position pos_;
 	std::map<int, PvInfo> pv_info_;
