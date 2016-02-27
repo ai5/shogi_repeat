@@ -191,6 +191,74 @@ public:
 
 		return ret;
 	}
+
+
+	/*-----------------------------------------------------------------------------*/
+	/**
+	* @brief 時間のパース
+	* @param str 文字列
+	* @return 時間をミリセカンドに直したものを返す
+	* @note "01:15"なら 75000
+	*       "01:02:03"なら 1*60*60+2*60+3を返す
+	*/
+	/*-----------------------------------------------------------------------------*/
+	template<typename T1>
+	static int ParseTimeMs(const T1& str)
+	{
+		int time = 0;
+		int sec = 0;
+		int ms = 0;
+		int keta = 0;
+
+		for (auto ch : str)
+		{
+			if (ch >= '0' && ch <= '9')
+			{
+				if (keta != 0)
+				{
+					ms += (ch - '0') * keta;
+					keta /= 10;
+					if (keta == 0)
+					{
+						break;
+					}
+				}
+				else
+				{
+					sec = sec * 10;
+					sec += ch - '0';
+				}
+			}
+			else if (ch == ':')
+			{
+				if (keta == 0)
+				{
+					time = time * 60 + sec * 60;
+					sec = 0;
+				}
+				else
+				{
+					break;
+				}
+			}
+			else if (ch == '.')
+			{
+				if (keta != 0)
+				{
+					break;
+				}
+
+				keta = 100;
+			}
+			else
+			{
+				// 他の文字は無視
+			}
+		}
+
+		return (time + sec) * 1000 + ms;
+	}
+
 };
 
 

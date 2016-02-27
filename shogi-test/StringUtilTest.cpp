@@ -82,4 +82,14 @@ TEST(StringUtilTest, testParseTime)
 	ASSERT_EQ(StringUtil::ParseTime(L" 21:05 "), 21*60+5);
 	ASSERT_EQ(StringUtil::ParseTime(L"12:34:56"), 12*3600+34*60+56);
 
+
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1:05"), 65000);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1:05.1"), 65100);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1:05.12"), 65120);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1:05.123"), 65123);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1:05.1234"), 65123);
+
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"1.123"), 1123);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"0.1"), 100);
+	ASSERT_EQ(StringUtil::ParseTimeMs(L"0.12"), 120);
 }

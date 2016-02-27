@@ -25,8 +25,8 @@ struct PlayerSetting
 	std::string SettingFileName;
 
 	// 時間設定
-	int time  = 0;    // 持ち時間(秒
-	int byoyomi = 1; // 秒読み(秒
+	int time  = 0;    // 持ち時間(ms
+	int byoyomi = 1000; // 秒読み(ms
 	
 };
 

@@ -74,13 +74,13 @@ int main(int argc, char* argv[])
 /*-----------------------------------------------------------------------------*/
 static void usage(const char* name)
 {
-	std::cout << name << " 先手エンジン  後手エンジン [オプション]" << std::endl;
+	std::cout << name << " <先手エンジン>  <後手エンジン> [オプション]" << std::endl;
 	std::cout << "オプション:" << std::endl;
 
-	std::cout << "  -B 設定ファイル     先手設定フィアル" << std::endl;
-	std::cout << "  -W 設定ファイル     後手設定フィアル" << std::endl;
+	std::cout << "  -B <設定ファイル>   先手設定フィアル" << std::endl;
+	std::cout << "  -W <設定ファイル>   後手設定フィアル" << std::endl;
 
-	std::cout << "  -T 持ち時間(秒) [秒読み(秒)]  持ち時間設定" << std::endl;
+	std::cout << "  -T <持ち時間(秒)> [秒読み(秒)]  持ち時間設定" << std::endl;
 
 	std::cout << "  -G <num>            対局数" << std::endl;
 	std::cout << "  -M <num>            最大手数" << std::endl;
@@ -93,7 +93,7 @@ static void usage(const char* name)
 	std::cout << "  -L-                 ログ出力をOFFにする" << std::endl;
 	std::cout << "  -N [棋譜保存パス]   棋譜出力ON、棋譜を保存するパスを設定する" << std::endl;
 	std::cout << "  -N-                 棋譜出力OFFにする" << std::endl;
-	std::cout << "  -K 棋譜 [手数]      開始局面を指定した棋譜ファイルの手数からにする" << std::endl;
+	std::cout << "  -K <棋譜> [手数]    開始局面を指定した棋譜ファイルの手数からにする" << std::endl;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -134,11 +134,10 @@ static void parse_args(int argc, char* argv[], GameParam& param)
 				{
 					int num;
 					
-					if (StringUtil::ParseNum<std::string>(argv[i + 1], num))
-					{
-						param.Black.time = num;
-						param.White.time = num;
-					}
+					num = StringUtil::ParseTimeMs<std::string>(argv[i + 1]);
+
+					param.Black.time = num;
+					param.White.time = num;
 
 					i++;
 				}
@@ -147,11 +146,10 @@ static void parse_args(int argc, char* argv[], GameParam& param)
 				{
 					int byoyomi;
 
-					if (StringUtil::ParseNum<std::string>(argv[i + 1], byoyomi))
-					{
-						param.Black.byoyomi = byoyomi;
-						param.White.byoyomi = byoyomi;
-					}
+					byoyomi = StringUtil::ParseTimeMs<std::string>(argv[i + 1]);
+
+					param.Black.byoyomi = byoyomi;
+					param.White.byoyomi = byoyomi;
 
 					i++;
 				}

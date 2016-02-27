@@ -49,7 +49,7 @@ public:
 	
 	GameRemainTime GetRemainTime(Color color) const { return this->GetRemainTime(color, (color == BLACK) ? this->BlackTime : this->WhiteTime); }
 
-	void SetTime(Color color, int time_min, int byoyomi_sec);
+	void SetTime(Color color, int time_ms, int byoyomi_ms);
 	void SetRestartTime(int blackTimeSec, int whiteTimeSec);
 
 	void Start(Color turn);

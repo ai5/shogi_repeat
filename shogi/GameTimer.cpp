@@ -34,22 +34,22 @@ GameTimer::~GameTimer()
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
-void GameTimer::SetTime(Color color, int time_min, int byoyomi_sec)
+void GameTimer::SetTime(Color color, int time_ms, int byoyomi_ms)
 {
 	if (color == BLACK)
 	{
-		this->BlackTime.Time = time_min * 60 * 1000;
+		this->BlackTime.Time = time_ms;
 		this->BlackTime.RemainTime = this->BlackTime.Time;
-		this->BlackTime.Byoyomi = byoyomi_sec * 1000;
+		this->BlackTime.Byoyomi = byoyomi_ms;
 		this->BlackTime.ElapsedTime = 0;
 
 		this->WhiteTime = this->BlackTime; // 後手時間も同じ値を設定する
 	}
 	else
 	{
-		this->WhiteTime.Time = time_min * 60 * 1000;
+		this->WhiteTime.Time = time_ms;
 		this->WhiteTime.RemainTime = this->BlackTime.Time;
-		this->WhiteTime.Byoyomi = byoyomi_sec * 1000;
+		this->WhiteTime.Byoyomi = byoyomi_ms;
 		this->WhiteTime.ElapsedTime = 0;
 	}
 }
