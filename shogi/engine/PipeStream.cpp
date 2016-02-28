@@ -4,6 +4,10 @@
 
 #define ERROR_LOG(msg, x) std::cerr << __FILE__ << " : " << __LINE__ << " : " << (msg) << (x) << std::endl
 
+#ifndef _WIN32
+#define CloseHandle(handle) close(handle)
+#endif
+
 /*-----------------------------------------------------------------------------*/
 /**
  * @brief コンストラクタ
@@ -28,8 +32,9 @@ bool OPipeStream::Open()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	HANDLE writeTemp;
 	bool ret = true;
+#ifdef _WIN32
+	HANDLE writeTemp;
 
 	SECURITY_ATTRIBUTES sa;
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -53,6 +58,21 @@ bool OPipeStream::Open()
 	}
 
 	return ret;
+#else
+	int pip[2];
+
+	if (pipe(pip) != 0)
+	{
+		ERROR_LOG("CreatePipe error = ", errno);
+		ret = false;
+	}
+	else
+	{
+		this->h_read_ = pip[0];
+		this->h_write_ = pip[1];
+	}
+
+#endif
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -65,16 +85,16 @@ void OPipeStream::Close()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	if (this->h_read_ != 0)
+	if (this->h_read_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_read_);
-		this->h_read_ = 0;
+		this->h_read_ = INVALID_HANDLE_VALUE;
 	}
 
-	if (this->h_write_ != 0)
+	if (this->h_write_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_write_);
-		this->h_write_ = 0;
+		this->h_write_ = INVALID_HANDLE_VALUE;
 	}
 }
 
@@ -88,10 +108,10 @@ void OPipeStream::CloseRead()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	if (this->h_read_ != 0)
+	if (this->h_read_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_read_);
-		this->h_read_ = 0;
+		this->h_read_ = INVALID_HANDLE_VALUE;
 	}
 }
 
@@ -105,9 +125,10 @@ int OPipeStream::Write(const std::string str)
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
+#ifdef _WIN32
 	DWORD len = -1;
 
-	if (this->h_write_)
+	if (this->h_write_ != INVALID_HANDLE_VALUE)
 	{
 
 		if (!WriteFile(this->h_write_, &str[0], str.length(), &len, NULL))
@@ -115,7 +136,15 @@ int OPipeStream::Write(const std::string str)
 			ERROR_LOG("WriteFile error = ", GetLastError());
 		}
 	}
+#else
+	size_t len = -1;
 
+	if (this->h_write_ != INVALID_HANDLE_VALUE)
+	{
+		len = write(this->h_write_, &str[0], str.length());
+	}
+
+#endif
 	return len;
 }
 
@@ -127,11 +156,6 @@ int OPipeStream::Write(const std::string str)
 /*-----------------------------------------------------------------------------*/
 IPipeStream::IPipeStream()
 {
-	this->h_read_ = 0;
-	this->h_write_ = 0;
-	
-	this->buffer_pos_ = 0;
-	this->buffer_len_ = 0;
 }
 
 IPipeStream::~IPipeStream()
@@ -150,6 +174,8 @@ bool IPipeStream::Open()
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
 	bool ret = true;
+
+#ifdef _WIN32
 	HANDLE readTemp;
 
 	SECURITY_ATTRIBUTES sa;
@@ -172,7 +198,20 @@ bool IPipeStream::Open()
 		ret = false;
 		ERROR_LOG("DuplicateHandle error = ", GetLastError());
 	}
+#else
+	int pip[2];
 
+	if (pipe(pip) != 0)
+	{
+		ERROR_LOG("CreatePipe error = ", errno);
+		ret = false;
+	}
+	else
+	{
+		this->h_read_ = pip[0];
+		this->h_write_ = pip[1];
+	}
+#endif
 	return ret;
 }
 
@@ -186,16 +225,16 @@ void IPipeStream::Close()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	if (this->h_read_ != 0)
+	if (this->h_read_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_read_);
-		this->h_read_ = 0;
+		this->h_read_ = INVALID_HANDLE_VALUE;
 	}
 
-	if (this->h_write_ != 0)
+	if (this->h_write_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_write_);
-		this->h_write_ = 0;
+		this->h_write_ = INVALID_HANDLE_VALUE;
 	}
 
 	this->strbuf_ = "";
@@ -211,10 +250,10 @@ void IPipeStream::CloseWrite()
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	if (this->h_write_ != 0)
+	if (this->h_write_ != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(this->h_write_);
-		this->h_write_ = 0;
+		this->h_write_ = INVALID_HANDLE_VALUE;
 	}
 }
 
@@ -228,7 +267,7 @@ bool IPipeStream::ReadLine(std::string& str)
 {
 	std::unique_lock<std::mutex> lock(this->mtx_); // lock_guardを使うとこのスコープ内がロックされる
 
-	if (!this->h_read_)
+	if (this->h_read_ == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
@@ -238,7 +277,12 @@ bool IPipeStream::ReadLine(std::string& str)
 		return false;
 	}
 
+#ifdef _WIN32
 	DWORD len;
+#else
+	size_t len;
+#endif
+
 	char* buf = this->buffer_;
 	bool ret = true;
 
@@ -246,7 +290,7 @@ bool IPipeStream::ReadLine(std::string& str)
 	{
 		if (this->buffer_pos_ < this->buffer_len_)
 		{
-			for (DWORD i = this->buffer_pos_; i < this->buffer_len_; i++)
+			for (size_t i = this->buffer_pos_; i < this->buffer_len_; i++)
 			{
 				char ch = buf[i];
 				if (ch == '\r')
@@ -279,14 +323,21 @@ bool IPipeStream::ReadLine(std::string& str)
 			this->buffer_pos_ = 0;
 		}
 
-		if (!ReadFile(this->h_read_, this->buffer_, sizeof(this->buffer_) - 1, &len, NULL) || len == 0)
+#ifdef _WIN32
+		BOOL err = ReadFile(this->h_read_, this->buffer_, sizeof(this->buffer_) - 1, &len, NULL);
+#else
+		bool err = false;
+		len = read(this->h_read_, this->buffer_, sizeof(this->buffer_) - 1);
+#endif
+		if (!err || len == 0)
 		{
+#ifdef _WIN32
 			if (ERROR_BROKEN_PIPE != GetLastError())
 			{
 				// 子プロセス側でパイプが閉じられた（大体においてプロセス終了時）以外のエラーを表示
 				ERROR_LOG("ReadFile error = ", GetLastError());
 			}
-
+#endif
 			this->eof_flag = true; // 読み出し終了
 
 			if (this->strbuf_ == "")

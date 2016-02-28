@@ -3,6 +3,12 @@
 #ifndef SHOGI_PROCESS_H_
 #define SHOGI_PROCESS_H_
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <functional>
 #include <memory>
 #include <mutex>
@@ -24,7 +30,7 @@ struct ProcessStartInfo {
 class Process
 {
 private:
-	HANDLE hChildProcess = 0;
+	HANDLE hChildProcess = INVALID_HANDLE_VALUE;
 	std::mutex mtx_;
 	std::unique_ptr<std::thread> exit_thread_;
 

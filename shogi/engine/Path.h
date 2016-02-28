@@ -11,6 +11,7 @@ public:
 	static std::string FullPath(const std::string& filename);
 	static std::string FolderPath(const std::string& filepath);
 
+	static std::string FileName(const std::string& filename);
 };
 
 #endif

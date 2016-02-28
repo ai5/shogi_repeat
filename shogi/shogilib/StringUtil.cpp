@@ -1,7 +1,11 @@
 ﻿
 #include "StringUtil.h"
 
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <iconv.h>
+#endif
 
 #include <cstdio>
 #include <cstdarg>
@@ -11,6 +15,9 @@
 #include <fstream>
 #include <sstream>
 
+#ifndef _WIN32
+static int _vscprintf (const char * format, va_list pargs);
+#endif
 
 /*-----------------------------------------------------------------------------*/
 /**
@@ -35,8 +42,11 @@ std::string StringUtil::Format(const char* fmt, ...)
 		{
 
 			std::unique_ptr<char[]> buf(new char[length + 1]);
-
+#ifdef _WIN32
 			int result = vsprintf_s(buf.get(), length + 1, fmt, arguments);
+#else
+			int result = vsprintf(buf.get(), fmt, arguments);
+#endif
 			if (result >= 0)
 			{
 				buffer = buf.get();
@@ -59,13 +69,36 @@ std::string StringUtil::Format(const char* fmt, ...)
 std::wstring StringUtil::ConvertWStringFromString(const std::string& str)
 {
 	if (str.empty()) return std::wstring();
+#ifdef _WIN32
 
 	int size = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, str.c_str(), (int)str.size(), NULL, 0);
 
 	std::wstring wstr(size, 0);
 
 	MultiByteToWideChar(CP_ACP, 0, &str[0], (int)str.size(), &wstr[0], size);
+#else
+	iconv_t ic = iconv_open("UTF-16", "SHIFT_JIS");
+	if (ic == iconv_t(-1))
+	{
+		// エラー
 
+		return std::wstring();
+	}
+
+	char* in_buf = (char*)str.data();
+	size_t in_size = str.size();
+	size_t out_size = in_size * 2;
+
+	std::wstring wstr(out_size, 0);
+
+	char* out_buf = (char*)wstr.data();
+
+	iconv(ic, &in_buf, &in_size, &out_buf, &out_size);
+
+	iconv_close(ic);
+
+
+#endif
 	return wstr;
 }
 
@@ -78,12 +111,35 @@ std::wstring StringUtil::ConvertWStringFromString(const std::string& str)
 std::string StringUtil::ConvertStringFromWString(const std::wstring& wstr)
 {
 	if (wstr.empty()) return std::string();
-
+#ifdef _WIN32
 	int size = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), (int)wstr.size(), NULL, 0, NULL, NULL);
 
 	std::string str(size, 0);
 
 	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), &str[0], size, NULL, NULL);
+
+#else
+	iconv_t ic = iconv_open("SHIFT_JIS", "UTF-16");
+	if (ic == iconv_t(-1))
+	{
+		// エラー
+		return std::string();
+	}
+
+	char* in_buf = (char*)wstr.data();
+	size_t in_size = wstr.size();
+	size_t out_size = in_size;
+
+	std::string str(out_size, 0);
+
+	char* out_buf = (char*)str.data();
+
+	iconv(ic, &in_buf, &in_size, &out_buf, &out_size);
+
+	iconv_close(ic);
+
+
+#endif
 
 	return str;
 }
@@ -220,3 +276,14 @@ std::string StringUtil::Load(std::string filename)
 	return ret;
 }
 
+#ifndef _WIN32
+static int _vscprintf (const char * format, va_list pargs)
+{ 
+    int retval; 
+    va_list argcopy; 
+    va_copy(argcopy, pargs); 
+    retval = vsnprintf(NULL, 0, format, argcopy); 
+    va_end(argcopy); 
+    return retval; 
+}
+#endif

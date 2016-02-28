@@ -5,6 +5,14 @@ LDFLAGS  = -lpthread
 LIBS     =
 INCLUDE  = -Ishogi -Ishogi/util -Ishogi/engine -Ishogi/shogilib -Ishogi/shogilib/Notation
 
+ifndef debug
+debug = yes
+endif
+
+ifndef test
+test = no
+endif
+
 ifeq ($(debug),no)
 else
 	CFLAGS += -D_DEBUG
@@ -16,7 +24,7 @@ ifeq ($(OS),Windows_NT)
   EXE    = shogi-test.exe
   LDFLAGS += -static
 else
-  EXE = shogi-test
+  EXE = shogi-test.out
 endif
   TARGET = test/$(EXE)
 
@@ -27,7 +35,7 @@ ifeq ($(OS),Windows_NT)
   TARGET = shogi.exe
   LDFLAGS += -static
 else
-  TARGET = shogi
+  TARGET = shogi.out
 endif
 
 OBJDIR   = obj
@@ -46,15 +54,20 @@ ifeq ($(test), no)
 SOURCES += shogi/shogi.cpp
 else
 
-SOURCES += shogi-test/test.cpp shogi-test/EnginePlayerTest.cpp shogi-test/MessageQueueTest.cpp \
+SOURCES += shogi-test/Test.cpp shogi-test/EnginePlayerTest.cpp shogi-test/MessageQueueTest.cpp \
 			shogi-test/ProcessTest.cpp shogi-test/SemaphoreTest.cpp shogi-test/StringQueueTest.cpp shogi-test/USIEngineTest.cpp \
 			shogi-test/USIOptionTest.cpp shogi-test/USIStringTest.cpp \
 			shogi-test/ColorTest.cpp shogi-test/FileTest.cpp shogi-test/HandicapTest.cpp shogi-test/KeyTest.cpp shogi-test/MoveCheckTest.cpp \
 			shogi-test/MoveTest.cpp shogi-test/NotationTest.cpp shogi-test/PieceTest.cpp shogi-test/PositionTest.cpp \
-			shogi-test/RankTest.cpp shogi-test/SfenTest.cpp shogi-test/Squaretest.cpp shogi-test/StringUtilTest.cpp \
+			shogi-test/RankTest.cpp shogi-test/SfenTest.cpp shogi-test/SquareTest.cpp shogi-test/StringUtilTest.cpp \
 			shogi-test/DateTimeTest.cpp shogi-test/KeyValueTest.cpp shogi-test/TimerTest.cpp
 
+ifeq ($(OS),Windows_NT)
 LIBS	+=  external/googletest/lib/gtest.a external/googletest/lib/gtest_main.a
+else
+LIBS	+=  external/googletest/lib/libgtest.a external/googletest/lib/libgtest_main.a
+endif
+
 INCLUDE  += -Iexternal/googletest/include
 endif
 
