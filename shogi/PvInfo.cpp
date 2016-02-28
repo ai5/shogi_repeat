@@ -26,14 +26,14 @@ PvInfo::PvInfo(int num, int timeMs, int score, int mate, long long nodes, int de
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
-std::string PvInfo::ToString() const
+std::wstring PvInfo::ToString() const
 {
-	std::stringstream ss;
+	std::wstringstream ss;
 
 	// multi pv
 	if (this->Num != 0)
 	{
-		ss << "候補" << this->Num;
+		ss << L"候補" << this->Num;
 	}
 
 	// 時間
@@ -42,42 +42,42 @@ std::string PvInfo::ToString() const
 		int sec = (this->TimeMs - (min * 60 * 1000)) / 1000;
 		int msec = (this->TimeMs - (min * 60 * 1000)) % 1000;
 
-		ss << StringUtil::Format(" 時間 %02d:%02d.%d", min, sec, msec / 100);
+		ss << StringUtil::Format(L" 時間 %02d:%02d.%d", min, sec, msec / 100);
 	}
 
 	// 深さ
 	{
-		ss << " 深さ " << this->Depth << "/" << this->SelDepth;
+		ss << L" 深さ " << this->Depth << L"/" << this->SelDepth;
 	}
 
 	// ノード数
 	{
-		ss << " ノード数 " << this->Nodes;
+		ss << L" ノード数 " << this->Nodes;
 	}
 
 	if (this->Mate == MateNone)
 	{
 		int eval = this->Score;
 
-		ss << " 評価値 " << this->Score;
+		ss << L" 評価値 " << this->Score;
 
 	}
 	else
 	{
-		ss << " 評価値 " << ((this->Mate < 0) ? "-詰" : "+詰");
+		ss << L" 評価値 " << ((this->Mate < 0) ? L"-詰" : L"+詰");
 		if (this->Score != 0)
 		{
-			ss << " " << this->Score;
+			ss << L" " << this->Score;
 		}
 	}
 
 	// pv;
 	if (this->PvMoves->size() != 0)
 	{
-		ss << " 読み筋";
+		ss << L" 読み筋";
 		for (auto& move : *this->PvMoves)
 		{
-			ss << " " << ((move.side() == BLACK) ? "▲" : "△") <<  Kif::ToMoveString(move);
+			ss << L" " << ((move.side() == BLACK) ? L"▲" : L"△") <<  Kif::ToMoveString(move);
 		}
 	}
 

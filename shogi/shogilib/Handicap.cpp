@@ -53,6 +53,11 @@ const std::string& HandicapExtention::ToString(Handicap handicap)
 	return HandicapString[handicap];
 }
 
+const std::wstring& HandicapExtention::ToWString(Handicap handicap)
+{
+	return HandicapWString[handicap];
+}
+
 /*-----------------------------------------------------------------------------*/
 /**
 * @brief 手合割文字列からハンディキャップを取得

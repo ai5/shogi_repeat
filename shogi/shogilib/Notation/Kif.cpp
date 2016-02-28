@@ -16,29 +16,34 @@
 
 
 /*-----------------------------------------------------------------------------*/
+static void Write(std::ostream& wr, const std::wstring& str);
+static void Write(std::ostream& wr, const wchar_t* str);
+static void WriteLine(std::ostream& wr, const std::wstring& str);
+static void WriteLine(std::ostream& wr, const wchar_t* str);
 
-const char* Kif::ArabiaNumber[] = { "０", "１", "２", "３", "４", "５", "６", "７", "８", "９" };
-const char* Kif::KanNumber[] = { "零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十" };
-const char* Kif::KanjiPiece[] = { "・", "歩", "香", "桂", "銀", "角", "飛", "金", "玉" };
-const char* Kif::KanjiPiecePromotion[] = { "・", "と", "杏", "圭", "全", "馬", "龍" };
 
-const char* Kif::KanjiPiecePromotionStr[] = { "・", "と", "成香", "成桂", "成銀", "馬", "龍" };
+const wchar_t* Kif::ArabiaNumber[] = { L"０", L"１", L"２", L"３", L"４", L"５", L"６", L"７", L"８", L"９" };
+const wchar_t* Kif::KanNumber[] = { L"零", L"一", L"二", L"三", L"四", L"五", L"六", L"七", L"八", L"九", L"十" };
+const wchar_t* Kif::KanjiPiece[] = { L"・", L"歩", L"香", L"桂", L"銀", L"角", L"飛", L"金", L"玉" };
+const wchar_t* Kif::KanjiPiecePromotion[] = { L"・", L"と", L"杏", L"圭", L"全", L"馬", L"龍" };
 
-const char* Kif::TurnStrSengo[] = { "先手", "後手" };
-const char* Kif::TurnStrSimokami[] = { "下手", "上手" };
+const wchar_t* Kif::KanjiPiecePromotionStr[] = { L"・", L"と", L"成香", L"成桂", L"成銀", L"馬", L"龍" };
 
-const std::map<MoveType, const char*> Kif::ResultTable =
+const wchar_t* Kif::TurnStrSengo[] = { L"先手", L"後手" };
+const wchar_t* Kif::TurnStrSimokami[] = { L"下手", L"上手" };
+
+const std::map<MoveType, const wchar_t*> Kif::ResultTable =
 {
-	{ MoveType::RESIGN ,     "投了"},
-	{ MoveType::STOP ,      "中断" },
-	{ MoveType::REPETITION, "千日手" },
-	{ MoveType::DRAW ,      "持将棋" },
-	{ MoveType::TIMEOUT ,   "切れ負け"},
-	{ MoveType::MATE ,      "詰み"},
-	{ MoveType::NO_MATE ,   "不詰"},
-	{ MoveType::LOSE_FOUL,  "反則負け"},
-	{ MoveType::WIN_FOUL,   "反則勝ち"},
-	{ MoveType::STOP,       "封じ手"  },
+	{ MoveType::RESIGN ,     L"投了"},
+	{ MoveType::STOP ,      L"中断" },
+	{ MoveType::REPETITION, L"千日手" },
+	{ MoveType::DRAW ,      L"持将棋" },
+	{ MoveType::TIMEOUT ,   L"切れ負け"},
+	{ MoveType::MATE ,      L"詰み"},
+	{ MoveType::NO_MATE ,   L"不詰"},
+	{ MoveType::LOSE_FOUL,  L"反則負け"},
+	{ MoveType::WIN_FOUL,   L"反則勝ち"},
+	{ MoveType::STOP,       L"封じ手"  },
 };
 
 const std::map<std::wstring, MoveType> Kif::ResultFromWStringTable =
@@ -248,6 +253,8 @@ void Kif::ReadNotation(Notation& notation, std::istream& sr)
 		std::getline(sr, line);
 		
 		std::wstring wstr = StringUtil::TrimStart(StringUtil::ConvertWStringFromString(line), L" 　");
+
+		wstr = StringUtil::Trim(wstr, L"\r\n"); // \rのみでおｋ？
 
 		if (line == "" || line[0] == '#')
 		{
@@ -640,14 +647,11 @@ void Kif::WriteNotation(const Notation& notation, std::ostream& wr)
 	{
 		turn_str_ = TurnStrSimokami;
 	}
-
+	
 	// 他の情報
 	for (auto& de : notation.kifu_infos())
 	{
-		std::string key = StringUtil::ConvertStringFromWString(de.first);
-		std::string value = StringUtil::ConvertStringFromWString(de.second);
-
-		wr << key << "：" << value << std::endl;
+		WriteLine(wr, de.first + L"：" + de.second);
 	}
 
 	if (notation.output_initial_position())
@@ -657,14 +661,14 @@ void Kif::WriteNotation(const Notation& notation, std::ostream& wr)
 	else
 	{
 		// 手合割の出力
-		wr << "手合割：" << HandicapExtention::ToString(notation.handicap()) << std::endl;
+		WriteLine(wr, L"手合割：" + HandicapExtention::ToWString(notation.handicap()));
 	}
 
 	// 先手：名前　の出力
-	wr << this->turn_str_[BLACK] << "：" << StringUtil::ConvertStringFromWString(notation.black_name()) << std::endl;
-	wr << this->turn_str_[WHITE] << "：" << StringUtil::ConvertStringFromWString(notation.white_name()) << std::endl;
+	WriteLine(wr, std::wstring(this->turn_str_[BLACK]) + L"：" + notation.black_name());
+	WriteLine(wr, std::wstring(this->turn_str_[WHITE]) + L"：" + notation.white_name());
 
-	wr << "手数----指手---------消費時間--" << std::endl;
+	WriteLine(wr, L"手数----指手---------消費時間--");
 
 	// 指し手出力
  	this->WriteMoveTree(notation.moves(), wr);
@@ -680,23 +684,23 @@ void Kif::WriteNotation(const Notation& notation, std::ostream& wr)
 /*-----------------------------------------------------------------------------*/
 void Kif::WritePosition(const Position& pos, Handicap handicap, std::ostream& wr)
 {
-	std::string hand_str = Kif::HandStrFromHand(pos.hand()[WHITE]);
+	std::wstring hand_str = Kif::HandStrFromHand(pos.hand()[WHITE]);
 
 	if (HandicapExtention::IsBlack(handicap))
 	{
-		wr << "後手の持駒：" << hand_str << std::endl;
+		WriteLine(wr, L"後手の持駒：" + hand_str);
 	}
 	else
 	{
-		wr << "上手の持駒：" << hand_str << std::endl;
+		WriteLine(wr, L"上手の持駒：" + hand_str );
 	}
 
-	wr << "  ９ ８ ７ ６ ５ ４ ３ ２ １" << std::endl;
-	wr << "+---------------------------+" << std::endl;
+	WriteLine(wr, L"  ９ ８ ７ ６ ５ ４ ３ ２ １");
+	WriteLine(wr, L"+---------------------------+");
 
 	for (Rank rank = RANK_1; rank < RANK_NB; ++rank)
 	{
-		wr << "|";
+		Write(wr, L"|");
 
 		for (File file = FILE_9; file < FILE_NB; ++file)
 		{
@@ -704,42 +708,42 @@ void Kif::WritePosition(const Position& pos, Handicap handicap, std::ostream& wr
 
 			if (color_of(piece) == Color::WHITE)
 			{
-				wr << "v";
+				Write(wr, L"v");
 			}
 			else
 			{
-				wr << " ";
+				Write(wr, L" ");
 			}
 
 			// 駒書き出し
-			wr << Kif::PieceCharFromPiece(piece);
+			Write(wr, Kif::PieceCharFromPiece(piece));
 		}
 
-		wr << "|" << Kif::KanNumber[rank + 1] << std::endl;
+		WriteLine(wr, std::wstring(L"|") + Kif::KanNumber[rank + 1]);
 	}
 
-	wr << "+---------------------------+" << std::endl;
+	WriteLine(wr, L"+---------------------------+");
 
 	hand_str = Kif::HandStrFromHand(pos.hand()[BLACK]);
 
 	if (HandicapExtention::IsBlack(handicap))
 	{
-		wr << "先手の持駒：" << hand_str << std::endl;
+		WriteLine(wr, L"先手の持駒：" + hand_str);
 	}
 	else
 	{
-		wr << "下手の持駒：{0}" << hand_str << std::endl;
+		WriteLine(wr, L"下手の持駒：{0}" + hand_str );
 	}
 
 	if (pos.side_to_move() == WHITE)
 	{
 		if (HandicapExtention::IsBlack(handicap))
 		{
-			wr << "後手番" << std::endl;
+			WriteLine(wr, L"後手番");
 		}
 		else
 		{
-			wr << "下手番" << std::endl;
+			WriteLine(wr, L"下手番");
 		}
 	}
 }
@@ -761,7 +765,7 @@ void Kif::WriteMoveTree(const Moves& moves, std::ostream& wr)
 	{
 		for (auto& mvs : ite->branches())
 		{
-			wr << "変化：" << ite->number() << "手" << std::endl;
+			WriteLine(wr, StringUtil::Format(L"変化：%d手", ite->number()));
 			Kif::WriteMoveTree(*mvs, wr);
 		}
 	}
@@ -783,17 +787,23 @@ void Kif::WriteMoves(const Moves& moves, std::ostream& wr)
 	{
 		if (move.number() != 0)
 		{
-			wr << std::right << std::setw(4) << move.number() << " "
-				<< std::left << std::setw(13) << Kif::ToMoveString(move)
-				<< " (" << Kif::ToMoveTimeString(move) << ")" << std::endl;
-
+			std::wstring str = Kif::ToMoveString(move);
+			int width = StringUtil::WStringWidth(str);
+			for (; width < 13; width++)
+			{
+				str += L' ';
+			}
+			
+#ifdef _WIN32
+			WriteLine(wr, StringUtil::Format(L"%4d %s (%s)", move.number(), str.c_str(), Kif::ToMoveTimeString(move).c_str()));
+#else
+			WriteLine(wr, StringUtil::Format(L"%4d %ls (%ls)", move.number(), str.c_str(), Kif::ToMoveTimeString(move).c_str()));
+#endif
 			// wr.WriteLine("{0,4} {1,-11}    ({2})", move_info.Number, GetMoveString(move_info), GetMoveTimeString(move_info));
 
 			for (auto& comment : move.comments())
 			{
-				std::string cmt = StringUtil::ConvertStringFromWString(comment);
-
-				wr << "*" << cmt << std::endl;
+				WriteLine(wr, L"*" + comment);
 			}
 		}
 	}
@@ -809,21 +819,41 @@ void Kif::WriteMoves(const Moves& moves, std::ostream& wr)
 		switch (move.move_type())
 		{
 		case MoveType::RESIGN: // 投了
-			wr << "まで" << (move.number() - 1) << "手で" << this->turn_str_[rev_turn] << "の勝ち" << std::endl;
+			// wr << "まで" << (move.number() - 1) << "手で" << this->turn_str_[rev_turn] << "の勝ち" << std::endl;
+#ifdef _WIN32
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%sの勝ち", move.number() - 1, this->turn_str_[rev_turn]));
+#else
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%lsの勝ち", move.number() - 1, this->turn_str_[rev_turn]));
+#endif
 			// wr.WriteLine("まで{0}手で{1}の勝ち", move_info.Number - 1, this.turnStr[(int)rev_turn]);
 			break;
 		case MoveType::TIMEOUT: // 時間切れ
-			wr << "まで" << move.number() << "手で時間切れにより" << this->turn_str_[rev_turn] << "の勝ち" << std::endl;
+			// wr << "まで" << move.number() << "手で時間切れにより" << this->turn_str_[rev_turn] << "の勝ち" << std::endl;
+#ifdef _WIN32
+			WriteLine(wr, StringUtil::Format(L"まで%d手で時間切れにより%sの勝ち", move.number() - 1, this->turn_str_[rev_turn]));
+#else
+			WriteLine(wr, StringUtil::Format(L"まで%d手で時間切れにより%lsの勝ち", move.number() - 1, this->turn_str_[rev_turn]));
+#endif
 			// wr.WriteLine("まで{0}手で時間切れにより{1}の勝ち", move_info.Number - 1, this->turn_str_[(int)rev_turn]);
 			break;
 		case MoveType::WIN_FOUL: // 反則勝ち
 		case MoveType::LOSE_FOUL: // 反則負け
-			wr << "まで" << move.number() << "手で" << this->turn_str_[move.side()] << "の" << Kif::MoveTypeStrFromMoveType(move.move_type()) << std::endl;
+			// wr << "まで" << move.number() << "手で" << this->turn_str_[move.side()] << "の" << Kif::MoveTypeStrFromMoveType(move.move_type()) << std::endl;
+#ifdef _WIN32
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%sの%s", move.number() - 1, this->turn_str_[move.side()], Kif::MoveTypeStrFromMoveType(move.move_type())));
+#else
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%lsの%ls", move.number() - 1, this->turn_str_[move.side()], Kif::MoveTypeStrFromMoveType(move.move_type())));
+#endif
 			// wr.WriteLine("まで{0}手で{1}の{2}", move_info.Number - 1, this.turnStr[(int)move_info.Turn], StrFromMovetype(move_info.MoveType));
 			break;
 
 		default:
-			wr << "まで" << move.number() << "手で" << Kif::MoveTypeStrFromMoveType(move.move_type()) << std::endl;
+			// wr << "まで" << move.number() << "手で" << Kif::MoveTypeStrFromMoveType(move.move_type()) << std::endl;
+#ifdef _WIN32
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%sの%s", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
+#else
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%lsの%ls", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
+#endif
 			// wr.WriteLine("まで{0}手で{1}", move_info.Number - 1, StrFromMovetype(move_info.MoveType));
 			break;
 		}
@@ -839,7 +869,7 @@ void Kif::WriteMoves(const Moves& moves, std::ostream& wr)
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
-const char* Kif::PieceCharFromPiece(Piece piece)
+const wchar_t* Kif::PieceCharFromPiece(Piece piece)
 {
 	PieceType pt = type_of(piece);
 
@@ -860,7 +890,7 @@ const char* Kif::PieceCharFromPiece(Piece piece)
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-const char* Kif::PieceStrFromPiece(Piece piece)
+const wchar_t* Kif::PieceStrFromPiece(Piece piece)
 {
 	PieceType pt = type_of(piece);
 
@@ -882,7 +912,7 @@ const char* Kif::PieceStrFromPiece(Piece piece)
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-std::string Kif::HandStrFromHand(const int hand[PIECE_TYPE_NB])
+std::wstring Kif::HandStrFromHand(const int hand[PIECE_TYPE_NB])
 {
 	int num;
 	static const PieceType hand_table[] = {
@@ -897,10 +927,10 @@ std::string Kif::HandStrFromHand(const int hand[PIECE_TYPE_NB])
 
 	if (total == 0)
 	{
-		return "なし";
+		return L"なし";
 	}
 
-	std::string str = "";
+	std::wstring str = L"";
 
 	for (auto pt : hand_table)
 	{
@@ -938,14 +968,14 @@ std::string Kif::HandStrFromHand(const int hand[PIECE_TYPE_NB])
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-const char* Kif::MoveTypeStrFromMoveType(MoveType movetype)
+const wchar_t* Kif::MoveTypeStrFromMoveType(MoveType movetype)
 {
 	if (Kif::ResultTable.count(movetype) > 0)
 	{
 		return Kif::ResultTable.at(movetype);
 	}
 
-	return "";
+	return L"";
 }
 
 
@@ -956,29 +986,29 @@ const char* Kif::MoveTypeStrFromMoveType(MoveType movetype)
  * @note  
  */
 /*-----------------------------------------------------------------------------*/
-std::string Kif::ToMoveString(const Move& move)
+std::wstring Kif::ToMoveString(const Move& move)
 {
-	std::string str = "";
+	std::wstring str = L"";
 
 	int dan, suji;
 
 	if (move.move_type() == MoveType::PASS)
 	{
-		str = "パス";
+		str = L"パス";
 	}
 	else if (is_move(move.move_type()))
 	{
 		// 通常の指し手の場合 移動先を設定
 		if (move.move_type() & MoveType::SAME_FLAG)
 		{
-			str = "同　";
+			str = L"同　";
 		}
 		else
 		{
 			dan = dan_from_rank(rank_of(move.to()));
 			suji = suji_from_file(file_of(move.to()));
 
-			str = std::string(Kif::ArabiaNumber[suji]) + Kif::KanNumber[dan];
+			str = std::wstring(Kif::ArabiaNumber[suji]) + Kif::KanNumber[dan];
 		}
 
 		// 駒文字列を入れる
@@ -986,12 +1016,12 @@ std::string Kif::ToMoveString(const Move& move)
 
 		if (move.move_type() & MoveType::PROMOTION_FLAG)
 		{
-			str += "成";
+			str += L"成";
 		}
 
 		if (move.move_type() & MoveType::DROP_FLAG)
 		{
-			str += "打";
+			str += L"打";
 		}
 		else 
 		{
@@ -999,7 +1029,7 @@ std::string Kif::ToMoveString(const Move& move)
 			dan = dan_from_rank(rank_of(move.from()));
 			suji = suji_from_file(file_of(move.from()));
 
-			str += StringUtil::Format("(%d%d)", suji, dan);
+			str += StringUtil::Format(L"(%d%d)", suji, dan);
 		}
 	}
 	else if (move.move_type() & MoveType::RESULT_FLAG)
@@ -1008,7 +1038,7 @@ std::string Kif::ToMoveString(const Move& move)
 	}
 	else
 	{
-		str = "";
+		str = L"";
 	}
 
 	return str;
@@ -1022,7 +1052,7 @@ std::string Kif::ToMoveString(const Move& move)
  */
 /*-----------------------------------------------------------------------------*/
 
-std::string Kif::ToMoveTimeString(const MoveKif& info)
+std::wstring Kif::ToMoveTimeString(const MoveKif& info)
 {
 	std::string str;
 	int hour;
@@ -1033,7 +1063,7 @@ std::string Kif::ToMoveTimeString(const MoveKif& info)
 
 
 	return StringUtil::Format(
-		"%2d:%02d/%02d:%02d:%02d", 
+		L"%2d:%02d/%02d:%02d:%02d", 
 		info.time / 60,
 		info.time % 60,
 		hour,
@@ -1424,3 +1454,51 @@ bool Kif::ParseKifMove(const Notation& notation, const std::wstring& str, MoveKi
 
 	return true;
 }
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief wchar文字列をSJISに変換して書き込み
+* @param wr 出力ストリーム
+* @param wstr 出力文字列
+*/
+/*-----------------------------------------------------------------------------*/
+static void Write(std::ostream& wr, const std::wstring& wstr)
+{
+	std::string str = StringUtil::ConvertStringFromWString(wstr);
+	wr << str;
+}
+
+static void Write(std::ostream& wr, const wchar_t* wstr)
+{
+	std::string str = StringUtil::ConvertStringFromWString(wstr);
+	wr << str;
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief wchar文字列をSJISに変換して改行付きで書き込み
+* @param wr 出力ストリーム
+* @param wstr 出力文字列
+*/
+/*-----------------------------------------------------------------------------*/
+static void WriteLine(std::ostream& wr, const std::wstring& wstr)
+{
+	std::string str = StringUtil::ConvertStringFromWString(wstr);
+#ifdef _WIN32
+	wr << str << std::endl;
+#else
+	wr << str << "\r" << "\n";
+#endif
+}
+
+static void WriteLine(std::ostream& wr, const wchar_t* wstr)
+{
+	std::string str = StringUtil::ConvertStringFromWString(wstr);
+#ifdef _WIN32
+	wr << str << std::endl;
+#else
+	wr << str << "\r" << "\n";
+#endif
+}
+
+

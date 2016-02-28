@@ -48,6 +48,7 @@ public:
 	}
 
 	static const std::string& ToString(Handicap handicap);
+	static const std::wstring& ToWString(Handicap handicap);
 	static Handicap FromString(const std::string& str);
 	static Handicap FromWString(const std::wstring& str);
 

@@ -23,7 +23,7 @@ struct PvInfo
 	static const int MateBlack = 1; // 先手から見て自分が勝ち
 	static const int MateWhite = -1;  // 先手から見て相手が勝ち
 
-	std::string ToString() const;
+	std::wstring ToString() const;
 };
 
 

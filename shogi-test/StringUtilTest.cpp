@@ -67,11 +67,20 @@ TEST(StringUtilTest, testFormat)
 
 TEST(StringUtilTest, testConvert)
 {
+#ifdef _WIN32
 	ASSERT_EQ(StringUtil::ConvertWStringFromString("テスト"), L"テスト");
 	ASSERT_EQ(StringUtil::ConvertWStringFromString("表示"), L"表示");
 
 	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"テスト"), "テスト");
 	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"表示"), "表示");
+#else
+	ASSERT_EQ(StringUtil::ConvertWStringFromString("\x83\x65\x83\x58\x83\x67"), L"テスト");
+	ASSERT_EQ(StringUtil::ConvertWStringFromString("\x95\x5c\x8e\xa6"), L"表示");
+
+	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"テスト"), "\x83\x65\x83\x58\x83\x67");
+	ASSERT_EQ(StringUtil::ConvertStringFromWString(L"表示"), "\x95\x5c\x8e\xa6");
+
+#endif
 }
 
 TEST(StringUtilTest, testParseTime)

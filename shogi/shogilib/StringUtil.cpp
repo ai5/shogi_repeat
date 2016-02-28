@@ -5,8 +5,9 @@
 #include <Windows.h>
 #else
 #include <iconv.h>
+#include <cwchar>
 #endif
-
+#include <iostream>
 #include <cstdio>
 #include <cstdarg>
 #include <cassert>
@@ -17,13 +18,12 @@
 
 #ifndef _WIN32
 static int _vscprintf (const char * format, va_list pargs);
+static int _vscwprintf(const wchar_t * format, va_list pargs);
 #endif
 
 /*-----------------------------------------------------------------------------*/
 /**
- * @brief stringのFor /
- 45
- ]:;lkj mat
+ * @brief stringのFormat
  * @note  どこぞのコピペ
  */
 /*-----------------------------------------------------------------------------*/
@@ -46,6 +46,45 @@ std::string StringUtil::Format(const char* fmt, ...)
 			int result = vsprintf_s(buf.get(), length + 1, fmt, arguments);
 #else
 			int result = vsprintf(buf.get(), fmt, arguments);
+#endif
+			if (result >= 0)
+			{
+				buffer = buf.get();
+
+			}
+		}
+	}
+
+	va_end(arguments);
+
+	return buffer;
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief stringのFormat
+* @note  どこぞのコピペ
+*/
+/*-----------------------------------------------------------------------------*/
+std::wstring StringUtil::Format(const wchar_t* fmt, ...)
+{
+	va_list     arguments;
+	std::wstring buffer = L"";
+
+	assert(fmt);
+
+	va_start(arguments, fmt);
+
+	{
+		int length = _vscwprintf(fmt, arguments);
+		if (length >= 0)
+		{
+
+			std::unique_ptr<wchar_t[]> buf(new wchar_t[length + 1]);
+#ifdef _WIN32
+			int result = vswprintf_s(buf.get(), length + 1, fmt, arguments);
+#else
+			int result = vswprintf(buf.get(), length + 1, fmt, arguments);
 #endif
 			if (result >= 0)
 			{
@@ -282,6 +321,34 @@ std::string StringUtil::Load(std::string filename)
 	return ret;
 }
 
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief 0x100以上を2文字分とみなした横幅を返す
+* @param str 文字列
+* @return 横幅
+* @note
+*/
+/*-----------------------------------------------------------------------------*/
+int StringUtil::WStringWidth(const std::wstring& str)
+{
+	int width = 0;
+
+	for (auto ch : str)
+	{
+		if (ch >= 0x100)
+		{
+			width += 2;
+		}
+		else
+		{
+			width += 1;
+		}
+	}
+
+
+	return width;
+}
+
 #ifndef _WIN32
 static int _vscprintf (const char * format, va_list pargs)
 { 
@@ -292,4 +359,21 @@ static int _vscprintf (const char * format, va_list pargs)
     va_end(argcopy); 
     return retval; 
 }
+
+static int _vscwprintf(const wchar_t * format, va_list argptr)
+{
+	int buf_size = 1024;
+	while (buf_size < 1024 * 1024)
+	{
+		va_list args;
+		va_copy(args, argptr);
+		wchar_t buffer[buf_size];
+		int fmt_size = vswprintf(buffer, buf_size, format, args);
+		if (fmt_size >= 0)
+			return fmt_size;
+		buf_size *= 2;
+	}
+	return -1;
+}
+
 #endif

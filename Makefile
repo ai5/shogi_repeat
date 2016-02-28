@@ -1,5 +1,5 @@
 COMPILER = g++
-CFLAGS   = -std=c++14 -fno-exceptions -fno-rtti -fexec-charset=cp932 
+CFLAGS   = -std=c++14 -fno-exceptions -fno-rtti
 LDFLAGS  = -lpthread 
 
 LIBS     =
@@ -61,7 +61,7 @@ SOURCES += shogi-test/Test.cpp shogi-test/EnginePlayerTest.cpp shogi-test/Messag
 			shogi-test/MoveTest.cpp shogi-test/NotationTest.cpp shogi-test/PieceTest.cpp shogi-test/PositionTest.cpp \
 			shogi-test/RankTest.cpp shogi-test/SfenTest.cpp shogi-test/SquareTest.cpp shogi-test/StringUtilTest.cpp \
 			shogi-test/DateTimeTest.cpp shogi-test/KeyValueTest.cpp shogi-test/TimerTest.cpp \
-			shogi-test/PathTest.cpp
+			shogi-test/PathTest.cpp shogi-test/HistoryTest.cpp shogi-test/KifTest.cpp
 
 ifeq ($(OS),Windows_NT)
 LIBS	+=  external/googletest/lib/gtest.a external/googletest/lib/gtest_main.a
@@ -99,11 +99,14 @@ test:
 
 test-run:
 	cd Test
-	test/shogi-test.exe
+	$(EXE)
 	cd ..
 
 test-child:
 	g++ tchild/child.cpp -o test/tchild.out
+
+hiyoko:
+	$(EXE) Debug/hiyoko.exe Debug/hiyoko.exe -T 0 0.2 -G 2
 
 clean:
 	rm -f $(OBJECTS) $(DEPENDS) $(TARGET) ${OBJECTS:.o=.gcda}

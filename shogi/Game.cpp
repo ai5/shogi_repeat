@@ -624,9 +624,9 @@ void Game::AddComment(const std::map<int, PvInfo>& pvinfos)
 {
 	for (auto& info : pvinfos)
 	{
-		std::string str = "*対局 " + info.second.ToString();
+		std::wstring str = L"*対局 " + info.second.ToString();
 
-		this->notation_.AddComment(StringUtil::ConvertWStringFromString(str));
+		this->notation_.AddComment(str);
 	}
 }
 

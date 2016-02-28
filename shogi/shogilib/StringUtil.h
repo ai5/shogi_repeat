@@ -114,6 +114,7 @@ public:
 	}
 
 	static std::string Format(const char* fmt, ...);
+	static std::wstring Format(const wchar_t* fmt, ...);
 
 	static std::wstring ConvertWStringFromString(const std::string& str);
 	static std::string  ConvertStringFromWString(const std::wstring& wstr);
@@ -122,6 +123,8 @@ public:
 	static int ParseTime(const std::wstring& str);
 
 	static std::string Load(std::string filename);
+
+	static int WStringWidth(const std::wstring& str);
 
 	/*-----------------------------------------------------------------------------*/
 	/**
