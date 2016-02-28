@@ -13,6 +13,6 @@ TEST(DateTimeTest, test)
 	DateTime now = DateTime::Now();
 
 	std::wstring wstr = now.ToWString();
-
+	printf("%ls\n", wstr.c_str());
 
 }

@@ -53,6 +53,15 @@ std::string Path::FolderPath(const std::string& filepath)
 	_makepath_s(path, _MAX_PATH , drive, dir, NULL, NULL);
 
 #endif
+	int len = strlen(path);
+	if (len != 0)
+	{
+		if (path[len - 1] == '\\' || path[len - 1] == '/')
+		{
+			path[len - 1] = '\0';
+		}
+	}
+
 	return path;
 #else
 	char path[PATH_MAX];

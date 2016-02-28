@@ -55,8 +55,11 @@ TEST(USIEngineTest, InitTest)
 {
 	USIEngine engine;
 
+#ifdef _WIN32
 	ASSERT_EQ(engine.Initialize("tchild.exe"), true);
-
+#else
+	ASSERT_EQ(engine.Initialize("./tchild.out"), true);
+#endif
 	engine.WriteLine("usi");
 
 	std::string str;
@@ -72,17 +75,24 @@ TEST(USIEngineTest, InitTest)
 TEST(USIEngineTest, InitTest2)
 {
 	USIEngine engine;
-
+#ifdef _WIN32
 	ASSERT_EQ(engine.Initialize("tchild.exe"), true);
 	// quitを送らないのでタイムアウトでプロセスが死ぬ・・・はず
 	engine.Terminate();
+#else
+	// Linuxではタイムアウト未実装
+#endif
 }
 
 TEST(USIEngineTest, InitTest3)
 {
 	USIEngine engine;
 
+#ifdef _WIN32
 	ASSERT_EQ(engine.Initialize("tchild.exe"), true);
+#else
+	ASSERT_EQ(engine.Initialize("./tchild.out"), true);
+#endif
 	engine.WriteLine("usi");
 
 

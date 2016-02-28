@@ -70,8 +70,11 @@ TEST(EnginePlayerTest, test)
 	Listener listener;
 
 	EnginePlayer player(BLACK, &listener);
+#ifdef _WIN32
 	ASSERT_EQ(player.Init("tchild.exe"), true);
-
+#else
+	ASSERT_EQ(player.Init("./tchild.out"), true);
+#endif
 	listener.Wait(10000); // 10秒
 	// オプション送信
 

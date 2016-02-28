@@ -39,6 +39,7 @@
     <ClCompile Include="MoveCheckTest.cpp" />
     <ClCompile Include="MoveTest.cpp" />
     <ClCompile Include="NotationTest.cpp" />
+    <ClCompile Include="PathTest.cpp" />
     <ClCompile Include="PieceTest.cpp" />
     <ClCompile Include="PositionTest.cpp" />
     <ClCompile Include="ProcessTest.cpp" />

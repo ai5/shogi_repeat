@@ -60,7 +60,8 @@ SOURCES += shogi-test/Test.cpp shogi-test/EnginePlayerTest.cpp shogi-test/Messag
 			shogi-test/ColorTest.cpp shogi-test/FileTest.cpp shogi-test/HandicapTest.cpp shogi-test/KeyTest.cpp shogi-test/MoveCheckTest.cpp \
 			shogi-test/MoveTest.cpp shogi-test/NotationTest.cpp shogi-test/PieceTest.cpp shogi-test/PositionTest.cpp \
 			shogi-test/RankTest.cpp shogi-test/SfenTest.cpp shogi-test/SquareTest.cpp shogi-test/StringUtilTest.cpp \
-			shogi-test/DateTimeTest.cpp shogi-test/KeyValueTest.cpp shogi-test/TimerTest.cpp
+			shogi-test/DateTimeTest.cpp shogi-test/KeyValueTest.cpp shogi-test/TimerTest.cpp \
+			shogi-test/PathTest.cpp
 
 ifeq ($(OS),Windows_NT)
 LIBS	+=  external/googletest/lib/gtest.a external/googletest/lib/gtest_main.a
@@ -100,6 +101,9 @@ test-run:
 	cd Test
 	test/shogi-test.exe
 	cd ..
+
+test-child:
+	g++ tchild/child.cpp -o test/tchild.out
 
 clean:
 	rm -f $(OBJECTS) $(DEPENDS) $(TARGET) ${OBJECTS:.o=.gcda}

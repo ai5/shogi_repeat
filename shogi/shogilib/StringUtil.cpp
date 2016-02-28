@@ -77,7 +77,7 @@ std::wstring StringUtil::ConvertWStringFromString(const std::string& str)
 
 	MultiByteToWideChar(CP_ACP, 0, &str[0], (int)str.size(), &wstr[0], size);
 #else
-	iconv_t ic = iconv_open("UTF-16", "SHIFT_JIS");
+	iconv_t ic = iconv_open("UCS-4LE", "SHIFT_JIS");
 	if (ic == iconv_t(-1))
 	{
 		// エラー
@@ -87,13 +87,16 @@ std::wstring StringUtil::ConvertWStringFromString(const std::string& str)
 
 	char* in_buf = (char*)str.data();
 	size_t in_size = str.size();
-	size_t out_size = in_size * 2;
+	size_t out_size = in_size * 4;
+	size_t size = out_size;
 
 	std::wstring wstr(out_size, 0);
 
 	char* out_buf = (char*)wstr.data();
 
 	iconv(ic, &in_buf, &in_size, &out_buf, &out_size);
+	wstr.resize((size - out_size) / 4);
+
 
 	iconv_close(ic);
 
@@ -119,7 +122,7 @@ std::string StringUtil::ConvertStringFromWString(const std::wstring& wstr)
 	WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), &str[0], size, NULL, NULL);
 
 #else
-	iconv_t ic = iconv_open("SHIFT_JIS", "UTF-16");
+	iconv_t ic = iconv_open("SHIFT_JIS", "UCS-4LE");
 	if (ic == iconv_t(-1))
 	{
 		// エラー
@@ -127,14 +130,17 @@ std::string StringUtil::ConvertStringFromWString(const std::wstring& wstr)
 	}
 
 	char* in_buf = (char*)wstr.data();
-	size_t in_size = wstr.size();
+	size_t in_size = wstr.size() * 4;
 	size_t out_size = in_size;
+	size_t size = out_size;
 
 	std::string str(out_size, 0);
 
 	char* out_buf = (char*)str.data();
 
 	iconv(ic, &in_buf, &in_size, &out_buf, &out_size);
+
+	str.resize(size - out_size);
 
 	iconv_close(ic);
 

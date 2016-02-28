@@ -25,9 +25,11 @@ bool USIEngine::Initialize(const std::string& filename)
 
 	this->process_ = std::make_unique<Process>();
 	this->string_queue_ = std::make_unique<StringQueue>();
-
-	
+#ifdef _WIN32
 	this->process_->StartInfo.FileName = filename;
+#else
+	this->process_->StartInfo.FileName = Path::FullPath(filename);
+#endif
 	// this->process_.StartInfo.CreateNoWindow = true;
 	this->process_->StartInfo.RedirectStandardInput = true;
 	this->process_->StartInfo.RedirectStandardOutput = true;

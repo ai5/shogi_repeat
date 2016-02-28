@@ -1,7 +1,10 @@
 // child.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
 //
 
+#ifdef _WIN32
 #include "stdafx.h"
+#endif
+
 #include <iostream>
 #include <string>
 
@@ -16,6 +19,9 @@ int main()
 	do
 	{
 		getline(cin, str);
+
+		cerr << str << endl;
+
 		if (str == "usi")
 		{
 			cout << "id name child dummy" << endl;

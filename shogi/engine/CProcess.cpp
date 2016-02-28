@@ -178,7 +178,9 @@ bool Process::Start()
 			chdir(this->StartInfo.WorkingDirectory.c_str());
 		}
 
-		execlp(this->StartInfo.FileName.c_str(), Path::FileName(this->StartInfo.FileName).c_str());
+		execlp(this->StartInfo.FileName.c_str(), Path::FileName(this->StartInfo.FileName).c_str(), NULL);
+		ERROR_LOG("execlp error ", this->StartInfo.FileName);
+
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -189,6 +191,8 @@ bool Process::Start()
 		this->StdOut.CloseWrite();
 		this->StdErr.CloseWrite();
 		this->StdIn.CloseRead();
+
+		this->exit_thread_ = std::make_unique<std::thread>(&Process::exitThread, this);
 	}
 
 	return ret;
@@ -237,7 +241,7 @@ void Process::WaitForExit(int timeout)
 
 			if (WIFEXITED(status))
 			{
-				ERROR_LOG("exited, status=", WEXITSTATUS(status));
+				// ERROR_LOG("exited, status=", WEXITSTATUS(status));
 			}
 			else if (WIFSIGNALED(status)) {
 				ERROR_LOG("killed by signal ", WTERMSIG(status));

@@ -11,7 +11,11 @@ TEST(ProcessTest, test)
 	Process proc;
 
 	proc.StartInfo.CreateNoWindow = false;
+#ifdef _WIN32
 	proc.StartInfo.FileName = "tchild.exe";
+#else
+	proc.StartInfo.FileName = "./tchild.out";
+#endif
 	proc.StartInfo.RedirectStandardInput = true;
 	proc.StartInfo.RedirectStandardOutput = true;
 

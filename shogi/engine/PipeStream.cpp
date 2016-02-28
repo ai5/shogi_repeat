@@ -269,11 +269,13 @@ bool IPipeStream::ReadLine(std::string& str)
 
 	if (this->h_read_ == INVALID_HANDLE_VALUE)
 	{
+		ERROR_LOG("h_read err = ", this->h_read_);
 		return false;
 	}
 
 	if (this->eof_flag)
 	{
+		ERROR_LOG("eof ", this->h_read_);
 		return false;
 	}
 
@@ -326,7 +328,7 @@ bool IPipeStream::ReadLine(std::string& str)
 #ifdef _WIN32
 		BOOL err = ReadFile(this->h_read_, this->buffer_, sizeof(this->buffer_) - 1, &len, NULL);
 #else
-		bool err = false;
+		bool err = true;
 		len = read(this->h_read_, this->buffer_, sizeof(this->buffer_) - 1);
 #endif
 		if (!err || len == 0)

@@ -10,6 +10,6 @@ public:
 	// rootpath
 };
 
-#define RootPath  "..\\shogi-test\\"
+#define RootPath  "../shogi-test/"
 
 #endif
