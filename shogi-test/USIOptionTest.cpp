@@ -135,3 +135,66 @@ TEST(USIOptionTest, testOptions)
 	options.Clear();
 	ASSERT_EQ(options.size(), 0);
 }
+
+TEST(USIOptionTest, testChanged)
+{
+	{
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionButton>("test");
+
+		opt->SetValue("aaa");	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(10);		ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(std::string("aaa"));	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+	}
+
+	{
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionCheck>("test", false);
+
+		opt->SetValue("true");	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(10);		ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(std::string("false"));	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+	}
+
+	{
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionSpin>("test", 10, 1, 15);
+
+		opt->SetValue("15");	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(10);		ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(std::string("32"));	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+	}
+
+	{
+		std::vector<std::string> strlist;
+
+		strlist.push_back("str1");
+		strlist.push_back("str2");
+		strlist.push_back("str3");
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionCombo>("test", "str2", strlist);
+
+		opt->SetValue("str3");	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(10);		ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(0);		ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(std::string("str2"));	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+	}
+
+	{
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionString>("test", "str");
+
+		opt->SetValue("str3");	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(0);		ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(std::string("str2"));	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+	}
+
+	{
+		std::unique_ptr<USIOption> opt = std::make_unique<USIOptionFilename>("test", "str");
+
+		opt->SetValue("str3");	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+		opt->SetValue(0);		ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(false);	ASSERT_EQ(opt->HasChanged(), false); opt->ClearChanged();
+		opt->SetValue(std::string("str2"));	ASSERT_EQ(opt->HasChanged(), true); opt->ClearChanged();
+	}
+}

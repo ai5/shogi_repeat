@@ -571,6 +571,7 @@ void Game::SaveOption(Color color, const std::string& filename)
 	KeyValue kv;
 
 	if (filename == "") return;
+	std::cout << "save option " << filename << std::endl;
 
 	const USIOptions& options = (color == BLACK) ? this->black_player_->GetOptions() : this->white_player_->GetOptions();
 

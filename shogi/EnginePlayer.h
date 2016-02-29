@@ -117,6 +117,8 @@ class EnginePlayer
 	bool is_go_req_ = false;
 	GoRequest go_req_;
 
+	bool is_setoption_req_ = false;
+
 	std::unique_ptr<Move> ponder_;
 
 	std::string name_;
@@ -166,6 +168,8 @@ private:
 
 	void ExecGoReeust(const GoRequest& req);
 	void send_cmd(const std::string &cmd);
+
+	void send_options();
 
 	static std::string time_str(TimePoint tp);
 

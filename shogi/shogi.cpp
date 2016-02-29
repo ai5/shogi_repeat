@@ -49,8 +49,7 @@ int main(int argc, char* argv[])
 		}
 		else if (cmd == "stop")
 		{
-			
-			// msg_que.enqueue(MyMessage(QUIT));
+			// 対局を止める処理（未実装
 		}
 		else if (cmd == "save")
 		{

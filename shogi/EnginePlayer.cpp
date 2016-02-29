@@ -92,7 +92,7 @@ void EnginePlayer::Terminate()
 /*-----------------------------------------------------------------------------*/
 /**
 * @brief オプション設定
-* @note isreadyの送信
+* @note
 */
 /*-----------------------------------------------------------------------------*/
 void EnginePlayer::SetOptions(const std::map<std::string, std::string>& opt_name_value)
@@ -101,13 +101,33 @@ void EnginePlayer::SetOptions(const std::map<std::string, std::string>& opt_name
 
 	this->engine_->SetOptions(opt_name_value);
 
-	for (auto& pair : opt_name_value)
+	if (this->state_ == EnginePlayerState::IDLE || this->state_ == EnginePlayerState::INISIALIZED)
 	{
-		if (this->engine_->HasOption(pair.first))
+		this->send_options();
+	}
+	else
+	{
+		this->is_setoption_req_ = true;
+	}
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+ * @brief オプション送信
+ * @note  
+ */
+/*-----------------------------------------------------------------------------*/
+void EnginePlayer::send_options()
+{
+	for (auto& pair : this->engine_->options())
+	{
+		if (pair.second->HasChanged())
 		{
-			std::string opt = "option name " + pair.first + " value " + this->engine_->GetOptonValue(pair.first);
+			std::string opt = "setoption name " + pair.first + " value " + pair.second->ValueToString();
 
 			this->send_cmd(opt);
+
+			pair.second->ClearChanged();
 		}
 	}
 }
@@ -725,6 +745,11 @@ void EnginePlayer::handleIdleState()
 	std::unique_lock<std::mutex> lock(this->mtx_);
 
 	// 保留されてるコマンドの実行
+	if (this->is_setoption_req_)
+	{
+		this->is_setoption_req_ = false;
+		this->send_options();
+	}
 
 	if (this->is_go_req_)
 	{
