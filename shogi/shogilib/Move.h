@@ -183,7 +183,7 @@ public:
 };
 
 
-class Moves : public std::deque<MoveKif>
+class Moves : private std::deque<MoveKif>
 {
 	Moves* parent_; // 親 (smart pointerで管理はしない
 public:
@@ -197,6 +197,23 @@ public:
 
 	static void ChangeParent(Moves& moves, Moves* parent);
 
+	using std::deque<MoveKif>::rbegin;
+	using std::deque<MoveKif>::rend;
+	using std::deque<MoveKif>::at;
+	using std::deque<MoveKif>::begin;
+	using std::deque<MoveKif>::end;
+	using std::deque<MoveKif>::back;
+	using std::deque<MoveKif>::size;
+	using std::deque<MoveKif>::clear;
+	using std::deque<MoveKif>::push_back;
+	using std::deque<MoveKif>::emplace_back;
+	using std::deque<MoveKif>::insert;
+	using std::deque<MoveKif>::erase;
+	using std::deque<MoveKif>::iterator;
+	using std::deque<MoveKif>::const_reverse_iterator;
+	using std::deque<MoveKif>::value_type;
+
+	using std::deque<MoveKif>::operator[];
 };
 
 
