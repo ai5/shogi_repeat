@@ -53,7 +53,7 @@ struct GameParam
 
 	bool SwapPlayer = true; // 先後入れ替え
 
-	int MaxPlays = 1; // 対局数
+	int MaxPlays = 1; // 対局数 games?
 	int MaxMoves = 256; // 引き分けにする手数   <=0 で判定なし
 };
 

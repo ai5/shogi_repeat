@@ -7,10 +7,12 @@
 #include "Game.h"
 #include "StringUtil.h"
 #include "Kif.h"
+#include "Sfen.h"
+#include "DateTime.h"
 
-static void usage(const char* argv);
+static void usage(const char* argv, GameParam& param);
 static void parse_args(int argc, char* argv[], GameParam& param);
-
+static void print_settings(GameParam& param);
 
 /*-----------------------------------------------------------------------------*/
 /**
@@ -19,16 +21,17 @@ static void parse_args(int argc, char* argv[], GameParam& param);
 /*-----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
+	GameParam param;
 
 	if (argc < 3)
 	{
-		usage(argv[0]);
+		usage(argv[0], param);
 		return -1;
 	}
 
-	GameParam param;
-
 	parse_args(argc, argv, param);
+
+	print_settings(param);
 
 	Game game;
 
@@ -71,7 +74,7 @@ int main(int argc, char* argv[])
 * @brief usageの表示
 */
 /*-----------------------------------------------------------------------------*/
-static void usage(const char* name)
+static void usage(const char* name, GameParam& param)
 {
 	std::cout << name << " <先手エンジン>  <後手エンジン> [オプション]" << std::endl;
 	std::cout << "オプション:" << std::endl;
@@ -93,6 +96,60 @@ static void usage(const char* name)
 	std::cout << "  -N [棋譜保存パス]   棋譜出力ON、棋譜を保存するパスを設定する" << std::endl;
 	std::cout << "  -N-                 棋譜出力OFFにする" << std::endl;
 	std::cout << "  -K <棋譜> [手数]    開始局面を指定した棋譜ファイルの手数からにする" << std::endl;
+
+	std::cout << std::endl << "デフォルト値" << std::endl;
+	print_settings(param);
+}
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief 設定出力
+*/
+/*-----------------------------------------------------------------------------*/
+static void print_settings(GameParam& param)
+{
+	std::cout << "先手:" << param.Black.FileName  << std::endl;
+	std::cout << "持ち時間:" << DateTime::ToTimeString(param.Black.time) << "分 秒読み:" << DateTime::ToTimeString(param.Black.byoyomi) << "秒" << std::endl;
+	if (param.Black.SettingFileName != "")
+	{
+		std::cout << "設定ファイル: " << param.Black.SettingFileName << std::endl;
+	}
+
+	std::cout << "後手:" << param.White.FileName  << std::endl;
+	std::cout << "持ち時間:" << DateTime::ToTimeString(param.White.time) << "分 秒読み:" << DateTime::ToTimeString(param.White.byoyomi) << "秒" << std::endl;
+	if (param.White.SettingFileName != "")
+	{
+		std::cout << "設定ファイル: " << param.White.SettingFileName << std::endl;
+	}
+
+	std::cout << std::endl;
+	std::cout << "対局数:" << param.MaxPlays << std::endl;
+	std::cout << "最大手数:" << param.MaxMoves << std::endl;
+	std::cout << "Ponder: " << (param.PonderON ? "ON" : "OFF") << std::endl;
+	std::cout << "先後入れ替え:" << (param.SwapPlayer ? "はい" : "いいえ") << std::endl;
+	std::cout << "ログ記録:" << (param.SaveLog ? "はい" : "いいえ") << std::endl;
+	if (param.SaveLog)	std::cout << "ログ保存フォルダ:" << (param.LogPath != "" ? param.LogPath : "カレント") << std::endl;
+	std::cout << "棋譜保存:" << (param.SaveNotation ? "はい" : "いいえ") << std::endl;
+	if (param.SaveLog)	std::cout << "棋譜保存フォルダ:" << (param.KifPath != "" ? param.KifPath : "カレント") << std::endl;
+
+	if (param.UseNotation)
+	{
+		Notation notation = param.notation;
+		if (param.Num >= 0)
+		{
+			notation.Jump(param.Num);
+		}
+		else
+		{
+			notation.Last();
+		}
+
+		std::cout << "開始局面:" << std::endl;
+		std::cout << "sfen " << Sfen::PositionToString(notation.position(), notation.number() + 1);
+	}
+	else
+	{
+		std::cout << "開始局面:" << HandicapExtention::ToString(param.handicap) << std::endl;
+	}
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -239,3 +296,6 @@ static void parse_args(int argc, char* argv[], GameParam& param)
 		}
 	}
 }
+
+
+

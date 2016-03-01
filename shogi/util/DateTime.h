@@ -5,7 +5,8 @@
 #include <chrono>
 #include <ctime>
 #include <string>
-
+#include <sstream>
+#include <iomanip>
 
 class DateTime : public std::chrono::time_point<std::chrono::system_clock>
 {
@@ -81,6 +82,46 @@ public:
 		local_tm.tm_mon += 1;
 
 		return local_tm;
+	}
+
+	/*-----------------------------------------------------------------------------*/
+	/**
+	* @brief 時間を文字列に変換する
+	* @param time 時間(ms)
+	* @note
+	*/
+	/*-----------------------------------------------------------------------------*/
+	static std::string ToTimeString(int time)
+	{
+		int min = time / (1000 * 60);
+		int sec = (time - (min * 1000 * 60)) / 1000;
+		int msec = time % 1000;
+
+		std::ostringstream str;
+
+		if (min != 0)
+		{
+			str << min << + ":" << std::setfill('0') << std::setw(2) << sec;
+		}
+		else
+		{
+			str << sec;
+		}
+
+		if (msec != 0)
+		{
+			str << ".";
+			for (int i = 100; i >= 1 && msec != 0; i = i / 10)
+			{
+				int n = msec / i;
+				str << n;
+
+				msec -= n * i;
+
+			}
+		}
+
+		return str.str();
 	}
 
 };

@@ -114,7 +114,7 @@ void Game::main_loop()
 	if (!this->cancel_)
 	{
 		// キャンセル以外の終了のしかたがexitしか思いつかない
-		// exit(0);
+		exit(0);
 	}
 }
 
