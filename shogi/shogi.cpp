@@ -14,6 +14,8 @@ static void usage(const char* argv, GameParam& param);
 static void parse_args(int argc, char* argv[], GameParam& param);
 static void print_settings(GameParam& param);
 
+static bool InteractiveMode = false;
+
 /*-----------------------------------------------------------------------------*/
 /**
  * @note  
@@ -37,34 +39,39 @@ int main(int argc, char* argv[])
 
 	game.Start(param);
 
+	if (!InteractiveMode)
+	{
+		game.Wait(); // 終了待つ
+	}
+	else
+	{
+		// キー入力
+		std::string cmd;
+		do {
+			if (!getline(std::cin, cmd))
+			{
+				cmd = "quit";
+			}
 
-	// キー入力
-	std::string cmd;
-	do {
-		if (!getline(std::cin, cmd))
-		{
-			cmd = "quit";
-		}
+			if (cmd == "quit")
+			{
+				game.Cancel();
+			}
+			else if (cmd == "stop")
+			{
+				// 対局を止める処理（未実装
+			}
+			else if (cmd == "save")
+			{
+				// 設定の保存
+				game.SaveOption(BLACK, "black.ini");
+				game.SaveOption(WHITE, "white.ini");
+			}
 
-		if (cmd == "quit")
-		{
-			game.Cancel();
-		}
-		else if (cmd == "stop")
-		{
-			// 対局を止める処理（未実装
-		}
-		else if (cmd == "save")
-		{
-			// 設定の保存
-			game.SaveOption(BLACK, "black.ini");
-			game.SaveOption(WHITE, "white.ini");
-		}
+		} while (cmd != "quit");
 
-	} while (cmd != "quit");
-
-	game.Terminate();
-
+		game.Terminate();
+	}
 
 	return 0;
 }
@@ -83,6 +90,7 @@ static void usage(const char* name, GameParam& param)
 	std::cout << "  -W <設定ファイル>   後手設定フィアル" << std::endl;
 
 	std::cout << "  -T <持ち時間(秒)> [秒読み(秒)]  持ち時間設定" << std::endl;
+	std::cout << "  -T- <持ち時間(秒)> [秒読み(秒)]  持ち時間設定 & 時間切れ負け無し" << std::endl;
 
 	std::cout << "  -G <num>            対局数" << std::endl;
 	std::cout << "  -M <num>            最大手数" << std::endl;
@@ -96,6 +104,8 @@ static void usage(const char* name, GameParam& param)
 	std::cout << "  -N [棋譜保存パス]   棋譜出力ON、棋譜を保存するパスを設定する" << std::endl;
 	std::cout << "  -N-                 棋譜出力OFFにする" << std::endl;
 	std::cout << "  -K <棋譜> [手数]    開始局面を指定した棋譜ファイルの手数からにする" << std::endl;
+
+	std::cout << "  -I                  対話モード" << std::endl;
 
 	std::cout << std::endl << "デフォルト値" << std::endl;
 	print_settings(param);
@@ -124,6 +134,7 @@ static void print_settings(GameParam& param)
 	std::cout << std::endl;
 	std::cout << "対局数:" << param.MaxPlays << std::endl;
 	std::cout << "最大手数:" << param.MaxMoves << std::endl;
+	std::cout << "時間切れ負け: " << (param.Timeout ? "ON" : "OFF") << std::endl;
 	std::cout << "Ponder: " << (param.PonderON ? "ON" : "OFF") << std::endl;
 	std::cout << "先後入れ替え:" << (param.SwapPlayer ? "はい" : "いいえ") << std::endl;
 	std::cout << "ログ記録:" << (param.SaveLog ? "はい" : "いいえ") << std::endl;
@@ -185,6 +196,7 @@ static void parse_args(int argc, char* argv[], GameParam& param)
 				}
 				break;
 			case 'T':
+				param.Timeout = (arg[2] == '-') ? false : true;
 				// 持ち時間設定
 				if ((i + 1) < argc)
 				{
@@ -291,6 +303,9 @@ static void parse_args(int argc, char* argv[], GameParam& param)
 					i++;
 				}
 
+				break;
+			case 'I':
+				InteractiveMode = (arg[2] == '-') ? false : true;;
 				break;
 			}
 		}

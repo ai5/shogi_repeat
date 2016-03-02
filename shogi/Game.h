@@ -36,7 +36,7 @@ struct GameParam
 	PlayerSetting White; // 後手設定
 
 	bool PonderON = false; // Ponder設定
-
+	bool Timeout = true;   // 時間切れ負け
 	bool SaveLog = true;      // ログ保存
 	bool SaveNotation = true; // 棋譜保存
 	bool DispLog = false;      // ログをstdoutへ出力
@@ -74,6 +74,7 @@ public:
 	virtual void notifyBestMove(Color color, int transactionNo, const Move& bestmove, const Move& ponder);
 
 	virtual void notifyInfo(Color color, int transactonNO, const PvInfo& str);
+	virtual void notifyStop(Color color, int transactionNo);
 
 	virtual void notifyError(Color color, int error, const std::string& errorMsg);
 
@@ -86,6 +87,8 @@ class Game
 	bool cancel_ = false; // キャンセルフラグ　キャンセルされると立つ
 	bool terminate_ = false; // 終了フラグ
 	bool play_ = false; // 対局中フラグ game_play からgame_endまで
+	bool error_ = false;
+
 	GameParam param_;
 
 	std::unique_ptr<EnginePlayer> black_player_;
@@ -107,6 +110,9 @@ class Game
 	int black_win_ = 0;
 	int white_win_ = 0;
 	bool swap_flag = false;
+
+	bool timeout_ = false; // タイムアウトフラグ
+
 public:
 	Game();
 	~Game();
@@ -118,6 +124,9 @@ public:
 
 	void Terminate();
 	void SaveOption(Color color, const std::string& filename);
+	void Wait() {
+		this->th_.join();
+	}
 
 private:
 
@@ -140,7 +149,7 @@ private:
 	void EventInitialized(MessageInitialized& msg);
 	void EventReady(MessageReady& msg);
 	void EventBestMove(MessageBestMove& msg);
-
+	void EventStop(MessageStop& msg);
 
 	// その他
 	void LoadOption(Color color, const std::string& filename);

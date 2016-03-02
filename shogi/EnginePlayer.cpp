@@ -174,7 +174,8 @@ void EnginePlayer::GameStart()
 	}
 	else
 	{
-		ASSERT_MSG(0, "STATEがIDLE以外は呼び出してはいけません");
+		this->is_newgame_req_ = true;
+		// ASSERT_MSG(0, "STATEがIDLE以外は呼び出してはいけません");
 	}
 }
 
@@ -372,6 +373,8 @@ void EnginePlayer::Stop()
 
 	if (this->state_ == EnginePlayerState::GO || this->state_ == EnginePlayerState::PONDER)
 	{
+		this->state_ = EnginePlayerState::STOP;
+
 		this->is_go_req_ = false;
 		this->ponder_ = nullptr;
 		this->send_cmd("stop");
@@ -493,6 +496,8 @@ void EnginePlayer::receive_command(const std::string& str)
 			if (tok.GetToken() == "bestmove")
 			{
 				// bestmoveの場合
+				this->lisnter_->notifyStop(this->color_, this->transactionNo_);
+
 				this->state_ = EnginePlayerState::IDLE;
 				// 保留してあるコマンドの処理
 				this->handleIdleState();
@@ -749,6 +754,12 @@ void EnginePlayer::handleIdleState()
 	{
 		this->is_setoption_req_ = false;
 		this->send_options();
+	}
+
+	if (this->is_newgame_req_)
+	{
+		this->is_newgame_req_ = false;
+		this->send_cmd("usinewgame");
 	}
 
 	if (this->is_go_req_)

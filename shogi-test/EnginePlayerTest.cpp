@@ -44,6 +44,11 @@ public:
 
 	}
 
+	virtual void notifyStop(Color, int transactonNO)
+	{
+
+	}
+
 	virtual void notifyError(Color, int no, const std::string& error)
 	{
 		error_cnt_++;

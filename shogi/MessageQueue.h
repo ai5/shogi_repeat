@@ -17,6 +17,7 @@ enum class MessageID {
 	Initialized, // 初期化完了
 	Ready,       // Ready
 	BestMove,    // BestMove
+	Stop,        // 停止
 	Error,       // エラー
 };
 
@@ -85,6 +86,18 @@ public:
 	Color Player;
 	Move BestMove;
 	Move Ponder;
+	int TransactionNo;
+};
+
+class MessageStop : public Message {
+public:
+	MessageStop(Color color, int transactionNo) : Message(MessageID::Stop)
+	{
+		this->Player = color;
+		this->TransactionNo = transactionNo;
+	}
+
+	Color Player;
 	int TransactionNo;
 };
 

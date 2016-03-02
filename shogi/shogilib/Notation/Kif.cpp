@@ -850,9 +850,9 @@ void Kif::WriteMoves(const Moves& moves, std::ostream& wr)
 		default:
 			// wr << "まで" << move.number() << "手で" << Kif::MoveTypeStrFromMoveType(move.move_type()) << std::endl;
 #ifdef _WIN32
-			WriteLine(wr, StringUtil::Format(L"まで%d手で%sの%s", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%s", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
 #else
-			WriteLine(wr, StringUtil::Format(L"まで%d手で%lsの%ls", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
+			WriteLine(wr, StringUtil::Format(L"まで%d手で%ls", move.number() - 1, Kif::MoveTypeStrFromMoveType(move.move_type())));
 #endif
 			// wr.WriteLine("まで{0}手で{1}", move_info.Number - 1, StrFromMovetype(move_info.MoveType));
 			break;

@@ -47,6 +47,7 @@ public:
 	virtual void notifyBestMove(Color color, int transactionNo, const Move& bestmove, const Move& ponder) = 0;
 
 	virtual void notifyInfo(Color color, int transactonNO, const PvInfo& info) = 0;
+	virtual void notifyStop(Color color, int transactionNo) = 0;
 
 	virtual void notifyError(Color color, int errnoNo, const std::string& errorMsg) = 0;
 };
@@ -118,6 +119,7 @@ class EnginePlayer
 	GoRequest go_req_;
 
 	bool is_setoption_req_ = false;
+	bool is_newgame_req_ = false;
 
 	std::unique_ptr<Move> ponder_;
 
@@ -138,6 +140,9 @@ public:
 	int Go(Notation& notation, const GameTimer& time_info);
 	int Ponder(const Notation& notation);
 	void Stop();
+	bool IsThinking_Stopping() const {
+		return this->state_ == EnginePlayerState::GO || this->state_ == EnginePlayerState::PONDER || this->state_ == EnginePlayerState::STOP;
+	}
 
 	void Analyze();
 

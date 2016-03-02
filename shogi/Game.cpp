@@ -102,8 +102,11 @@ void Game::main_loop()
 		case MessageID::BestMove:
 			this->EventBestMove(*(static_cast<MessageBestMove*>(msg.get())));
 			break;
+		case MessageID::Stop:
+			this->EventStop(*(static_cast<MessageStop*>(msg.get())));
+			break;
 		case MessageID::Error:
-			this->cancel_ = true;
+			this->error_ = true;
 			break;
 		}
 	}
@@ -114,7 +117,7 @@ void Game::main_loop()
 	if (!this->cancel_)
 	{
 		// キャンセル以外の終了のしかたがexitしか思いつかない
-		exit(0);
+		// exit(0);
 	}
 }
 
@@ -126,6 +129,11 @@ void Game::main_loop()
 /*-----------------------------------------------------------------------------*/
 bool Game::is_continuous_game_end()
 {
+	if (this->error_)
+	{
+		return true;
+	}
+
 	return (this->param_.MaxPlays > 0) && (this->count_ >= this->param_.MaxPlays);
 }
 
@@ -142,7 +150,11 @@ void Game::game_init()
 	this->black_player_ = std::make_unique<EnginePlayer>(BLACK, &this->engine_listner_);
 	this->white_player_ = std::make_unique<EnginePlayer>(WHITE, &this->engine_listner_);
 
-	this->black_player_->Init(this->param_.Black.FileName);
+	if (!this->black_player_->Init(this->param_.Black.FileName))
+	{
+		// エラー
+		this->error_ = true;
+	}
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -154,6 +166,7 @@ void Game::game_init()
 void Game::game_start()
 {
 	this->play_ = true;
+	this->timeout_ = false;
 
 	std::cout << "game start " << (this->count_ + 1) << " " 
 		<< this->param_.Black.Name << " vs " 
@@ -490,6 +503,26 @@ void Game::EventBestMove(MessageBestMove& msg)
 
 }
 
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief stop
+*/
+/*-----------------------------------------------------------------------------*/
+void Game::EventStop(MessageStop& msg)
+{
+
+	if (this->black_player_->IsThinking_Stopping() || this->white_player_->IsThinking_Stopping())
+	{
+	}
+	else
+	{
+		if (this->timeout_)
+		{
+			this->timeout_ = false;
+			this->game_end();
+		}
+	}
+}
 
 
 /*-----------------------------------------------------------------------------*/
@@ -519,13 +552,23 @@ void Game::EventTimeout(Message& msg)
 
 				int time = this->timer_.Stop(); // タイマーを停止
 
-			
-				MoveKif move(MoveType::TIMEOUT); // タイムアウト負けにする
-				move.time = time;
+				if (this->param_.Timeout)
+				{
+					MoveKif move(MoveType::TIMEOUT); // タイムアウト負けにする
+					move.time = time;
+					this->notation_.AddMove(move);
 
-				this->notation_.AddMove(move);
-
-				this->game_end();
+					if (this->black_player_->IsThinking_Stopping() || this->white_player_->IsThinking_Stopping())
+					{
+						this->timeout_ = true;
+						this->black_player_->Stop();
+						this->white_player_->Stop();
+					}
+					else
+					{
+						this->game_end();
+					}
+				}
 			}
 		}
 	}
@@ -683,6 +726,16 @@ void GameEngineListner::notifyBestMove(Color color, int transactionNo, const Mov
 /*-----------------------------------------------------------------------------*/
 void GameEngineListner::notifyInfo(Color color, int transactionNo, const PvInfo& )
 {
+}
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief Stop
+*/
+/*-----------------------------------------------------------------------------*/
+void GameEngineListner::notifyStop(Color color, int transactionNo)
+{
+	this->msgq_->Send(std::make_shared<MessageStop>(color, transactionNo));
 }
 
 /*-----------------------------------------------------------------------------*/
