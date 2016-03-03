@@ -1,5 +1,6 @@
 ﻿#include "Path.h"
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef _WIN32
 #include <limits.h>
