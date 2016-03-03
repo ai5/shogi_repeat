@@ -1,5 +1,9 @@
 COMPILER = g++
 CFLAGS   = -std=c++14 -fno-exceptions -fno-rtti
+ifeq ($(OS),Windows_NT)
+CFLAGS   += -fexec-charset=cp932
+endif
+
 LDFLAGS  = -lpthread 
 
 LIBS     =
