@@ -125,7 +125,7 @@ bool MoveCheck::MoveCheckParam(const Position& pos, const Move& move)
 	}
 
 	// ターンが違う場合
-	if (pos.side_to_move() != color_of(move.piece()))
+	if (pos.side_to_move() != color_of(move.piece()) || pos.side_to_move() != move.side())
 	{
 		// Debug.Assert(false, "引数エラー");
 		return false;

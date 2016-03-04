@@ -352,6 +352,7 @@ int EnginePlayer::Ponder(const Notation& notation)
 
 	req.Moves = Sfen::MovesToString(notation) + " " + Sfen::MoveToString(*this->ponder_);
 	req.Pos = notation.position();
+	req.Pos.DoMove(*this->ponder_);
 
 	req.transactionNo = ++this->transactionCounter_;
 
@@ -563,13 +564,15 @@ void EnginePlayer::parse_bestmove(const std::string& str)
 		}
 
 		Move move = Sfen::ParseMove(this->pos_, move_str);
-		if (ponder == "" || ponder == "(none)")
+		if (ponder == "" || ponder == "(none)" || !is_move(move.move_type()) || !MoveCheck::IsValid(this->pos_, move))
 		{
 			this->ponder_ = std::make_unique<Move>();
 		}
 		else
 		{
+			this->pos_.DoMove(move);
 			this->ponder_ = std::make_unique<Move>(Sfen::ParseMove(this->pos_, ponder));
+			this->pos_.UndoMove(move);
 		}
 
 		this->lisnter_->notifyBestMove(this->color_, this->transactionNo_, move, *this->ponder_);

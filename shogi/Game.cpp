@@ -483,7 +483,10 @@ void Game::EventBestMove(MessageBestMove& msg)
 			else
 			{
 				this->current_player()->Go(this->notation_, this->timer_);
-				this->opp_player()->Ponder(this->notation_);
+				if (this->param_.PonderON)
+				{
+					this->opp_player()->Ponder(this->notation_);
+				}
 
 				this->timer_.TakeTurn();
 
