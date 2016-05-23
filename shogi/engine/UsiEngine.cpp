@@ -53,7 +53,6 @@ bool USIEngine::Initialize(const std::string& filename)
 /*-----------------------------------------------------------------------------*/
 /**
 * @brief 終了
-* @param filename フィアル名
 * @note
 */
 /*-----------------------------------------------------------------------------*/
@@ -132,7 +131,7 @@ void USIEngine::WriteLine(const std::string& str)
 /*-----------------------------------------------------------------------------*/
 void USIEngine::SetOption(const std::string& name, bool value)
 {
-	if (this->options_.Contents(name))
+	if (this->options_.Contains(name))
 	{
 		this->options_[name]->SetValue(value);
 	}
@@ -141,7 +140,7 @@ void USIEngine::SetOption(const std::string& name, bool value)
 
 void USIEngine::SetOption(const std::string& name, int value)
 {
-	if (this->options_.Contents(name))
+	if (this->options_.Contains(name))
 	{
 		this->options_[name]->SetValue(value);
 	}
@@ -149,7 +148,7 @@ void USIEngine::SetOption(const std::string& name, int value)
 
 void USIEngine::SetOption(const std::string& name, const std::string& value)
 {
-	if (this->options_.Contents(name))
+	if (this->options_.Contains(name))
 	{
 		this->options_[name]->SetValue(value);
 	}

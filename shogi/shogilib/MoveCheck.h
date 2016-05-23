@@ -57,6 +57,9 @@ protected:
 	template<Color Us>
 	static bool IsPawnDropMate(const Position& pos, const Move& move);
 
+	template<Color Us>
+	static bool response(Position& pos, Square to_sq, Piece skip_piece);
+
 
 	static bool CanMove(const MoveCoord move_ofs[], int num, int file_ofs, int rank_ofs);
 	static bool CanMoveRank(const Position& pos, const Move& move);

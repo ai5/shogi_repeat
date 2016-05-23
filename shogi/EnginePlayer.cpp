@@ -303,21 +303,22 @@ void EnginePlayer::ExecGoReeust(const GoRequest& req)
 
 	this->send_cmd(str);
 
+	str = "go ";
+	str += (req.Ponder ? "ponder " : "");
+
 	if (req.ReqType == GoRequest::Type::NORMAL)
 	{
-		str = StringUtil::Format("go btime %d wtime %d byoyomi %d",
+		str += StringUtil::Format("btime %d wtime %d byoyomi %d",
 			req.Btime, req.Wtime, req.Byoyomi);
 		this->send_cmd(str);
-	}
-	else if (req.ReqType == GoRequest::Type::PONDER)
-	{
-		this->send_cmd("go ponder");
 	}
 	else
 	{
 		// 他は未対応
-		this->send_cmd("go infinite");
+		str += "infinite";
 	}
+
+	this->send_cmd(str);
 
 	this->transactionNo_ = req.transactionNo;
 }
@@ -328,10 +329,10 @@ void EnginePlayer::ExecGoReeust(const GoRequest& req)
 * @note
 */
 /*-----------------------------------------------------------------------------*/
-int EnginePlayer::Ponder(const Notation& notation)
+int EnginePlayer::Ponder(const Notation& notation, const GameTimer& time_info)
 {
 	std::unique_lock<std::mutex> lock(this->mtx_);
-	if (this->ponder_ == nullptr || !(this->ponder_->move_type() && MoveType::MOVE_FLAG))
+	if (this->ponder_ == nullptr || !is_move(this->ponder_->move_type()))
 	{
 		// null or 指し手じゃない
 		return this->transactionCounter_; // 現在の値を返しとく
@@ -343,7 +344,15 @@ int EnginePlayer::Ponder(const Notation& notation)
 		return this->transactionCounter_;
 	}
 
-	GoRequest req(GoRequest::Type::PONDER);
+	const GameTime& game_time = (this->color_ == BLACK) ? time_info.BlackTime : time_info.WhiteTime;
+	int byoyomi = game_time.Byoyomi;
+	if (game_time.Byoyomi == 0 && game_time.Time == 0)
+	{
+		byoyomi = 10 * 1000; // 暫定１０秒
+	}
+
+	GoRequest req(time_info.BlackTime.RemainTime, time_info.WhiteTime.RemainTime, byoyomi);
+	req.Ponder = true;
 
 	if (notation.output_initial_position() || notation.handicap() != Handicap::HIRATE)
 	{
@@ -581,7 +590,7 @@ void EnginePlayer::parse_bestmove(const std::string& str)
 
 /*-----------------------------------------------------------------------------*/
 /**
-* @brief bestmoveの処理
+* @brief infoの処理
 * @note
 */
 /*-----------------------------------------------------------------------------*/

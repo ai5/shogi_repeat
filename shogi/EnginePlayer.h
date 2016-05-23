@@ -58,12 +58,12 @@ struct GoRequest
 	enum Type {
 		NORMAL,   // 通常対局用
 		TIME_INFINITY, // 時間無制限
-		PONDER,   // 先読み
 //		MATE,     // 詰み
 //		MOVETIME,    // 時間他指定
 	};
 
 	GoRequest::Type ReqType;
+	bool Ponder = false;
 
 	int Btime;
 	int Wtime;
@@ -138,7 +138,7 @@ public:
 	void Ready();
 
 	int Go(Notation& notation, const GameTimer& time_info);
-	int Ponder(const Notation& notation);
+	int Ponder(const Notation& notation, const GameTimer& time_info);
 	void Stop();
 	bool IsThinking_Stopping() const {
 		return this->state_ == EnginePlayerState::GO || this->state_ == EnginePlayerState::PONDER || this->state_ == EnginePlayerState::STOP;

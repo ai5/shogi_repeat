@@ -35,10 +35,10 @@ public:
 	/* オプション関連 */
 	const USIOptions& options() const { return this->options_; }
 	bool HasOption(const std::string& name) const {
-		return this->options_.Contents(name);
+		return this->options_.Contains(name);
 	}
 	std::string GetOptonValue(const std::string& name) const {
-		if (this->options_.Contents(name))
+		if (this->options_.Contains(name))
 		{
 			return this->options_.at(name)->ValueToString();
 		}

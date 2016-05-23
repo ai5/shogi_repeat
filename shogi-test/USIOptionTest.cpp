@@ -5,7 +5,7 @@
 
 TEST(USIOptionTest, test)
 {
-	USIOptionCheck opt_check("name", "true");
+	USIOptionCheck opt_check("name", true);
 
 	USIOption* opt = &opt_check;
 
@@ -74,8 +74,8 @@ TEST(USIOptionTest, testOptions)
 	USIOptions options;
 
 	ASSERT_EQ(options.AddOption("option name name1 type check default true"), true);
-	ASSERT_EQ(options.Contents("name1"), true);
-	ASSERT_EQ(options.Contents("name"), false);
+	ASSERT_EQ(options.Contains("name1"), true);
+	ASSERT_EQ(options.Contains("name"), false);
 
 	USIOption* opt = options.GetOption("name1");
 	ASSERT_TRUE(opt != nullptr);
@@ -90,7 +90,7 @@ TEST(USIOptionTest, testOptions)
 
 	ASSERT_EQ(options.size(), 6);
 
-	ASSERT_EQ(options.Contents("name2"), true);
+	ASSERT_EQ(options.Contains("name2"), true);
 	opt = options.GetOption("name2");
 	ASSERT_TRUE(opt != nullptr);
 	ASSERT_EQ(opt->Name, "name2");

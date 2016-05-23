@@ -203,7 +203,7 @@ public:
 class USIOptions : private std::map<std::string, std::shared_ptr<USIOption>>
 {
 public:
-	bool Contents(const std::string& name) const
+	bool Contains(const std::string& name) const
 	{
 		return this->count(name) > 0;
 	}
@@ -215,7 +215,7 @@ public:
 
 	USIOption* GetOption(const std::string& name)
 	{
-		if (this->Contents(name))
+		if (this->Contains(name))
 		{
 			return (*this)[name].get();
 		}
@@ -225,7 +225,7 @@ public:
 
 	const USIOption* GetOption(const std::string& name) const 
 	{
-		if (this->Contents(name))
+		if (this->Contains(name))
 		{
 			return (*this).at(name).get();
 		}

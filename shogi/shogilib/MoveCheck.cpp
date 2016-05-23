@@ -733,27 +733,70 @@ bool MoveCheck::IsPawnDropMate(const Position& pos, const Move& move)
 		}
 	}
 
-	// Œãè‹Ê‚ğœ‚¢‚½Œãè‚Ì‹î‚ÌŒø‚«‚ğ’²‚×‚é
-	MoveCheck::ClearEffectData(effect_data);
+	bool ret;
 	
 	if (Us == BLACK)
 	{
-		MoveCheck::MakeEffectAll<WHITE>(pos_next, effect_data, king);
+		ret = MoveCheck::response<WHITE>(pos_next, move.to(), king);
 	}
 	else
 	{
-		MoveCheck::MakeEffectAll<BLACK>(pos_next, effect_data, king);
+		ret = MoveCheck::response<BLACK>(pos_next, move.to(), king);
 	}
 
-	if (effect_data[move.to()] != 0)
+	if (ret)
 	{
-		// Œãè‚ÌŒø‚«‚ª‚ ‚è‚Ü‚µ‚½
+		// ‰è‚ª‚ ‚é
 		return false;
 	}
 
 	// ‚±‚±‚Ü‚Å‚­‚ê‚Î‘Å‚¿•à‹l‚İ
 	return true;
 }
+
+/*-----------------------------------------------------------------------------*/
+/**
+* @brief ‰¤è‚É‘Î‚·‚é‰è
+*/
+/*-----------------------------------------------------------------------------*/
+template<Color Us>
+bool MoveCheck::response(Position& pos, Square to_sq, Piece skip_piece)
+{
+	Piece piece;
+	Square sq;
+	int effect_data[SQUARE_NB];
+
+	Piece cap_piece = pos.GetPiece(to_sq);
+
+	for (sq = SQ_ZERO; sq < SQUARE_NB; sq += 1)
+	{
+		piece = pos.GetPiece(sq);
+
+		if (color_of(piece) == Us && skip_piece != piece)
+		{
+			// æè‚Ì‹î‚ª‚ ‚é
+			// —˜‚«ƒf[ƒ^‚Ìì¬
+			MoveCheck::ClearEffectData(effect_data);
+			MakeEfectOne<Us>(pos, sq, effect_data);
+
+			if (effect_data[to_sq] != 0)
+			{
+				Move movedata(MoveType::NORMAL, sq, to_sq, piece, cap_piece);
+				pos.DoMove(movedata);
+
+				if (!MoveCheck::IsMateLeft<Us>(pos))
+				{
+					return true;
+				}
+
+				pos.UndoMove(movedata);
+			}
+		}
+	}
+
+	return false;
+}
+
 
 /*-----------------------------------------------------------------------------*/
 /**

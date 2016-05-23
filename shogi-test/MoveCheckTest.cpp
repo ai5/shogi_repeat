@@ -187,3 +187,31 @@ TEST_F(MoveCheckTest, testIsCheck)
 }
 
 
+// [TestMethod, Description("打ち歩詰めテスト")]
+TEST_F(MoveCheckTest, PawnDropMateTest)
+{
+
+	Position pos;
+
+	Sfen::LoadPosition(pos, "lnsg2snl/1r5b1/ppppppppp/7gk/9/7S1/PPPPPPPP1/1B5R1/LNSGKG1N1 b LP 1");
+
+	Move movedata = Sfen::ParseMove(pos, "P*1e");
+	ASSERT_EQ(MoveCheck::IsValid(pos, movedata), true);
+
+	Sfen::LoadPosition(pos, "lnsg2snl/1r5b1/ppppppppp/4R2gk/9/7S1/PPPPPPPP1/1B7/LNSGKG1N1 b LP 1");
+
+	movedata = Sfen::ParseMove(pos, "P*1e");
+	ASSERT_EQ(MoveCheck::IsValid(pos, movedata), false);
+
+	Sfen::LoadPosition(pos, "lnsg1ksn1/1r5b1/pppppppp1/7g1/9/7SK/PPPPPPPPP/1B5R1/LNSG1G1N1 w Llp 1");
+
+	movedata = Sfen::ParseMove(pos, "P*1e");
+	ASSERT_EQ(MoveCheck::IsValid(pos, movedata), true);
+
+	Sfen::LoadPosition(pos, "lnsg1ksn1/7b1/pppppppp1/7g1/9/4r2SK/PPPPPPPPP/1B5R1/LNSG1G1N1 w Llp 1");
+
+	movedata = Sfen::ParseMove(pos, "P*1e");
+	ASSERT_EQ(MoveCheck::IsValid(pos, movedata), false);
+
+}
+
