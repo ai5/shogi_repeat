@@ -5,7 +5,7 @@
 
 #include "GameTimer.h"
 
-#include "USIEngine.h"
+#include "UsiEngine.h"
 #include "USIString.h"
 
 #include "Logger.h"
