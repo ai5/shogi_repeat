@@ -7,7 +7,7 @@
 #include "KeyValue.h"
 #include "Kif.h"
 #include "StringUtil.h"
-#include "USIEngine.h"
+#include "UsiEngine.h"
 
 #include "MoveCheck.h"
 #include "Logger.h"

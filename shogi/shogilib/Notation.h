@@ -7,8 +7,8 @@
 #include <map>
 #include "types.h"
 
-#include "position.h"
-#include "move.h"
+#include "Position.h"
+#include "Move.h"
 
 class Notation
 {

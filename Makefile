@@ -48,7 +48,7 @@ endif
 
 SOURCES  =  shogi/Game.cpp shogi/EnginePlayer.cpp shogi/GameTimer.cpp shogi/Logger.cpp shogi/PvInfo.cpp \
 			shogi/util/KeyValue.cpp shogi/engine/CProcess.cpp shogi/engine/Path.cpp shogi/engine/PipeStream.cpp \
-			shogi/engine/StringQueue.cpp shogi/engine/USIEngine.cpp shogi/engine/USIOption.cpp shogi/engine/USIString.cpp \
+			shogi/engine/StringQueue.cpp shogi/engine/UsiEngine.cpp shogi/engine/USIOption.cpp shogi/engine/USIString.cpp \
 			shogi/shogilib/Handicap.cpp shogi/shogilib/History.cpp shogi/shogilib/Key.cpp shogi/shogilib/Move.cpp \
 			shogi/shogilib/MovesEnumerator.cpp shogi/shogilib/Notation.cpp shogi/shogilib/Position.cpp shogi/shogilib/StringUtil.cpp \
 			shogi/shogilib/Tokenizer.cpp shogi/shogilib/MoveCheck.cpp \
